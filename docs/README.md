@@ -1,4 +1,4 @@
-# Duke
+# FinText
 
 {Give product intro here}
 
