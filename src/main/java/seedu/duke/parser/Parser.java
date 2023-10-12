@@ -17,7 +17,7 @@ public class Parser {
     }
 
     public Command parse(String userInput) throws DukeException {
-        String trimmedInput = userInput.trim().strip();
+        String trimmedInput = userInput.trim();
 
         String commandWord = getCommandWord(trimmedInput);
         String description = getDescription(trimmedInput);
