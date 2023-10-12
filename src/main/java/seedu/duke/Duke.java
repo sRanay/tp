@@ -1,21 +1,45 @@
 package seedu.duke;
 
+import seedu.duke.command.Command;
+import seedu.duke.command.ExitCommand;
+import seedu.duke.exception.DukeException;
+import seedu.duke.parser.Parser;
+import seedu.duke.ui.Ui;
+
 import java.util.Scanner;
 
 public class Duke {
+
+    private static Ui ui;
+
+    public Duke() {
+        ui = new Ui();
+    }
+
+    public void run() {
+        Scanner scanner = new Scanner(System.in);
+        ui.printGreeting();
+        String userInput;
+        while (true) {
+            userInput = scanner.nextLine();
+            try {
+                Command command = new Parser().parse(userInput);
+                command.execute(ui);
+
+                if(command instanceof ExitCommand){
+                    break;
+                }
+            } catch (DukeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
     /**
      * Main entry-point for the java.duke.Duke application.
      */
     public static void main(String[] args) {
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);
-        System.out.println("What is your name?");
-
-        Scanner in = new Scanner(System.in);
-        System.out.println("Hello " + in.nextLine());
+        Duke duke = new Duke();
+        duke.run();
     }
 }
