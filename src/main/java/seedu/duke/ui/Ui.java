@@ -3,8 +3,6 @@ package seedu.duke.ui;
 public class Ui {
     final String PROGRAM_NAME = "FinText";
 
-    final String SEPARATOR = "____________________________________________________________";
-
     public Ui() {
     }
 

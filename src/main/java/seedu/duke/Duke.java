@@ -26,7 +26,7 @@ public class Duke {
                 Command command = new Parser().parse(userInput);
                 command.execute(ui);
 
-                if(command instanceof ExitCommand){
+                if (command instanceof ExitCommand) {
                     break;
                 }
             } catch (DukeException e) {
