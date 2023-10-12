@@ -26,7 +26,8 @@ public class Parser {
         return getCommand(commandWord, description, argsMap);
     }
 
-    public Command getCommand(String commandWord, String description, HashMap<String, String> argsMap) throws DukeException {
+    public Command getCommand(String commandWord, String description,
+                              HashMap<String, String> argsMap) throws DukeException {
         switch (commandWord) {
         case "bye":
             return new ExitCommand();
@@ -44,7 +45,6 @@ public class Parser {
         if (splitInput.length <= 1) {
             return EMPTY_STRING;
         }
-//        System.out.println(Arrays.toString(splitInput[1].split(SPACE_WITH_ARG_PREFIX, 1)));
         return splitInput[1].split(SPACE_WITH_ARG_PREFIX, 2)[0].trim();
     }
 

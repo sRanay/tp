@@ -1,7 +1,7 @@
 package seedu.duke.ui;
 
 public class Ui {
-    final String PROGRAM_NAME = "FinText";
+    private static final String PROGRAM_NAME = "FinText";
 
     public Ui() {
     }
