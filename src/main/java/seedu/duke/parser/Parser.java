@@ -1,5 +1,6 @@
 package seedu.duke.parser;
 
+import seedu.duke.command.AddIncomeCommand;
 import seedu.duke.command.Command;
 import seedu.duke.command.ExitCommand;
 import seedu.duke.exception.DukeException;
@@ -31,6 +32,8 @@ public class Parser {
         switch (commandWord) {
         case "bye":
             return new ExitCommand();
+        case "in":
+            return new AddIncomeCommand(description, argsMap);
         default:
             throw new DukeException("Sorry I do not understand your command");
         }
@@ -78,5 +81,22 @@ public class Parser {
 
     public String convertArgValueListToString(ArrayList<String> argValues) {
         return String.join(DELIM, argValues).trim();
+    }
+
+    public static Double parseDouble(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public static Double parseNonNegativeDouble(String value) {
+        Double parsedValue = parseDouble(value);
+        if (parsedValue == null || parsedValue < 0) {
+            return null;
+        }
+
+        return parsedValue;
     }
 }
