@@ -2,7 +2,6 @@ package seedu.duke.classes;
 
 public class Income {
     private Transaction transaction;
-
     private Category category;
 
     public Income(Transaction transaction, Category category) {
