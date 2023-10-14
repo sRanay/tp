@@ -14,6 +14,11 @@ public class AddIncomeCommand extends Command {
     private static final String AMOUNT_ARG = "amount";
     private static final String[] HEADERS = {"Description", "Amount"};
 
+    private static final String SUCCESS_PRINT = "Nice! The following income has been tracked:";
+    private static final String MISSING_DESC = "Description cannot be empty...";
+    private static final String MISSING_AMOUNT = "Amount cannot be empty...";
+    private static final String BAD_AMOUNT = "Invalid amount value specified...";
+
     public AddIncomeCommand(String description, HashMap<String, String> args) {
         super(description, args);
     }
@@ -45,6 +50,7 @@ public class AddIncomeCommand extends Command {
         ArrayList<String> printValues = new ArrayList<>();
         printValues.add(transaction.getDescription());
         printValues.add(ui.formatAmount(transaction.getAmount()));
+        ui.print(SUCCESS_PRINT);
         ui.printTableRow(printValues, HEADERS);
     }
 
@@ -55,17 +61,17 @@ public class AddIncomeCommand extends Command {
         assert getArgs() != null;
 
         if (getDescription().isBlank()) {
-            throw new DukeException("Description cannot be empty...");
+            throw new DukeException(MISSING_DESC);
         }
 
         String amountArg = getArg(AMOUNT_ARG);
         if (amountArg == null) {
-            throw new DukeException("Amount cannot be empty...");
+            throw new DukeException(MISSING_AMOUNT);
         }
 
         Double amount = Parser.parseNonNegativeDouble(amountArg);
         if (amount == null) {
-            throw new DukeException("Invalid amount value specified...");
+            throw new DukeException(BAD_AMOUNT);
         }
     }
 }

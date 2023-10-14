@@ -27,11 +27,6 @@ public class Ui {
             colWidths = getDefaultColWidths(rowValues.size());
         }
 
-        if (headers != null) {
-            List<String> headerList = Arrays.asList(headers);
-            print(formatColumnValues(colWidths, new ArrayList<>(headerList)));
-        }
-
         print(formatColumnValues(colWidths, rowValues));
     }
 
@@ -40,10 +35,13 @@ public class Ui {
             return null;
         }
 
-        return (ArrayList<Integer>) Arrays.stream(headers)
+        ArrayList<Integer> colWidths = (ArrayList<Integer>) Arrays.stream(headers)
                 .parallel()
                 .map(header -> Math.max(header.length(), COLUMN_WIDTH))
                 .collect(Collectors.toList());
+        List<String> headerList = Arrays.asList(headers);
+        print(formatColumnValues(colWidths, new ArrayList<>(headerList)));
+        return colWidths;
     }
 
     public String formatAmount(Double value) {
