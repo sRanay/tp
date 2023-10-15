@@ -24,6 +24,10 @@ public class Ui {
         outputStream = System.out;
     }
 
+    public Ui(OutputStream outputStream) {
+        this.outputStream = outputStream;
+    }
+
     public void printTableRow(ArrayList<String> rowValues) {
         printTableRow(rowValues, null, null);
     }
