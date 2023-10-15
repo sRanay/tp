@@ -4,27 +4,31 @@ import java.time.LocalDate;
 
 public class Transaction {
     private String description;
-    private int amount;
+    private Double amount;
     private LocalDate date;
 
-    public Transaction(String description, int amount, LocalDate date) {
+    public Transaction(String description, Double amount, LocalDate date) {
+        if (date == null) {
+            date = LocalDate.now();
+        }
+
         this.description = description;
         this.amount = amount;
         this.date = date;
     }
-    
-    public int getAmount() {
+
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
     public LocalDate getDate() {
         return date;
     }
-    
+
     public void setDate(LocalDate date) {
         this.date = date;
     }
