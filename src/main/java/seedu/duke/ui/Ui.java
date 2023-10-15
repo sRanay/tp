@@ -16,7 +16,7 @@ public class Ui {
     private static final int COLUMN_WIDTH = 10;
     private static final int SPACE_BETWEEN_COLS = 3;
     private static final String AMOUNT_FORMAT = "%.2f";
-    private static final char LINE_DELIMETER = '\n';
+    private static final char LINE_DELIMITER = '\n';
 
     private final OutputStream outputStream;
 
@@ -89,7 +89,7 @@ public class Ui {
     public void print(String value) {
         try {
             outputStream.write(value.getBytes(StandardCharsets.UTF_8));
-            outputStream.write(LINE_DELIMETER);
+            outputStream.write(LINE_DELIMITER);
             outputStream.flush();
         } catch (IOException e) {
             // Fail quietly for now
