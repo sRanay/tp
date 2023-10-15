@@ -1,5 +1,6 @@
 package seedu.duke.parser;
 
+import seedu.duke.command.AddExpenseCommand;
 import seedu.duke.command.AddIncomeCommand;
 import seedu.duke.command.Command;
 import seedu.duke.command.ExitCommand;
@@ -34,6 +35,8 @@ public class Parser {
             return new ExitCommand();
         case "in":
             return new AddIncomeCommand(description, argsMap);
+        case "out":
+            return new AddExpenseCommand(description, argsMap);
         default:
             throw new DukeException("Sorry I do not understand your command");
         }
