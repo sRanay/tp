@@ -26,4 +26,23 @@ class UiTest {
                 outputStream.toString()
         );
     }
+
+    @Test
+    public void printTableWithCustomWidths() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Ui ui = new Ui(outputStream);
+        String[] headers = new String[]{"Header 1", "Header 2"};
+        Integer[] widths = new Integer[]{20, 20};
+        ArrayList<ArrayList<String>> rows = new ArrayList<>();
+        ArrayList<String> row = new ArrayList<>();
+        row.add("Hi");
+        row.add("Test print");
+        rows.add(row);
+        ui.printTableRows(rows, headers, widths);
+        assertEquals(
+                "Header 1               Header 2\n" +
+                        "Hi                     Test print\n",
+                outputStream.toString()
+        );
+    }
 }

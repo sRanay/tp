@@ -121,7 +121,8 @@ public class Ui {
         }
 
         assert colWidths.size() <= customWidths.length;
-        for (int i = 0; i < colWidths.size(); ++i) {
+        int colCount = colWidths.size();
+        for (int i = 0; i < colCount; ++i) {
             colWidths.add(i, Math.max(colWidths.get(i), customWidths[i]));
         }
 
