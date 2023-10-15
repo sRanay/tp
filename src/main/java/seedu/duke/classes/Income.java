@@ -2,11 +2,11 @@ package seedu.duke.classes;
 
 public class Income {
     private Transaction transaction;
-    private Category category;
+    private Goal goal;
 
-    public Income(Transaction transaction, Category category) {
+    public Income(Transaction transaction, Goal goal) {
         this.transaction = transaction;
-        this.category = category;
+        this.goal = goal;
     }
 
     public Transaction getTransaction() {
@@ -17,11 +17,11 @@ public class Income {
         this.transaction = transaction;
     }
 
-    public Category getCategory() {
-        return category;
+    public Goal getGoal() {
+        return goal;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setGoal(Goal goal) {
+        this.goal = goal;
     }
 }
