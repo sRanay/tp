@@ -134,12 +134,13 @@ public class Ui {
         assert colWidths.size() >= colValues.size();
 
         ArrayList<String> finalValues = new ArrayList<>(colValues.size());
+        int lastIdx = colValues.size() - 1;
         for (int i = 0; i < colValues.size(); ++i) {
             int maxWidth = colWidths.get(i);
             String truncatedValue = colValues.get(i);
             if (truncatedValue.length() > maxWidth) {
                 truncatedValue = truncatedValue.substring(0, maxWidth - ELLIPSIS.length()) + ELLIPSIS;
-            } else {
+            } else if (i != lastIdx) {
                 char[] fillerChars = new char[maxWidth - truncatedValue.length()];
                 Arrays.fill(fillerChars, FILLER_CHAR);
                 truncatedValue += new String(fillerChars);

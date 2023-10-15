@@ -21,7 +21,7 @@ class UiTest {
         rows.add(row);
         ui.printTableRows(rows, headers);
         assertEquals(
-                "Header 1     Header 2  \n" +
+                "Header 1     Header 2\n" +
                         "Hi           Test print\n",
                 outputStream.toString()
         );
