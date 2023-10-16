@@ -6,23 +6,45 @@ import java.util.HashMap;
 import seedu.duke.ui.Ui;
 
 public class HelpCommand extends Command {
+    private ArrayList<ArrayList<String>> helpList;
+
     private static final String LINE_DIVIDER = "";
     private static final String[] FULL_LIST_HEADERS = {"Command", "Description"};
+    private static final String[] FLAG_DESCRIPTION_HEADERS = {"Option", "Description"};
     private static final Integer[] CUSTOM_COLUMN_WIDTH = {10, 1000};
     private static final String HELP_COMMAND = "help";
     private static final String HELP_DESCRIPTION = "Shows a list of all the commands available to the user";
     private static final String IN_COMMAND = "in";
     private static final String IN_DESCRIPTION = "Adds an income towards goal";
+    private static final String IN_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]";
+    private static final String[] IN_COMMAND_FLAGS = {"/amount", "/goal", "/date"};
+    private static final String[] IN_COMMAND_FLAGS_DESCRIPTION = {"Amount to be added", "The goal to classify it under", "Date of the transaction"};
     private static final String OUT_COMMAND = "out";
     private static final String OUT_DESCRIPTION = "Adds an expense for a category";
+    private static final String OUT_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]";
+    private static final String[] OUT_COMMAND_FLAGS = {"/amount", "/category", "/date"};
+    private static final String[] OUT_COMMAND_FLAGS_DESCRIPTION = {"Amount to be deducted", "The spending category to classify it under", "Date of the transaction"};
     private static final String DELETE_COMMAND = "delete";
     private static final String DELETE_DESCRIPTION = "Delete a specific transaction based on the index in the list";
+    private static final String DELETE_COMMAND_USAGE = " INDEX /type (in | out)";
+    private static final String[] DELETE_COMMAND_FLAGS = {"/type"};
+    private static final String[] DELETE_COMMAND_FLAGS_DESCRIPTION = {"To set whether it is a in or out transaction"};
     private static final String LIST_COMMAND = "list";
     private static final String LIST_DESCRIPTION = "Shows a list of all added transactions based on type";
+    private static final String LIST_COMMAND_USAGE = " /type (in | out) [/goal GOAL] [/category CATEGORY]";
+    private static final String[] LIST_COMMAND_FLAGS = {"/type", "/goal", "/category"};
+    private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether it is a in or out transaction", "The goal which it is classify under", "The spending category it is classify under"};
+    private static final String USAGE_PREFIX = "Usage: ";
+    private static final String INVALID_COMMAND = "NO SUCH COMMAND";
 
 
     public HelpCommand(String command, HashMap<String, String> args) {
         super(command, args);
+        helpList = new ArrayList<ArrayList<String>>();
+    }
+
+    public ArrayList<ArrayList<String>> gethelpList() {
+        return this.helpList;
     }
 
     public ArrayList<String> convertCommandList(String command, String description) {
@@ -44,7 +66,7 @@ public class HelpCommand extends Command {
 
     public ArrayList<String> printOutDescription() {
         ArrayList<String> out = convertCommandList(OUT_COMMAND, OUT_DESCRIPTION);
-        return out;
+        return out; 
     }
 
     public ArrayList<String> printDeleteDescription() {
@@ -57,61 +79,86 @@ public class HelpCommand extends Command {
         return list;
     }
 
-    public ArrayList<ArrayList<String>> printFullList(ArrayList<ArrayList<String>> helpList) {
-        helpList.add(printHelpDescription());
-        helpList.add(printInDescription());
-        helpList.add(printOutDescription());
-        helpList.add(printDeleteDescription());
-        helpList.add(printListDescription());
-        assert helpList != null;
-        return helpList;
+    public ArrayList<ArrayList<String>> printFullList() {
+        this.helpList.add(printHelpDescription());
+        this.helpList.add(printInDescription());
+        this.helpList.add(printOutDescription());
+        this.helpList.add(printDeleteDescription());
+        this.helpList.add(printListDescription());
+        assert this.helpList != null;
+        return this.helpList;
     }
 
-    // public void printHelpUsage() {
-    //     print("Usage: help\n");
-    // }
+    public String helpUsage() {
+        return USAGE_PREFIX + HELP_COMMAND;
+    }
 
-    // public void printInUsage() {
-    //     print("Usage: in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]\n");
-    // }
+    public String inUsage() {
+        return USAGE_PREFIX + IN_COMMAND + IN_COMMAND_USAGE;
+    }
 
-    // public void printOutUsage() {
-    //     print("Usage: out DESCRIPTION /amount  AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]\n");
-    // }
+    public String outUsage() {
+        return USAGE_PREFIX + OUT_COMMAND + OUT_COMMAND_USAGE;
+    }
 
-    // public void printDeleteUsage() {
-    //     print("Usage: delete INDEX /type (in | out)\n");
-    // }
+    public String deleteUsage() {
+        return USAGE_PREFIX + DELETE_COMMAND + DELETE_COMMAND_USAGE;
+    }
 
-    // public void printListUsage() {
-    //     print("Usage: list /type (in | out) [/goal GOAL] [/category CATEGORY]\n");
-    // }
+    public String listUsage() {
+        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE;
+    }
 
-    @Override
-    public void execute(Ui ui) {
-        ArrayList<ArrayList<String>> helpList = new ArrayList<ArrayList<String>>();
+    public void convertIntoList(String[] flags, String[] description) {
+        for(int i = 0; i < flags.length; i++) {
+            ArrayList<String> row = new ArrayList<String>();
+            row.add(flags[i]);
+            row.add(description[i]);
+            this.helpList.add(row);
+        }
+    }
+
+    public void updateOutput(Ui ui) {
         if(getDescription().isBlank()) {
-            printFullList(helpList);
-            ui.print(LINE_DIVIDER);
-            ui.printTableRows(helpList, FULL_LIST_HEADERS, CUSTOM_COLUMN_WIDTH);
-            ui.print(LINE_DIVIDER);
+            printFullList();
         } else {
             switch(getDescription()) {
             case "help":
+                ui.print(helpUsage());
                 break;
             case "in":
+                ui.print(inUsage());
+                convertIntoList(IN_COMMAND_FLAGS, IN_COMMAND_FLAGS_DESCRIPTION);
                 break;
             case "out":
+                ui.print(outUsage());
+                convertIntoList(OUT_COMMAND_FLAGS, OUT_COMMAND_FLAGS_DESCRIPTION);
                 break;
             case "delete":
+                ui.print(deleteUsage());
+                convertIntoList(DELETE_COMMAND_FLAGS, DELETE_COMMAND_FLAGS_DESCRIPTION);
                 break;
             case "list":
+                ui.print(listUsage());
+                convertIntoList(LIST_COMMAND_FLAGS, LIST_COMMAND_FLAGS_DESCRIPTION);
                 break;
             default:
-                System.out.println("NO SUCH COMMANDS");
+                ui.print(INVALID_COMMAND);
                 break;
             }
-            System.out.println("Works");
         }
+    }
+
+    @Override
+    public void execute(Ui ui) {
+        this.helpList.clear();
+        ui.print(LINE_DIVIDER);
+        updateOutput(ui);
+        if(getDescription().isBlank()) {
+            ui.printTableRows(this.helpList, FULL_LIST_HEADERS, CUSTOM_COLUMN_WIDTH);
+        } else if (!(getDescription().equals("help") || this.helpList.isEmpty())) {
+            ui.printTableRows(this.helpList, FLAG_DESCRIPTION_HEADERS, CUSTOM_COLUMN_WIDTH);
+        }
+        ui.print(LINE_DIVIDER);
     }
 }
