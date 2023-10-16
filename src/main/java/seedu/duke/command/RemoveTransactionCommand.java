@@ -1,8 +1,6 @@
 package seedu.duke.command;
 
-import seedu.duke.classes.Transaction;
 import seedu.duke.exception.DukeException;
-import seedu.duke.parser.Parser;
 import seedu.duke.ui.Ui;
 import seedu.duke.classes.StateManager;
 
