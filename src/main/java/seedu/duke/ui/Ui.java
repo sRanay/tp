@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -13,8 +14,12 @@ public class Ui {
     private static final String ELLIPSIS = "...";
     private static final String PROGRAM_NAME = "FinText";
     private static final char FILLER_CHAR = ' ';
+    private static final char LIST_SEPARATOR = '=';
     private static final int COLUMN_WIDTH = 10;
+    private static final int LIST_COLUMN_WIDTH = 30;
+    private static final int ID_COLUMN_WIDTH = 3;
     private static final int SPACE_BETWEEN_COLS = 3;
+
     private static final String AMOUNT_FORMAT = "%.2f";
     private static final char LINE_DELIMITER = '\n';
 
@@ -152,5 +157,30 @@ public class Ui {
         char[] spacer = new char[SPACE_BETWEEN_COLS];
         Arrays.fill(spacer, FILLER_CHAR);
         return String.join(new String(spacer), finalValues);
+    }
+
+    public void listTransactions(ArrayList<ArrayList<String>> list, String[] headers, String headerMessage) {
+        String end = " transactions.";
+        if (list.size() == 1) {
+            end = " transaction.";
+        }
+        print("Alright! Displaying " + list.size() + end);
+        Integer[] columnWidths = {ID_COLUMN_WIDTH, LIST_COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH};
+        int totalSpace = Arrays.stream(columnWidths)
+                .mapToInt(Integer::intValue)
+                .sum();
+        totalSpace = totalSpace + (SPACE_BETWEEN_COLS * columnWidths.length) - headerMessage.length();
+        int leftSide = totalSpace / 2;
+        int rightSide = totalSpace - leftSide;
+        String leftPad = new String(new char[leftSide]).replace('\0', LIST_SEPARATOR);
+        String rightPad = new String(new char[rightSide]).replace('\0', LIST_SEPARATOR);
+        StringJoiner wrapper = new StringJoiner(" ");
+        wrapper.add(leftPad);
+        wrapper.add(headerMessage);
+        wrapper.add(rightPad);
+        print(wrapper.toString());
+        printTableRows(list, headers, columnWidths);
+        print(wrapper.toString());
+
     }
 }
