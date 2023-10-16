@@ -61,6 +61,8 @@ public class RemoveTransactionCommand extends Command {
         String type = getArg("type").toLowerCase();
         int maxSize = getTransactionMaxSize(type);
         int idx = parseIdx(maxSize) - 1; //-1 due to 0 based indexing for arraylist
+        assert idx >= 0 : "Index should be a valid integer greater than 0";
+
         boolean isSuccess = false;
         String transactionDescription = "";
         if (type.equals("in")) {
