@@ -129,4 +129,12 @@ public class StateManager {
     public ArrayList<Expense> getAllExpenses(){
         return expenses;
     }
+
+    public int getIncomesSize() {
+        return incomes.size();
+    }
+
+    public int getExpensesSize() {
+        return expenses.size();
+    }
 }
