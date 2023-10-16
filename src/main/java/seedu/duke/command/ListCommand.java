@@ -11,12 +11,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class ListCommand extends Command {
-    private static final String INVALID_TYPE_FORMAT = "I'm sorry, you need to specify a type in the format '/type in' or '/type out'";
-    private static final String INVALID_GOAL_FORMAT = "You have entered /goal, but you did not enter anything after that";
-    private static final String INVALID_CATEGORY_FORMAT = "You have entered /category, but you did not enter anything after that";
-
-    private static final String EMPTY_LIST = "It appears that we have came up empty. Why not try adding some transactions first?";
-
+    private static final String INVALID_TYPE_FORMAT = "I'm sorry, you need to specify a type in the format " +
+            "'/type in' or '/type out'";
+    private static final String INVALID_GOAL_FORMAT = "You have entered /goal, but you did not enter anything" +
+            " after that";
+    private static final String INVALID_CATEGORY_FORMAT = "You have entered /category, but you did not enter" +
+            " anything after that";
+    private static final String EMPTY_LIST = "It appears that we have came up empty. Why not try adding some" +
+            " transactions first?";
     private static final String[] HEADERS = {"ID", "Description", "Date", "Amount", "Goal"};
     private static final String IN = "IN TRANSACTIONS";
     private static final String OUT = "OUT TRANSACTIONS";
@@ -79,7 +81,7 @@ public class ListCommand extends Command {
             Transaction currentTransaction = i.getTransaction();
             String description = currentTransaction.getDescription();
             String date = currentTransaction.getDate().toString();
-            String amount = String.valueOf(currentTransaction.getAmount());
+            String amount = String.valueOf(ui.formatAmount(currentTransaction.getAmount()));
             String goal = "TBC";
             // TODO uncomment once goal is implemented
             // String goal = i.getGoal().getDescription();
@@ -105,7 +107,8 @@ public class ListCommand extends Command {
             String category = "TBC";
             // TODO uncomment once category is implemented
             // String category = i.getCategory().getName();
-            printExpenses.add(new ArrayList<>(Arrays.asList(String.valueOf(index), description, date, amount, category)));
+            printExpenses.add(new ArrayList<>(Arrays.asList(String.valueOf(index), description, date,
+                    amount, category)));
             index++;
         }
         printList(printExpenses, OUT);

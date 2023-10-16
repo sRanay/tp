@@ -172,14 +172,14 @@ public class Ui {
         totalSpace = totalSpace + (SPACE_BETWEEN_COLS * columnWidths.length) - headerMessage.length();
         int leftSide = totalSpace / 2;
         int rightSide = totalSpace - leftSide;
-        String leftPad = new String(new char[leftSide]).replace('\0', '=');
-        String rightPad = new String(new char[rightSide]).replace('\0', '=');
+        String leftPad = new String(new char[leftSide]).replace('\0', LIST_SEPARATOR);
+        String rightPad = new String(new char[rightSide]).replace('\0', LIST_SEPARATOR);
         StringJoiner wrapper = new StringJoiner(" ");
         wrapper.add(leftPad);
         wrapper.add(headerMessage);
         wrapper.add(rightPad);
         print(wrapper.toString());
-        printTableRows(list, headers);
+        printTableRows(list, headers, columnWidths);
         print(wrapper.toString());
 
     }

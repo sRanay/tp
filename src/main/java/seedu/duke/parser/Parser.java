@@ -1,6 +1,10 @@
 package seedu.duke.parser;
 
-import seedu.duke.command.*;
+import seedu.duke.command.AddExpenseCommand;
+import seedu.duke.command.AddIncomeCommand;
+import seedu.duke.command.Command;
+import seedu.duke.command.ExitCommand;
+import seedu.duke.command.ListCommand;
 import seedu.duke.exception.DukeException;
 
 import java.util.ArrayList;
