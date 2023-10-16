@@ -152,18 +152,17 @@ public class HelpCommand extends Command {
                 break;
             }
         }
-    }
-
-    @Override
-    public void execute(Ui ui) {
-        this.helpList.clear();
-        ui.print(LINE_DIVIDER);
-        updateOutput(ui);
         if(getDescription().isBlank()) {
             ui.printTableRows(this.helpList, FULL_LIST_HEADERS, CUSTOM_COLUMN_WIDTH);
         } else if (!(getDescription().equals("help") || this.helpList.isEmpty())) {
             ui.printTableRows(this.helpList, FLAG_DESCRIPTION_HEADERS, CUSTOM_COLUMN_WIDTH);
         }
+    }
+
+    @Override
+    public void execute(Ui ui) {
+        ui.print(LINE_DIVIDER);
+        updateOutput(ui);
         ui.print(LINE_DIVIDER);
     }
 }
