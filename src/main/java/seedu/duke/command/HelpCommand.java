@@ -17,15 +17,16 @@ public class HelpCommand extends Command {
     private static final String IN_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]";
     private static final String[] IN_COMMAND_FLAGS = {"/amount", "/goal", "/date"};
     private static final String[] IN_COMMAND_FLAGS_DESCRIPTION = {"Amount to be added", 
-                                                                    "The goal to classify it under", 
-                                                                    "Date of the transaction"};
+                                                                  "The goal to classify it under", 
+                                                                  "Date of the transaction"};
     private static final String OUT_COMMAND = "out";
     private static final String OUT_DESCRIPTION = "Adds an expense for a category";
-    private static final String OUT_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]";
+    private static final String OUT_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT " +
+                                                    "/category CATEGORY [/date DATE in DDMMYYYY]";
     private static final String[] OUT_COMMAND_FLAGS = {"/amount", "/category", "/date"};
     private static final String[] OUT_COMMAND_FLAGS_DESCRIPTION = {"Amount to be deducted", 
-                                                                    "The spending category to classify it under", 
-                                                                    "Date of the transaction"};
+                                                                   "The spending category to classify it under", 
+                                                                   "Date of the transaction"};
     private static final String DELETE_COMMAND = "delete";
     private static final String DELETE_DESCRIPTION = "Delete a specific transaction based on the index in the list";
     private static final String DELETE_COMMAND_USAGE = " INDEX /type (in | out)";
@@ -36,8 +37,8 @@ public class HelpCommand extends Command {
     private static final String LIST_COMMAND_USAGE = " /type (in | out) [/goal GOAL] [/category CATEGORY]";
     private static final String[] LIST_COMMAND_FLAGS = {"/type", "/goal", "/category"};
     private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether it is a in or out transaction", 
-                                                                        "The goal which it is classify under", 
-                                                                        "The spending category it is classify under"};
+                                                                    "The goal which it is classify under", 
+                                                                    "The spending category it is classify under"};
     private static final String USAGE_PREFIX = "Usage: ";
     private static final String INVALID_COMMAND = "NO SUCH COMMAND";
     private ArrayList<ArrayList<String>> helpList;
