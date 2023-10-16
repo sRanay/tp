@@ -90,6 +90,9 @@ public class Parser {
     }
 
     public String convertArgValueListToString(ArrayList<String> argValues) {
+        if (argValues.isEmpty()) {
+            return null;
+        }
         return String.join(DELIM, argValues).trim();
     }
 
