@@ -6,6 +6,7 @@ import seedu.duke.command.Command;
 import seedu.duke.command.ExitCommand;
 import seedu.duke.command.HelpCommand;
 import seedu.duke.command.ListCommand;
+import seedu.duke.command.RemoveTransactionCommand;
 import seedu.duke.exception.DukeException;
 
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ public class Parser {
             return new AddExpenseCommand(description, argsMap);
         case "list":
             return new ListCommand(description, argsMap);
+        case "delete":
+            return new RemoveTransactionCommand(description, argsMap);
         case "help":
             return new HelpCommand(description, argsMap);
         default:
