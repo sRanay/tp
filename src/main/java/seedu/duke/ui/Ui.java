@@ -67,7 +67,7 @@ public class Ui {
         }
 
         if (colWidths == null) {
-            colWidths = getPrintWidths(getDefaultColWidths(rows.get(0).size()), customWidths);
+            colWidths = getPrintWidths(genColWidths(rows.get(0).size(), 0), customWidths);
         }
 
         for (ArrayList<String> rowValues : rows) {
@@ -112,10 +112,14 @@ public class Ui {
         print("Bye Bye!");
     }
 
-    private ArrayList<Integer> getDefaultColWidths(int length) {
+    private ArrayList<Integer> genColWidths(int length, int width) {
         return (ArrayList<Integer>) IntStream.range(0, length)
-                .mapToObj(i -> COLUMN_WIDTH)
+                .mapToObj(i -> width)
                 .collect(Collectors.toList());
+    }
+
+    private ArrayList<Integer> getDefaultColWidths(int length) {
+        return genColWidths(length, COLUMN_WIDTH);
     }
 
     private ArrayList<Integer> getPrintWidths(ArrayList<Integer> colWidths, Integer[] customWidths) {
