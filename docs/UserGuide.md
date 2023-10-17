@@ -12,7 +12,7 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
     * [Adding an expense entry: `out`](#adding-an-expense-entry-out)
     * [Delete Transaction: `delete`](#delete-transaction-delete)
     * [List Transactions: `list`](#list-transactions-list)
-    * [End Program: `quit`](#end-program-quit)
+    * [End Program: `bye`](#end-program-bye)
 * [Command Summary](#command-summary)
 
 
@@ -108,7 +108,7 @@ ID    Description   Date			Amount	Goal
  2    Hongbao		13 SEP 2023		$10		KOREA STUDIES
 ==================== IN TRANSACTIONS =====================
 ```
-### End Program: `quit`
+### End Program: `bye`
 Safely ends the program.
 
 ## Command Summary
