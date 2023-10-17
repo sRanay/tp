@@ -103,9 +103,9 @@ Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY]`
 **Sample Output:**
 ```
 ==================== IN TRANSACTIONS =====================
-ID    Description   Date			Amount	Goal
- 1    Random		12 SEP 2023		$10	TRAVEL
- 2    Hongbao		13 SEP 2023		$10	KOREA STUDIES
+ID   Description   Date          Amount      Goal
+1    Random.       12 SEP 2023   $10         TRAVEL
+2    Hongbao       13 SEP 2023   $10         KOREA STUDIES
 ==================== IN TRANSACTIONS =====================
 ```
 ### End Program: `bye`

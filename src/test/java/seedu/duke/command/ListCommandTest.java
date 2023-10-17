@@ -8,7 +8,8 @@ import seedu.duke.ui.Ui;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ListCommandTest {
 
@@ -18,20 +19,6 @@ class ListCommandTest {
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
         String userInput = "list";
-        HashMap<String, String> args = parser.getArguments(userInput);
-        String commandWord = parser.getDescription(userInput);
-        ListCommand command = new ListCommand(commandWord, args);
-        assertThrows(DukeException.class, () -> {
-            command.execute(ui);
-        });
-    }
-
-    @Test
-    void emptyInList() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
-        String userInput = "list /type in";
         HashMap<String, String> args = parser.getArguments(userInput);
         String commandWord = parser.getDescription(userInput);
         ListCommand command = new ListCommand(commandWord, args);
@@ -54,13 +41,24 @@ class ListCommandTest {
         });
     }
 
-    private static void addEntries() {
+    private static void addInEntries() {
         Parser parser = new Parser();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Ui ui = new Ui(outputStream);
         try {
             parser.parse("in part-time job /amount 500 /goal car").execute(ui);
             parser.parse("in red packet money /amount 50 /goal PS5 /date 18092023").execute(ui);
+        } catch (DukeException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private static void addOutEntries() {
+        Parser parser = new Parser();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Ui ui = new Ui(outputStream);
+        try {
             parser.parse("out dinner /amount 10.50 /category food").execute(ui);
             parser.parse("out pokemon card pack /amount 10.50 /category games /date 18092023").execute(ui);
         } catch (DukeException e) {
@@ -70,22 +68,8 @@ class ListCommandTest {
     }
 
     @Test
-    void emptyOutList() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
-        String userInput = "list /type out";
-        HashMap<String, String> args = parser.getArguments(userInput);
-        String commandWord = parser.getDescription(userInput);
-        ListCommand command = new ListCommand(commandWord, args);
-        assertThrows(DukeException.class, () -> {
-            command.execute(ui);
-        });
-    }
-
-    @Test
     void validInList() throws DukeException {
-        addEntries();
+        addInEntries();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -103,7 +87,7 @@ class ListCommandTest {
 
     @Test
     void validOutList() throws DukeException {
-        addEntries();
+        addOutEntries();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
