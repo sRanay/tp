@@ -4,6 +4,7 @@ import seedu.duke.command.AddExpenseCommand;
 import seedu.duke.command.AddIncomeCommand;
 import seedu.duke.command.Command;
 import seedu.duke.command.ExitCommand;
+import seedu.duke.command.HelpCommand;
 import seedu.duke.command.ListCommand;
 import seedu.duke.exception.DukeException;
 
@@ -40,6 +41,8 @@ public class Parser {
             return new AddExpenseCommand(description, argsMap);
         case "list":
             return new ListCommand(description, argsMap);
+        case "help":
+            return new HelpCommand(description, argsMap);
         default:
             throw new DukeException("Sorry I do not understand your command");
         }
