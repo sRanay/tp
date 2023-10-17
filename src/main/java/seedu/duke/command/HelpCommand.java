@@ -126,35 +126,36 @@ public class HelpCommand extends Command {
     public void updateOutput(Ui ui) {
         if(getDescription().isBlank()) {
             printFullList();
-        } else {
-            switch(getDescription()) {
-            case "help":
-                ui.print(helpUsage());
-                break;
-            case "in":
-                ui.print(inUsage());
-                convertIntoList(IN_COMMAND_FLAGS, IN_COMMAND_FLAGS_DESCRIPTION);
-                break;
-            case "out":
-                ui.print(outUsage());
-                convertIntoList(OUT_COMMAND_FLAGS, OUT_COMMAND_FLAGS_DESCRIPTION);
-                break;
-            case "delete":
-                ui.print(deleteUsage());
-                convertIntoList(DELETE_COMMAND_FLAGS, DELETE_COMMAND_FLAGS_DESCRIPTION);
-                break;
-            case "list":
-                ui.print(listUsage());
-                convertIntoList(LIST_COMMAND_FLAGS, LIST_COMMAND_FLAGS_DESCRIPTION);
-                break;
-            default:
-                ui.print(INVALID_COMMAND);
-                break;
-            }
-        }
-        if(getDescription().isBlank()) {
             ui.printTableRows(this.helpList, FULL_LIST_HEADERS, CUSTOM_COLUMN_WIDTH);
-        } else if (!(getDescription().equals("help") || this.helpList.isEmpty())) {
+            return;
+        }
+        
+        switch(getDescription()) {
+        case "help":
+            ui.print(helpUsage());
+            break;
+        case "in":
+            ui.print(inUsage());
+            convertIntoList(IN_COMMAND_FLAGS, IN_COMMAND_FLAGS_DESCRIPTION);
+            break;
+        case "out":
+            ui.print(outUsage());
+            convertIntoList(OUT_COMMAND_FLAGS, OUT_COMMAND_FLAGS_DESCRIPTION);
+            break;
+        case "delete":
+            ui.print(deleteUsage());
+            convertIntoList(DELETE_COMMAND_FLAGS, DELETE_COMMAND_FLAGS_DESCRIPTION);
+            break;
+        case "list":
+            ui.print(listUsage());
+            convertIntoList(LIST_COMMAND_FLAGS, LIST_COMMAND_FLAGS_DESCRIPTION);
+            break;
+        default:
+            ui.print(INVALID_COMMAND);
+            break;
+        }
+        
+        if (!this.helpList.isEmpty()) {
             ui.printTableRows(this.helpList, FLAG_DESCRIPTION_HEADERS, CUSTOM_COLUMN_WIDTH);
         }
     }
