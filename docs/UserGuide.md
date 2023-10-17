@@ -104,8 +104,8 @@ Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY]`
 ```
 ==================== IN TRANSACTIONS =====================
 ID    Description   Date			Amount	Goal
- 1    Random		12 SEP 2023		$10		TRAVEL
- 2    Hongbao		13 SEP 2023		$10		KOREA STUDIES
+ 1    Random		12 SEP 2023		$10	TRAVEL
+ 2    Hongbao		13 SEP 2023		$10	KOREA STUDIES
 ==================== IN TRANSACTIONS =====================
 ```
 ### End Program: `bye`
@@ -118,7 +118,7 @@ Safely ends the program.
 | Help                    | `help`                                                                       |                                           |
 | Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]`          | `in part-time job /amount 500 /goal car`  |
 | Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]` | `out dinner /amount 10.50 /category food` |
-| Delete Transaction      | `delete INDEX /type (in \| out)`                                             | `delete 1 /type in`                       |
-| Mark task as undone     | `list /type (in \| out) [/goal GOAL] [/category CATEGORY]`                   | `list /type in`                           |
+| Delete Transaction      | <code>delete INDEX /type (in &#124; out)</code>                              | `delete 1 /type in`                       |
+| List Transactions       | <code>list /type (in &#124; out) [/goal GOAL] [/category CATEGORY]</code>    | `list /type in`                           |
 | End program             | `bye`                                                                        |                                           |
 
