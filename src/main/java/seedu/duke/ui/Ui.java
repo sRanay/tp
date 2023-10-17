@@ -67,8 +67,7 @@ public class Ui {
         }
 
         if (colWidths == null) {
-            colWidths = getDefaultColWidths(rows.get(0).size());
-            colWidths = mergeColWidths(colWidths, customWidths);
+            colWidths = getPrintWidths(getDefaultColWidths(rows.get(0).size()), customWidths);
         }
 
         for (ArrayList<String> rowValues : rows) {
@@ -83,9 +82,9 @@ public class Ui {
 
         ArrayList<Integer> colWidths = (ArrayList<Integer>) Arrays.stream(headers)
                 .parallel()
-                .map(header -> Math.max(header.length(), COLUMN_WIDTH))
+                .map(String::length)
                 .collect(Collectors.toList());
-        colWidths = mergeColWidths(colWidths, customWidths);
+        colWidths = getPrintWidths(colWidths, customWidths);
         List<String> headerList = Arrays.asList(headers);
         print(formatColumnValues(colWidths, new ArrayList<>(headerList)));
         return colWidths;
@@ -117,6 +116,24 @@ public class Ui {
         return (ArrayList<Integer>) IntStream.range(0, length)
                 .mapToObj(i -> COLUMN_WIDTH)
                 .collect(Collectors.toList());
+    }
+
+    private ArrayList<Integer> getPrintWidths(ArrayList<Integer> colWidths, Integer[] customWidths) {
+        if (customWidths == null) {
+            colWidths = mergeColWidths(colWidths, getDefaultColWidths(colWidths.size()));
+        } else {
+            colWidths = mergeColWidths(colWidths, customWidths);
+        }
+        return colWidths;
+    }
+
+    private ArrayList<Integer> mergeColWidths(ArrayList<Integer> colWidths, ArrayList<Integer> customWidths) {
+        if (customWidths == null) {
+            return mergeColWidths(colWidths, (Integer[]) null);
+        }
+        Integer[] customWidthArray = new Integer[customWidths.size()];
+        customWidths.toArray(customWidthArray);
+        return mergeColWidths(colWidths, customWidthArray);
     }
 
     private ArrayList<Integer> mergeColWidths(ArrayList<Integer> colWidths, Integer[] customWidths) {

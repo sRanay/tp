@@ -123,10 +123,11 @@ public class StateManager {
         return removeExpense(expense);
     }
 
-    public ArrayList<Income> getAllIncomes(){
+    public ArrayList<Income> getAllIncomes() {
         return incomes;
     }
-    public ArrayList<Expense> getAllExpenses(){
+
+    public ArrayList<Expense> getAllExpenses() {
         return expenses;
     }
 }
