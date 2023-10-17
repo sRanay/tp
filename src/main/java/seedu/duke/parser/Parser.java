@@ -4,6 +4,7 @@ import seedu.duke.command.AddExpenseCommand;
 import seedu.duke.command.AddIncomeCommand;
 import seedu.duke.command.Command;
 import seedu.duke.command.ExitCommand;
+import seedu.duke.command.HelpCommand;
 import seedu.duke.command.ListCommand;
 import seedu.duke.command.RemoveTransactionCommand;
 import seedu.duke.exception.DukeException;
@@ -43,6 +44,8 @@ public class Parser {
             return new ListCommand(description, argsMap);
         case "delete":
             return new RemoveTransactionCommand(description, argsMap);
+        case "help":
+            return new HelpCommand(description, argsMap);
         default:
             throw new DukeException("Sorry I do not understand your command");
         }
@@ -57,7 +60,11 @@ public class Parser {
         if (splitInput.length <= 1) {
             return EMPTY_STRING;
         }
-        return splitInput[1].split(SPACE_WITH_ARG_PREFIX, 2)[0].trim();
+        String description = splitInput[1].split(SPACE_WITH_ARG_PREFIX, 2)[0].trim();
+        if (description.startsWith(ARG_PREFIX)) {
+            return EMPTY_STRING;
+        }
+        return description;
     }
 
     public HashMap<String, String> getArguments(String userInput) {
@@ -89,6 +96,9 @@ public class Parser {
     }
 
     public String convertArgValueListToString(ArrayList<String> argValues) {
+        if (argValues.isEmpty()) {
+            return null;
+        }
         return String.join(DELIM, argValues).trim();
     }
 
