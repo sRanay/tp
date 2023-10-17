@@ -120,5 +120,5 @@ Safely ends the program.
 | Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]` | `out dinner /amount 10.50 /category food` |
 | Delete Transaction      | `delete INDEX /type (in \| out)`                                             | `delete 1 /type in`                       |
 | Mark task as undone     | `list /type (in \| out) [/goal GOAL] [/category CATEGORY]`                   | `list /type in`                           |
-| End program             | `exit`                                                                       | `exit`                                    |
+| End program             | `bye`                                                                        |                                           |
 
