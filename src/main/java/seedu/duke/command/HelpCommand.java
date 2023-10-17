@@ -48,10 +48,6 @@ public class HelpCommand extends Command {
         helpList = new ArrayList<ArrayList<String>>();
     }
 
-    public ArrayList<ArrayList<String>> gethelpList() {
-        return this.helpList;
-    }
-
     public ArrayList<String> convertCommandList(String command, String description) {
         ArrayList<String> tableData = new ArrayList<String>();
         tableData.add(command);
@@ -130,7 +126,7 @@ public class HelpCommand extends Command {
             return;
         }
         
-        switch(getDescription()) {
+        switch(getDescription().toLowerCase()) {
         case "help":
             ui.print(helpUsage());
             break;
