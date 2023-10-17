@@ -111,7 +111,7 @@ public class HelpCommand extends Command {
     }
 
     public void convertIntoList(String[] flags, String[] description) {
-        for(int i = 0; i < flags.length; i++) {
+        for (int i = 0; i < flags.length; i++) {
             ArrayList<String> row = new ArrayList<String>();
             row.add(flags[i]);
             row.add(description[i]);
@@ -120,13 +120,13 @@ public class HelpCommand extends Command {
     }
 
     public void updateOutput(Ui ui) {
-        if(getDescription().isBlank()) {
+        if (getDescription().isBlank()) {
             printFullList();
             ui.printTableRows(this.helpList, FULL_LIST_HEADERS, CUSTOM_COLUMN_WIDTH);
             return;
         }
         
-        switch(getDescription().toLowerCase()) {
+        switch (getDescription().toLowerCase()) {
         case "help":
             ui.print(helpUsage());
             break;
