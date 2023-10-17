@@ -1,8 +1,7 @@
-package seedu.duke.help;
+package seedu.duke.command;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.duke.command.HelpCommand;
 import seedu.duke.parser.Parser;
 import seedu.duke.ui.Ui;
 
