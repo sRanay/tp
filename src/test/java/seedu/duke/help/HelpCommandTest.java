@@ -80,6 +80,40 @@ public class HelpCommandTest {
     }
 
     @Test
+    void helpCommand_commandCaseSensitive() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "help In";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        HelpCommand command = new HelpCommand(commandWord, args);
+        command.execute(ui);
+        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]\n" +
+                "Option       Description\n" +
+                "/amount      Amount to be added\n" +
+                "/goal        The goal to classify it under\n" +
+                "/date        Date of the transaction\n\n", outputStream.toString());
+    }
+
+    @Test
+    void helpCommand_commandAllUpperCase() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "help IN";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        HelpCommand command = new HelpCommand(commandWord, args);
+        command.execute(ui);
+        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]\n" +
+                "Option       Description\n" +
+                "/amount      Amount to be added\n" +
+                "/goal        The goal to classify it under\n" +
+                "/date        Date of the transaction\n\n", outputStream.toString());
+    }
+
+    @Test
     void helpCommand_withValidOutCommand() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
