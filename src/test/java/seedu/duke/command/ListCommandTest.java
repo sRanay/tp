@@ -6,6 +6,7 @@ import seedu.duke.parser.Parser;
 import seedu.duke.ui.Ui;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,13 +74,14 @@ class ListCommandTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
+        LocalDate currentDate = LocalDate.now();
         Command command = parser.parse("list /type in");
         command.execute(ui);
         assertEquals("Alright! Displaying 2 transactions.\n"
                         + "=============================== IN TRANSACTIONS ================================\n"
                         + "ID    Description                      Date         Amount       Goal\n"
-                        + "1     part-time job                    2023-10-17   500.00       TBC\n"
-                        + "2     red packet money                 2023-10-17   50.00        TBC\n"
+                        + "1     part-time job                    " + currentDate.toString() + "   500.00       TBC\n"
+                        + "2     red packet money                 " + currentDate.toString() + "   50.00        TBC\n"
                         + "=============================== IN TRANSACTIONS ================================\n"
                 , outputStream.toString());
 
@@ -91,13 +93,14 @@ class ListCommandTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
+        LocalDate currentDate = LocalDate.now();
         Command command = parser.parse("list /type out");
         command.execute(ui);
         assertEquals("Alright! Displaying 2 transactions.\n"
                         + "=============================== OUT TRANSACTIONS ===============================\n"
                         + "ID    Description                      Date         Amount       Goal\n"
-                        + "1     dinner                           2023-10-17   10.5         TBC\n"
-                        + "2     pokemon card pack                2023-10-17   10.5         TBC\n"
+                        + "1     dinner                           " + currentDate.toString() + "   10.5         TBC\n"
+                        + "2     pokemon card pack                " + currentDate.toString() + "   10.5         TBC\n"
                         + "=============================== OUT TRANSACTIONS ===============================\n"
                 , outputStream.toString());
 
