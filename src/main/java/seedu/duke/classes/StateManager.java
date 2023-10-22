@@ -1,6 +1,7 @@
 package seedu.duke.classes;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class StateManager {
     private static StateManager stateManager = null;
@@ -131,11 +132,37 @@ public class StateManager {
         return expenses;
     }
 
+    public ArrayList<Category> getAllCategories() {
+        return categories;
+    }
+
+    public ArrayList<Goal> getAllGoals() {
+        return goals;
+    }
+
     public int getIncomesSize() {
         return incomes.size();
     }
 
     public int getExpensesSize() {
         return expenses.size();
+    }
+
+    public int getCategoryIndex(String categoryToCheck) {
+        return IntStream.range(0, categories.size())
+                .filter(i -> categories.get(i).getName().equalsIgnoreCase(categoryToCheck))
+                .findFirst()
+                .orElse(-1);
+    }
+
+    public int getGoalIndex(String goalToCheck) {
+        return IntStream.range(0, goals.size())
+                .filter(i -> goals.get(i).getDescription().equalsIgnoreCase(goalToCheck))
+                .findFirst()
+                .orElse(-1);
+    }
+
+    public void clearStateManager() {
+        stateManager = new StateManager();
     }
 }

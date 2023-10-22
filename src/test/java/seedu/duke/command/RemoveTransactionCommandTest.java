@@ -18,7 +18,6 @@ class RemoveTransactionCommandTest {
     private static Ui ui = new Ui(outputStream);
 
     public static void populateStateManager() {
-
         try {
             parser.parse("in part-time job /amount 1000 /goal car").execute(ui);
             parser.parse("in allowance /amount 500 /goal car").execute(ui);
