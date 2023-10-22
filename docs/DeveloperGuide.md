@@ -4,10 +4,38 @@
 
 {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
 
-## Design & implementation
+## Design
 
+### Architecture
+
+The bulk of the app's work is done by the following three components:
+- `UI`: The UI of the App.
+- `Parser`: Formats the user's input
+- `Command`: Command's logic and execution
+
+### UI component
+
+### Parser component
+
+### Command component
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
+## Implementation
+
+### [Proposed] Export feature
+
+#### Proposed Implementation
+
+The proposed export feature is facilitated by `File`. It implements the following operation:
+- `File#exportTransaction()` - Exports all the transactions that is stored into a CSV format.
+
+Given below is an example usage scenario and how the export features behaves at each step.
+
+Step 1. The user launches the application for the first time. There would be no transactions available to be exported.
+
+Step 2. The user executes `in part-time job /amount 500 /goal car` to create a transaction with the description of `part-time job`, with the `amount` set to `500` and `goal` set to `car` and stores it in the program
+
+Step 3. So when the user executes `export`, it will get all the transactions that the program stored and exports to a CSV file using OpenCSV 
 
 ## Product scope
 ### Target user profile
@@ -22,8 +50,13 @@
 
 |Version| As a ... | I want to ... | So that I can ...|
 |--------|----------|---------------|------------------|
-|v1.0|new user|see usage instructions|refer to them when I forget how to use the application|
-|v2.0|user|find a to-do item by name|locate a to-do without having to go through the entire list|
+|v1.0|user|add a new income source|can keep track of my allowances and part-time job earnings|
+|v1.0|user|add an expense|can monitor my purchases and stay within my budget|
+|v1.0|user|delete a transaction|remove any duplicate or unwanted entries from my expenses|
+|v1.0|user|view a list of all my transactions|review my income and expenses|
+|v2.0|user|export financial data to a CSV file|use it for client presentations and analysis|
+|v2.0|user|set up recurring transactions for mortgage payments and utility bulls|easily track and budget for regular home expenses|
+|v2.0|user|set financial goals, such as saving for a down payment on a house|stay motivated and track my progress towards home ownership.|
 
 ## Non-Functional Requirements
 
