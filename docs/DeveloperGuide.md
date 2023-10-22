@@ -8,6 +8,11 @@
 
 ### Architecture
 
+The bulk of the app's work is done by the following three components:
+- `UI`: The UI of the App.
+- `Parser`: Formats the user's input
+- `Command`: Command's logic and execution
+
 ### UI component
 
 ### Parser component
