@@ -4,10 +4,33 @@
 
 {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
 
-## Design & implementation
+## Design
 
+### Architecture
+
+### UI component
+
+### Parser component
+
+### Command component
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
+## Implementation
+
+### [Proposed] Export feature
+
+#### Proposed Implementation
+
+The proposed export feature is facilitated by `File`. It implements the following operation:
+- `File#exportTransaction()` - Exports all the transactions that is stored into a CSV format.
+
+Given below is an example usage scenario and how the export features behaves at each step.
+
+Step 1. The user launches the application for the first time. There would be no transactions available to be exported.
+
+Step 2. The user executes `in part-time job /amount 500 /goal car` to create a transaction with the description of `part-time job`, with the `amount` set to `500` and `goal` set to `car` and stores it in the program
+
+Step 3. So when the user executes `export`, it will get all the transactions that the program stored and exports to a CSV file using OpenCSV 
 
 ## Product scope
 ### Target user profile
