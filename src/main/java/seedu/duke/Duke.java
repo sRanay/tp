@@ -6,8 +6,6 @@ import seedu.duke.exception.DukeException;
 import seedu.duke.parser.Parser;
 import seedu.duke.ui.Ui;
 
-import java.util.Scanner;
-
 public class Duke {
 
     private static Ui ui;
@@ -17,11 +15,10 @@ public class Duke {
     }
 
     public void run() {
-        Scanner scanner = new Scanner(System.in);
         ui.printGreeting();
         String userInput;
         while (true) {
-            userInput = scanner.nextLine();
+            userInput = ui.readUserInput();
             try {
                 Command command = new Parser().parse(userInput);
                 command.execute(ui);
@@ -33,7 +30,7 @@ public class Duke {
                 System.out.println(e.getMessage());
             }
         }
-        scanner.close();
+        ui.close();
     }
 
     /**

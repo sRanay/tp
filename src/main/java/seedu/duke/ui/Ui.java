@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -23,14 +24,17 @@ public class Ui {
     private static final String AMOUNT_FORMAT = "%.2f";
     private static final char LINE_DELIMITER = '\n';
 
+    private final Scanner scanner;
     private final OutputStream outputStream;
 
     public Ui() {
         outputStream = System.out;
+        scanner = new Scanner(System.in);
     }
 
     public Ui(OutputStream outputStream) {
         this.outputStream = outputStream;
+        scanner = new Scanner(System.in);
     }
 
     public void printTableRow(ArrayList<String> rowValues) {
@@ -110,6 +114,14 @@ public class Ui {
 
     public void printBye() {
         print("Bye Bye!");
+    }
+
+    public String readUserInput() {
+        return scanner.nextLine();
+    }
+
+    public void close() {
+        scanner.close();
     }
 
     private ArrayList<Integer> genColWidths(int length, int width) {
