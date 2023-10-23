@@ -7,6 +7,7 @@ import seedu.duke.command.ExitCommand;
 import seedu.duke.command.HelpCommand;
 import seedu.duke.command.ListCommand;
 import seedu.duke.command.RemoveTransactionCommand;
+import seedu.duke.command.ExportCommand;
 import seedu.duke.exception.DukeException;
 
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public class Parser {
             return new RemoveTransactionCommand(description, argsMap);
         case "help":
             return new HelpCommand(description, argsMap);
+        case "export":
+            return new ExportCommand();
         default:
             throw new DukeException("Sorry I do not understand your command");
         }
