@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Ui {
+    public static final int COLUMN_WIDTH = 10;
+    public static final int LIST_COLUMN_WIDTH = 30;
     private static final String ELLIPSIS = "...";
     private static final String PROGRAM_NAME = "FinText";
     private static final char FILLER_CHAR = ' ';
     private static final char LIST_SEPARATOR = '=';
-    private static final int COLUMN_WIDTH = 10;
-    private static final int LIST_COLUMN_WIDTH = 30;
     private static final int ID_COLUMN_WIDTH = 3;
     private static final int SPACE_BETWEEN_COLS = 3;
 

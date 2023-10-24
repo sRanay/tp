@@ -11,10 +11,16 @@ import seedu.duke.command.ListCommand;
 import seedu.duke.command.RemoveTransactionCommand;
 import seedu.duke.exception.DukeException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Parser {
+    public static final String DATE_INPUT_PATTERN = "ddMMyyyy";
+    public static final String DATE_EXAMPLE = "31122023";
+    public static final DateTimeFormatter DATE_INPUT_FORMATTER = DateTimeFormatter.ofPattern(DATE_INPUT_PATTERN);
     private static final String SPACE_WITH_ARG_PREFIX = " /";
     private static final String ARG_PREFIX = "/";
     private static final String DELIM = " ";
@@ -123,5 +129,17 @@ public class Parser {
         }
 
         return parsedValue;
+    }
+
+    public static LocalDate parseDate(String value) {
+        if (value == null) {
+            return null;
+        }
+
+        try {
+            return LocalDate.parse(value, DATE_INPUT_FORMATTER);
+        } catch (DateTimeParseException exception) {
+            return null;
+        }
     }
 }

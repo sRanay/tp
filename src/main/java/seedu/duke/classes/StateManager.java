@@ -20,6 +20,10 @@ public class StateManager {
         return stateManager;
     }
 
+    public static void clearStateManager() {
+        stateManager = new StateManager();
+    }
+
     public void addGoal(Goal goal) {
         assert goal != null;
         goals.add(goal);
@@ -160,9 +164,5 @@ public class StateManager {
                 .filter(i -> goals.get(i).getDescription().equalsIgnoreCase(goalToCheck))
                 .findFirst()
                 .orElse(-1);
-    }
-
-    public void clearStateManager() {
-        stateManager = new StateManager();
     }
 }

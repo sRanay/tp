@@ -24,4 +24,13 @@ public class Expense {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public Expense generateNextRecurrence() {
+        Transaction nextTransaction = transaction.generateNextRecurrence();
+        if (nextTransaction == null) {
+            return null;
+        }
+
+        return new Expense(nextTransaction, category);
+    }
 }

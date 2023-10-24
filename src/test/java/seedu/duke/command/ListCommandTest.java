@@ -83,7 +83,7 @@ class ListCommandTest {
                         + "=============================== IN TRANSACTIONS ================================\n"
                         + "ID    Description                      Date         Amount       Goal\n"
                         + "1     part-time job                    " + currentDate + "   500.00       car\n"
-                        + "2     red packet money                 " + currentDate + "   50.00        PS5\n"
+                        + "2     red packet money                 2023-09-18   50.00        PS5\n"
                         + "=============================== IN TRANSACTIONS ================================\n"
                 , outputStream.toString());
 
@@ -102,7 +102,7 @@ class ListCommandTest {
                         + "=============================== OUT TRANSACTIONS ===============================\n"
                         + "ID    Description                      Date         Amount       Category\n"
                         + "1     dinner                           " + currentDate + "   10.50        food\n"
-                        + "2     pokemon card pack                " + currentDate + "   10.50        games\n"
+                        + "2     pokemon card pack                2023-09-18   10.50        games\n"
                         + "=============================== OUT TRANSACTIONS ===============================\n"
                 , outputStream.toString());
 
