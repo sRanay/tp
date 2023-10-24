@@ -1,7 +1,5 @@
 package seedu.duke.command;
 
-import org.opentest4j.AssertionFailedError;
-
 public class CommandTestCase {
     private final String commandInput;
     private final String commandOutput;
