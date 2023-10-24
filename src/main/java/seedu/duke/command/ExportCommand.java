@@ -9,15 +9,13 @@ import seedu.duke.exception.DukeException;
 import seedu.duke.ui.Ui;
 import java.util.ArrayList;
 
-public class ExportCommand extends Command{
+public class ExportCommand extends Command {
+    private static final String SUCESSFUL_MSG = "Transaction Data extracted";
+    private static final String[] HEADERS = {"Description", "Date", "Amount", "Goal", "Category"};
     private Ui ui;
-
     private ArrayList<Income> incomeArray;
     private ArrayList<Expense> expenseArray;
     private Csv csvFile;
-    private static final String EMPTY_LIST = "There is no transaction data to export";
-    private static final String SUCESSFUL_MSG = "Transaction Data extracted";
-    private static final String[] HEADERS = {"Description", "Date", "Amount", "Goal", "Category"};
     private void writeHeader() {
         assert csvFile != null;
         csvFile.write(HEADERS);
@@ -37,7 +35,7 @@ public class ExportCommand extends Command{
         for (Income i : this.incomeArray) {
             Transaction currentTransaction = i.getTransaction();
             String[] row = new String[5];
-            row[3] = "TBC";
+            row[3] = i.getGoal().getDescription();
             row[4] = null;
             this.csvFile.write(extractTransactionData(currentTransaction, row));
         }
@@ -47,11 +45,10 @@ public class ExportCommand extends Command{
             Transaction currentTransaction = e.getTransaction();
             String[] row = new String[5];
             row[3] = null;
-            row[4] = "TBC";
+            row[4] = e.getCategory().getName();
             this.csvFile.write(extractTransactionData(currentTransaction, row));
         }
     }
-
 
     @Override
     public void execute(Ui ui) throws DukeException {
