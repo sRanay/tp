@@ -15,9 +15,7 @@ public abstract class AddTransactionCommand extends Command {
         super(description, args);
     }
 
-    protected void throwIfInvalidDescOrArgs(String classification, String missingClassification) throws DukeException {
-        // TODO:
-        //  Ensure category is non-null - after V1.0
+    protected void throwIfInvalidDescOrArgs(String classificationKey, String missingClassificationPrompt) throws DukeException {
         assert getDescription() != null;
         assert getArgs() != null;
 
@@ -35,9 +33,9 @@ public abstract class AddTransactionCommand extends Command {
             throw new DukeException(BAD_AMOUNT);
         }
 
-        String category = getArg(classification);
-        if (category == null || category.isBlank()) {
-            throw new DukeException(missingClassification);
+        String assignedClassification = getArg(classificationKey);
+        if (assignedClassification == null || assignedClassification.isBlank()) {
+            throw new DukeException(missingClassificationPrompt);
         }
     }
 }
