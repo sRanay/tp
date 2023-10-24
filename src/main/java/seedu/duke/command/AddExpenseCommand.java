@@ -1,5 +1,6 @@
 package seedu.duke.command;
 
+import seedu.duke.classes.Category;
 import seedu.duke.classes.Expense;
 import seedu.duke.classes.StateManager;
 import seedu.duke.classes.Transaction;
@@ -12,11 +13,12 @@ import java.util.HashMap;
 
 public class AddExpenseCommand extends Command {
     private static final String AMOUNT_ARG = "amount";
-    private static final String[] HEADERS = {"Description", "Amount"};
+    private static final String[] HEADERS = {"Description", "Amount", "Category"};
 
     private static final String SUCCESS_PRINT = "Nice! The following expense has been tracked:";
     private static final String MISSING_DESC = "Description cannot be empty...";
     private static final String MISSING_AMOUNT = "Amount cannot be empty...";
+    private static final String MISSING_CATEGORY = "Category cannot be empty...";
     private static final String BAD_AMOUNT = "Invalid amount value specified...";
 
     public AddExpenseCommand(String description, HashMap<String, String> args) {
@@ -34,7 +36,8 @@ public class AddExpenseCommand extends Command {
     }
 
     private Expense addNewExpense(Transaction transaction) {
-        Expense expense = new Expense(transaction, null);
+        Category category = handleCategory();
+        Expense expense = new Expense(transaction, category);
         StateManager.getStateManager().addExpense(expense);
         return expense;
     }
@@ -50,6 +53,7 @@ public class AddExpenseCommand extends Command {
         ArrayList<String> printValues = new ArrayList<>();
         printValues.add(transaction.getDescription());
         printValues.add(ui.formatAmount(transaction.getAmount()));
+        printValues.add(expense.getCategory().getName());
         ui.print(SUCCESS_PRINT);
         ui.printTableRow(printValues, HEADERS);
     }
@@ -72,6 +76,24 @@ public class AddExpenseCommand extends Command {
         Double amount = Parser.parseNonNegativeDouble(amountArg);
         if (amount == null) {
             throw new DukeException(BAD_AMOUNT);
+        }
+
+        String category = getArg("category");
+        if (category == null || category.isBlank()) {
+            throw new DukeException(MISSING_CATEGORY);
+        }
+    }
+
+    private Category handleCategory() {
+        StateManager state = StateManager.getStateManager();
+        String category = getArg("category");
+        int index = state.getCategoryIndex(category);
+        if (index == -1) {
+            Category categoryToAdd = new Category(category);
+            state.addCategory(categoryToAdd);
+            return categoryToAdd;
+        } else {
+            return state.getCategory(index);
         }
     }
 }

@@ -6,6 +6,7 @@ import seedu.duke.classes.StateManager;
 import seedu.duke.classes.Transaction;
 import seedu.duke.exception.DukeException;
 import seedu.duke.ui.Ui;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,7 +20,8 @@ public class ListCommand extends Command {
             " anything after that";
     private static final String EMPTY_LIST = "It appears that we have came up empty. Why not try adding some" +
             " transactions first?";
-    private static final String[] HEADERS = {"ID", "Description", "Date", "Amount", "Goal"};
+    private static final String[] IN_HEADERS = {"ID", "Description", "Date", "Amount", "Goal"};
+    private static final String[] OUT_HEADERS = {"ID", "Description", "Date", "Amount", "Category"};
     private static final String IN = "IN TRANSACTIONS";
     private static final String OUT = "OUT TRANSACTIONS";
     private Ui ui;
@@ -56,7 +58,6 @@ public class ListCommand extends Command {
     }
 
     private void listTypeHandler() throws DukeException {
-        ArrayList<ArrayList<String>> returnArray;
         String type = getArg("type");
         assert type != null;
         if (type.equals("in")) {
@@ -67,7 +68,12 @@ public class ListCommand extends Command {
     }
 
     private void printList(ArrayList<ArrayList<String>> listArray, String headerMessage) {
-        ui.listTransactions(listArray, HEADERS, headerMessage);
+        if (headerMessage.equals(IN)) {
+            ui.listTransactions(listArray, IN_HEADERS, headerMessage);
+        } else {
+            ui.listTransactions(listArray, OUT_HEADERS, headerMessage);
+        }
+
     }
 
     private void listIncome() throws DukeException {
@@ -82,9 +88,7 @@ public class ListCommand extends Command {
             String description = currentTransaction.getDescription();
             String date = currentTransaction.getDate().toString();
             String amount = String.valueOf(ui.formatAmount(currentTransaction.getAmount()));
-            String goal = "TBC";
-            // TODO uncomment once goal is implemented
-            // String goal = i.getGoal().getDescription();
+            String goal = i.getGoal().getDescription();
             printIncomes.add(new ArrayList<>(Arrays.asList(String.valueOf(index), description, date, amount, goal)));
             index++;
         }
@@ -103,10 +107,8 @@ public class ListCommand extends Command {
             Transaction currentExpense = i.getTransaction();
             String description = currentExpense.getDescription();
             String date = currentExpense.getDate().toString();
-            String amount = String.valueOf(currentExpense.getAmount());
-            String category = "TBC";
-            // TODO uncomment once category is implemented
-            // String category = i.getCategory().getName();
+            String amount = String.valueOf(ui.formatAmount(currentExpense.getAmount()));
+            String category = i.getCategory().getName();
             printExpenses.add(new ArrayList<>(Arrays.asList(String.valueOf(index), description, date,
                     amount, category)));
             index++;
