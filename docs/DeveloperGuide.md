@@ -39,20 +39,6 @@ Note: The `Parser` will not do any validation of arguments or description of the
 respective `Command` object.
 
 ### Command component
-### UI component
-![UI Sequence Diagram](./images/cs2113-ui-sequence.jpg "UI Sequence Diagram")
-
-The `UI` consists of a `Scanner` and an `OutputStream` object. Together, these objects abstract the functionalities of
-obtaining user input and providing feedback (output printed in terminal UI). The `UI` component provides a simple
-interface for other components to interact with the user.
-
-The `UI` component:
-- provides a method to obtain user input.
-- provide methods to print output in tabular format
-
-### Parser component
-
-### Command component
 The Command component consists of the individual command objects (listed in table below) and an abstract
 class `Command`. The `Command` component is responsible for executing the commands after it has been parsed by `Parser`.
 All error handling is handled here and any errors/output would be passed to the `UI` component for printing and
