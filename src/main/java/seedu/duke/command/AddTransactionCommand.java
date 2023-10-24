@@ -15,7 +15,8 @@ public abstract class AddTransactionCommand extends Command {
         super(description, args);
     }
 
-    protected void throwIfInvalidDescOrArgs(String classificationKey, String missingClassificationPrompt) throws DukeException {
+    protected void throwIfInvalidDescOrArgs(String classificationKey, String missingClassificationPrompt)
+            throws DukeException {
         assert getDescription() != null;
         assert getArgs() != null;
 
