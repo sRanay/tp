@@ -14,6 +14,15 @@ The bulk of the app's work is done by the following three components:
 - `Command`: Command's logic and execution
 
 ### UI component
+![UI Sequence Diagram](./images/cs2113-ui-sequence.jpg "UI Sequence Diagram")
+
+The `UI` consists of a `Scanner` and an `OutputStream` object. Together, these objects abstract the functionalities of
+obtaining user input and providing feedback (output printed in terminal UI). The `UI` component provides a simple
+interface for other components to interact with the user.
+
+The `UI` component:
+- provides a method to obtain user input.
+- provide methods to print output in tabular format
 
 ### Parser component
 

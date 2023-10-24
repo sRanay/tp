@@ -9,9 +9,10 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ParserTest {
+
+    private static final String EMPTY_STRING = "";
 
     @Test
     void parse_validIncome_incomeCommand() throws DukeException {
@@ -52,7 +53,7 @@ class ParserTest {
     @Test
     void getDescription_emptyDescriptionWithArguments_emptyString() {
         Parser parser = new Parser();
-        assertEquals("",
+        assertEquals(EMPTY_STRING,
                 parser.getDescription("in /amount 100 /goal car"));
     }
 
@@ -72,11 +73,27 @@ class ParserTest {
     }
 
     @Test
-    void getArguments_argumentWithoutValue_nullValue() {
+    void getArguments_argumentWithoutValue_emptyString() {
         Parser parser = new Parser();
         HashMap<String, String> args = parser.getArguments("in part time job /amount /goal");
-        assertNull(args.get("amount"));
-        assertNull(args.get("goal"));
+        assertEquals(EMPTY_STRING, args.get("amount"));
+        assertEquals(EMPTY_STRING, args.get("goal"));
+    }
+
+    @Test
+    void getArguments_firstArgumentWithEmptyString_emptyString() {
+        Parser parser = new Parser();
+        HashMap<String, String> args = parser.getArguments("in part time job /amount     /goal");
+        assertEquals(EMPTY_STRING, args.get("amount"));
+        assertEquals(EMPTY_STRING, args.get("goal"));
+    }
+
+    @Test
+    void getArguments_secondArgumentWithEmptyString_emptyString() {
+        Parser parser = new Parser();
+        HashMap<String, String> args = parser.getArguments("in part time job /amount /goal    ");
+        assertEquals(EMPTY_STRING, args.get("amount"));
+        assertEquals(EMPTY_STRING, args.get("goal"));
     }
 
 }
