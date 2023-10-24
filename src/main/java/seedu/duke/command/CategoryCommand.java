@@ -17,8 +17,8 @@ public class CategoryCommand extends Command {
 
     @Override
     public void execute(Ui ui) throws DukeException {
-        boolean addOrRemove = checkValidInputAndGetType();
-        if (addOrRemove) {
+        boolean isAdding = checkValidInputAndGetType();
+        if (isAdding) {
             String category = getArg(ADD_COMMAND);
             addCategory(category);
             ui.print("Successfully added " + category + "!");

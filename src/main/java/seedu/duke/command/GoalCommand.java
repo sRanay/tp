@@ -19,8 +19,8 @@ public class GoalCommand extends Command {
 
     @Override
     public void execute(Ui ui) throws DukeException {
-        boolean addOrRemove = checkValidInputAndGetType();
-        if (addOrRemove) {
+        boolean isAdding = checkValidInputAndGetType();
+        if (isAdding) {
             String goalName = getArg(ADD_ARG);
             Double amount = Parser.parseNonNegativeDouble(getArg(AMOUNT));
             addGoal(goalName, amount);
