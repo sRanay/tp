@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AddExpenseCommand extends AddTransactionCommand {
-    private static final String AMOUNT_ARG = "amount";
     private static final String CATEGORY_ARG = "category";
     private static final String[] HEADERS = {"Description", "Amount", "Category"};
 

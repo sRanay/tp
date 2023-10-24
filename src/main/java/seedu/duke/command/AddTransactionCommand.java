@@ -6,7 +6,7 @@ import seedu.duke.parser.Parser;
 import java.util.HashMap;
 
 public abstract class AddTransactionCommand extends Command {
-    private static final String AMOUNT_ARG = "amount";
+    protected static final String AMOUNT_ARG = "amount";
     private static final String MISSING_DESC = "Description cannot be empty...";
     private static final String MISSING_AMOUNT = "Amount cannot be empty...";
     private static final String BAD_AMOUNT = "Invalid amount value specified...";
