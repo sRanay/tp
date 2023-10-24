@@ -94,7 +94,7 @@ public class Parser {
                 currentWords.add(word);
             }
         }
-        if (!currentWords.isEmpty()) {
+        if (!currentWords.isEmpty() || !argsMap.containsKey(argName)) {
             String argValue = convertArgValueListToString(currentWords);
             argsMap.put(argName, argValue);
         }
@@ -103,7 +103,7 @@ public class Parser {
 
     public String convertArgValueListToString(ArrayList<String> argValues) {
         if (argValues.isEmpty()) {
-            return null;
+            return EMPTY_STRING;
         }
         return String.join(DELIM, argValues).trim();
     }
