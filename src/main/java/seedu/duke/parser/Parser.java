@@ -9,6 +9,7 @@ import seedu.duke.command.GoalCommand;
 import seedu.duke.command.HelpCommand;
 import seedu.duke.command.ListCommand;
 import seedu.duke.command.RemoveTransactionCommand;
+import seedu.duke.command.ExportCommand;
 import seedu.duke.exception.DukeException;
 
 import java.time.LocalDate;
@@ -54,6 +55,8 @@ public class Parser {
             return new RemoveTransactionCommand(description, argsMap);
         case "help":
             return new HelpCommand(description, argsMap);
+        case "export":
+            return new ExportCommand();
         case "category":
             return new CategoryCommand(description, argsMap);
         case "goal":
