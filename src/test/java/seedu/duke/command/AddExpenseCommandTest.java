@@ -1,33 +1,18 @@
 package seedu.duke.command;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import seedu.duke.classes.Income;
 import seedu.duke.classes.StateManager;
-import seedu.duke.classes.TransactionRecurrence;
 import seedu.duke.exception.DukeException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class AddIncomeCommandTest {
+class AddExpenseCommandTest {
     private static final DukeException MISSING_DESC_EXCEPTION = new DukeException("Description cannot be empty...");
     private static final DukeException MISSING_AMT_EXCEPTION = new DukeException("Amount cannot be empty...");
     private static final DukeException BAD_AMOUNT_EXCEPTION = new DukeException("Invalid amount value specified...");
-    private static final DukeException MISSING_GOAL_EXCEPTION = new DukeException("Goal cannot be empty...");
+    private static final DukeException MISSING_CAT_EXCEPTION = new DukeException("Category cannot be empty...");
     private static final DukeException BAD_RECURRENCE = new DukeException("Invalid recurrence period specified...");
-
-    @BeforeEach
-    void addCategories() {
-        assertDoesNotThrow(() -> {
-            new CommandTestCase("goal /add car /amount 5000").evaluate();
-            new CommandTestCase("goal /add PS5 /amount 300").evaluate();
-        });
-    }
 
     @AfterEach
     void clearStateManager() {
@@ -39,28 +24,17 @@ class AddIncomeCommandTest {
         LocalDate date = LocalDate.now();
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
-                    "in part-time job /amount 500 /goal car",
-                    "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal\n" +
-                            "part-time job                    " + date + "    500.00        car\n"
+                    "out dinner /amount 10.50 /category food",
+                    "Nice! The following expense has been tracked:\n" +
+                            "Description                      Date          Amount        Category\n" +
+                            "dinner                           " + date + "    10.50         food\n"
             ),
             new CommandTestCase(
-                    "in red packet money /amount 50 /goal PS5",
-                    "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal\n" +
-                            "red packet money                 " + date + "    50.00         PS5\n"
+                    "out pokemon card pack /amount 10.50 /category games",
+                    "Nice! The following expense has been tracked:\n" +
+                            "Description                      Date          Amount        Category\n" +
+                            "pokemon card pack                " + date + "    10.50         games\n"
             ),
-            new CommandTestCase(
-                    "in pocket money /amount 50 /goal PS5 /recurrence weekly",
-                    "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal\n" +
-                            "pocket money                     " + date + "    50.00         PS5\n",
-                    () -> {
-                        ArrayList<Income> incomes = StateManager.getStateManager().getAllIncomes();
-                        Income lastAddedIncome = incomes.get(incomes.size() - 1);
-                        assertEquals(lastAddedIncome.getTransaction().getRecurrence(), TransactionRecurrence.WEEKLY);
-                    }
-            )
         };
         CommandTestCase.runTestCases(testCases);
     }
@@ -69,23 +43,23 @@ class AddIncomeCommandTest {
     void missingDescription() {
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
-                    "in",
+                    "out",
                     MISSING_DESC_EXCEPTION
             ),
             new CommandTestCase(
-                    "in     ",
+                    "out     ",
                     MISSING_DESC_EXCEPTION
             ),
             new CommandTestCase(
-                    "in     /amount -1",
+                    "out     /amount -1",
                     MISSING_DESC_EXCEPTION
             ),
             new CommandTestCase(
-                    "in /amount 500",
+                    "out /amount 500",
                     MISSING_DESC_EXCEPTION
             ),
             new CommandTestCase(
-                    "in /amount 500 /goal car",
+                    "out /amount 500 /goal car",
                     MISSING_DESC_EXCEPTION
             ),
         };
@@ -96,15 +70,15 @@ class AddIncomeCommandTest {
     void missingAmount() {
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
-                    "in part-time job",
+                    "out dinner",
                     MISSING_AMT_EXCEPTION
             ),
             new CommandTestCase(
-                    "in part-time job /amount",
+                    "out dinner /amount",
                     MISSING_AMT_EXCEPTION
             ),
             new CommandTestCase(
-                    "in part-time job /amount   ",
+                    "out dinner /amount   ",
                     MISSING_AMT_EXCEPTION
             ),
         };
@@ -115,11 +89,11 @@ class AddIncomeCommandTest {
     void badAmount() {
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
-                    "in part-time job /amount -1",
+                    "out dinner /amount -1",
                     BAD_AMOUNT_EXCEPTION
             ),
             new CommandTestCase(
-                    "in part-time job /amount -1 /goal car",
+                    "out dinner /amount -1 /category games",
                     BAD_AMOUNT_EXCEPTION
             )
         };
@@ -130,20 +104,20 @@ class AddIncomeCommandTest {
     void missingClassification() {
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
-                    "in part-time job /amount 500",
-                    MISSING_GOAL_EXCEPTION
+                    "out dinner /amount 500",
+                    MISSING_CAT_EXCEPTION
             ),
             new CommandTestCase(
-                    "in part-time job /goal   /amount 500",
-                    MISSING_GOAL_EXCEPTION
+                    "out dinner /category   /amount 500",
+                    MISSING_CAT_EXCEPTION
             ),
             new CommandTestCase(
-                    "in part-time job /amount 500 /goal",
-                    MISSING_GOAL_EXCEPTION
+                    "out dinner /amount 500 /category",
+                    MISSING_CAT_EXCEPTION
             ),
             new CommandTestCase(
-                    "in part-time job /amount 500 /goal    ",
-                    MISSING_GOAL_EXCEPTION
+                    "out dinner /amount 500 /category    ",
+                    MISSING_CAT_EXCEPTION
             )
         };
         CommandTestCase.runTestCases(testCases);
@@ -153,11 +127,11 @@ class AddIncomeCommandTest {
     void badRecurrence() {
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
-                    "in pocket money /amount 50 /recurrence   /goal PS5",
+                    "out pocket money /amount 50 /recurrence   /category dinner",
                     BAD_RECURRENCE
             ),
             new CommandTestCase(
-                    "in pocket money /amount 50 /goal PS5 /recurrence random",
+                    "out pocket money /amount 50 /category dinner /recurrence random",
                     BAD_RECURRENCE
             )
         };

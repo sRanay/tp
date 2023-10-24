@@ -4,10 +4,14 @@ import seedu.duke.classes.Transaction;
 import seedu.duke.classes.TransactionRecurrence;
 import seedu.duke.exception.DukeException;
 import seedu.duke.parser.Parser;
+import seedu.duke.ui.Ui;
 
 import java.util.HashMap;
 
 public abstract class AddTransactionCommand extends Command {
+    protected static final Integer[] HEADERS_WIDTH = {
+        Ui.LIST_COLUMN_WIDTH, Ui.COLUMN_WIDTH, Ui.COLUMN_WIDTH, Ui.COLUMN_WIDTH
+    };
     protected static final String AMOUNT_ARG = "amount";
     protected static final String RECURRENCE_ARG = "recurrence";
     private static final String MISSING_DESC = "Description cannot be empty...";

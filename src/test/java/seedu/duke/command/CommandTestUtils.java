@@ -1,5 +1,6 @@
 package seedu.duke.command;
 
+import org.junit.jupiter.api.function.Executable;
 import seedu.duke.parser.Parser;
 import seedu.duke.ui.Ui;
 
@@ -10,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 public class CommandTestUtils {
-    public static void runSingleCommand(String command, String expectedOutput, Exception expectedException) {
+    public static void runSingleCommand(String command, String expectedOutput, Exception expectedException,
+                                        Executable executable) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Ui ui = new Ui(outputStream);
         Parser parser = new Parser();
@@ -27,6 +29,10 @@ public class CommandTestUtils {
 
         if (expectedOutput != null) {
             assertEquals(expectedOutput, outputStream.toString(), command);
+        }
+
+        if (executable != null) {
+            assertDoesNotThrow(executable);
         }
     }
 }

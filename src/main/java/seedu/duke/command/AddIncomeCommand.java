@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class AddIncomeCommand extends AddTransactionCommand {
     private static final String GOAL_ARG = "goal";
-    private static final String[] HEADERS = {"Description", "Amount", "Goal"};
+    private static final String[] HEADERS = {"Description", "Date", "Amount", "Goal"};
 
     private static final String SUCCESS_PRINT = "Nice! The following income has been tracked:";
     private static final String MISSING_GOAL = "Goal cannot be empty...";
@@ -40,10 +40,11 @@ public class AddIncomeCommand extends AddTransactionCommand {
         Transaction transaction = income.getTransaction();
         ArrayList<String> printValues = new ArrayList<>();
         printValues.add(transaction.getDescription());
+        printValues.add(transaction.getDate().toString());
         printValues.add(ui.formatAmount(transaction.getAmount()));
         printValues.add(income.getGoal().getDescription());
         ui.print(SUCCESS_PRINT);
-        ui.printTableRow(printValues, HEADERS);
+        ui.printTableRow(printValues, HEADERS, HEADERS_WIDTH);
     }
 
     private Goal handleGoal() throws DukeException {
