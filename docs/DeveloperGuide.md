@@ -25,6 +25,18 @@ The `UI` component:
 - provide methods to print output in tabular format
 
 ### Parser component
+The `Parser` functionality is to take in a user input, parse it and return the relevant `Command` object based on 
+the input.
+
+How the `Parser` works:
+1. When the user input any string, it will be passed to a newly constructed `Parser` object.
+2. The `parse` function in the `Parser` will be called to extract the command word, description and arguments of the 
+command if any.
+3. These parsed details will then be passed to the relevant `Command` object based on the command word.
+4. Afterward, the `Command` object will be passed back to `Main` for execution.
+
+Note: The `Parser` will not do any validation of arguments or description of the command. Those will be handled by the 
+respective `Command` object.
 
 ### Command component
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
