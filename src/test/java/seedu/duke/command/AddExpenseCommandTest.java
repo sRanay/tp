@@ -127,6 +127,10 @@ class AddExpenseCommandTest {
     void badRecurrence() {
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
+                    "out pocket money /amount 50 /category dinner /recurrence",
+                    BAD_RECURRENCE
+            ),
+            new CommandTestCase(
                     "out pocket money /amount 50 /recurrence   /category dinner",
                     BAD_RECURRENCE
             ),

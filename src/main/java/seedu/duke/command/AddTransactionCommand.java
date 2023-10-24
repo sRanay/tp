@@ -50,7 +50,7 @@ public abstract class AddTransactionCommand extends Command {
         }
 
         String amountArg = getArg(AMOUNT_ARG);
-        if (amountArg == null) {
+        if (amountArg == null || amountArg.isBlank()) {
             throw new DukeException(MISSING_AMOUNT);
         }
 
