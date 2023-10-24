@@ -5,7 +5,6 @@ import seedu.duke.classes.Income;
 import seedu.duke.classes.StateManager;
 import seedu.duke.classes.Transaction;
 import seedu.duke.exception.DukeException;
-import seedu.duke.parser.Parser;
 import seedu.duke.ui.Ui;
 
 import java.util.ArrayList;
@@ -35,12 +34,6 @@ public class AddIncomeCommand extends AddTransactionCommand {
         Income income = new Income(transaction, goal);
         StateManager.getStateManager().addIncome(income);
         return income;
-    }
-
-    private Transaction prepareTransaction() {
-        String description = getDescription();
-        Double amount = Parser.parseNonNegativeDouble(getArg(AMOUNT_ARG));
-        return new Transaction(description, amount, null);
     }
 
     private void printSuccess(Ui ui, Income income) {

@@ -5,7 +5,6 @@ import seedu.duke.classes.Expense;
 import seedu.duke.classes.StateManager;
 import seedu.duke.classes.Transaction;
 import seedu.duke.exception.DukeException;
-import seedu.duke.parser.Parser;
 import seedu.duke.ui.Ui;
 
 import java.util.ArrayList;
@@ -24,8 +23,6 @@ public class AddExpenseCommand extends AddTransactionCommand {
 
     @Override
     public void execute(Ui ui) throws DukeException {
-        // TODO:
-        //  Add dates arg to command
         throwIfInvalidDescOrArgs(CATEGORY_ARG, MISSING_CATEGORY);
         Transaction transaction = prepareTransaction();
         Expense expense = addNewExpense(transaction);
@@ -37,12 +34,6 @@ public class AddExpenseCommand extends AddTransactionCommand {
         Expense expense = new Expense(transaction, category);
         StateManager.getStateManager().addExpense(expense);
         return expense;
-    }
-
-    private Transaction prepareTransaction() {
-        String description = getDescription();
-        Double amount = Parser.parseNonNegativeDouble(getArg(AMOUNT_ARG));
-        return new Transaction(description, amount, null);
     }
 
     private void printSuccess(Ui ui, Expense expense) {

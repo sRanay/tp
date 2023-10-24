@@ -6,6 +6,7 @@ public class Transaction {
     private String description;
     private Double amount;
     private LocalDate date;
+    private TransactionRecurrence recurrence;
 
     public Transaction(String description, Double amount, LocalDate date) {
         if (date == null) {
@@ -15,6 +16,7 @@ public class Transaction {
         this.description = description;
         this.amount = amount;
         this.date = date;
+        this.recurrence = TransactionRecurrence.NONE;
     }
 
     public Double getAmount() {
@@ -41,4 +43,11 @@ public class Transaction {
         this.description = description;
     }
 
+    public TransactionRecurrence getRecurrence() {
+        return recurrence;
+    }
+
+    public void setRecurrence(TransactionRecurrence recurrence) {
+        this.recurrence = recurrence;
+    }
 }
