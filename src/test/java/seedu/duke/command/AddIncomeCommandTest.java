@@ -66,6 +66,16 @@ class AddIncomeCommandTest {
     }
 
     @Test
+    void missingGoal() {
+        String goal = "missing";
+        CommandTestCase tc = new CommandTestCase(
+                "in part-time job /amount 500 /goal " + goal,
+                new DukeException("Please add '" + goal + "' as a goal first.")
+        );
+        tc.evaluate();
+    }
+
+    @Test
     void missingDescription() {
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
