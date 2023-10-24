@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class Parser {
     public static final String DATE_INPUT_PATTERN = "ddMMyyyy";
     public static final String DATE_EXAMPLE = "31122023";
-    private static final DateTimeFormatter DATE_INPUT_FORMATTER = DateTimeFormatter.ofPattern(DATE_INPUT_PATTERN);
+    public static final DateTimeFormatter DATE_INPUT_FORMATTER = DateTimeFormatter.ofPattern(DATE_INPUT_PATTERN);
     private static final String SPACE_WITH_ARG_PREFIX = " /";
     private static final String ARG_PREFIX = "/";
     private static final String DELIM = " ";

@@ -22,16 +22,16 @@ public enum TransactionRecurrence {
         }
     }
 
-    public static LocalDate getNextRecurrenceDate(TransactionRecurrence recurrence, LocalDate previous) {
+    public static LocalDate getNextRecurrenceDate(TransactionRecurrence recurrence, LocalDate current) {
         switch (recurrence) {
         case DAILY:
-            return previous.plusDays(1);
+            return current.plusDays(1);
         case WEEKLY:
-            return previous.plusWeeks(1);
+            return current.plusWeeks(1);
         case MONTHLY:
-            return previous.plusMonths(1);
+            return current.plusMonths(1);
         default:
-            return previous;
+            return current;
         }
     }
 }

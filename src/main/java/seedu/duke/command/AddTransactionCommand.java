@@ -21,6 +21,8 @@ public abstract class AddTransactionCommand extends Command {
     private static final String BAD_AMOUNT = "Invalid amount value specified...";
     private static final String BAD_DATE = "Invalid date specified...";
     private static final String BAD_RECURRENCE = "Invalid recurrence period specified...";
+    private static final String BAD_RECURRENCE_DATE = "Cannot specify date for recurring transaction" +
+            "to be larger than 1 period in the past...";
     private boolean isValidated = false;
 
     protected AddTransactionCommand(String description, HashMap<String, String> args) {
@@ -59,7 +61,8 @@ public abstract class AddTransactionCommand extends Command {
         }
 
         String date = getArg(DATE_ARG);
-        if (date != null && Parser.parseDate(date) == null) {
+        LocalDate parsedDate = Parser.parseDate(date);
+        if (date != null && parsedDate == null) {
             throw new DukeException(BAD_DATE);
         }
 
@@ -74,8 +77,18 @@ public abstract class AddTransactionCommand extends Command {
         }
 
         String recurrence = getArg(RECURRENCE_ARG);
-        if (recurrence != null && TransactionRecurrence.getRecurrence(recurrence) == null) {
-            throw new DukeException(BAD_RECURRENCE);
+        if (recurrence != null) {
+            TransactionRecurrence parsedRecurrence = TransactionRecurrence.getRecurrence(recurrence);
+            if (parsedRecurrence == null) {
+                throw new DukeException(BAD_RECURRENCE);
+            }
+
+            if (parsedRecurrence != TransactionRecurrence.NONE && parsedDate != null) {
+                LocalDate nextDate = TransactionRecurrence.getNextRecurrenceDate(parsedRecurrence, parsedDate);
+                if (!nextDate.isAfter(LocalDate.now())) {
+                    throw new DukeException(BAD_RECURRENCE_DATE);
+                }
+            }
         }
 
         isValidated = true;

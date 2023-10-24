@@ -7,6 +7,7 @@ import seedu.duke.classes.Income;
 import seedu.duke.classes.StateManager;
 import seedu.duke.classes.TransactionRecurrence;
 import seedu.duke.exception.DukeException;
+import seedu.duke.parser.Parser;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,6 +22,10 @@ class AddIncomeCommandTest {
     private static final DukeException BAD_DATE_EXCEPTION = new DukeException("Invalid date specified...");
     private static final DukeException MISSING_GOAL_EXCEPTION = new DukeException("Goal cannot be empty...");
     private static final DukeException BAD_RECURRENCE = new DukeException("Invalid recurrence period specified...");
+    private static final DukeException BAD_RECURRENCE_DATE_EXCEPTION = new DukeException(
+            "Cannot specify date for recurring transaction" +
+                    "to be larger than 1 period in the past..."
+    );
 
     @BeforeEach
     void addCategories() {
@@ -204,6 +209,26 @@ class AddIncomeCommandTest {
                     "in pocket money /amount 50 /goal PS5 /recurrence random",
                     BAD_RECURRENCE
             )
+        };
+        CommandTestCase.runTestCases(testCases);
+    }
+
+    @Test
+    void badRecurrenceDate() {
+        LocalDate date = LocalDate.now();
+        String goodDate = date.minusDays(6).format(Parser.DATE_INPUT_FORMATTER);
+        String badDate = date.minusWeeks(1).format(Parser.DATE_INPUT_FORMATTER);
+        CommandTestCase[] testCases = new CommandTestCase[] {
+            new CommandTestCase(
+                    "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + goodDate,
+                    "Nice! The following income has been tracked:\n" +
+                            "Description                      Date          Amount        Goal\n" +
+                            "pocket money                     2023-10-18    50.00         PS5\n"
+            ),
+            new CommandTestCase(
+                    "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + badDate,
+                    BAD_RECURRENCE_DATE_EXCEPTION
+            ),
         };
         CommandTestCase.runTestCases(testCases);
     }
