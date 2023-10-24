@@ -18,6 +18,7 @@ class AddIncomeCommandTest {
     private static final DukeException MISSING_DESC_EXCEPTION = new DukeException("Description cannot be empty...");
     private static final DukeException MISSING_AMT_EXCEPTION = new DukeException("Amount cannot be empty...");
     private static final DukeException BAD_AMOUNT_EXCEPTION = new DukeException("Invalid amount value specified...");
+    private static final DukeException BAD_DATE_EXCEPTION = new DukeException("Invalid date specified...");
     private static final DukeException MISSING_GOAL_EXCEPTION = new DukeException("Goal cannot be empty...");
     private static final DukeException BAD_RECURRENCE = new DukeException("Invalid recurrence period specified...");
 
@@ -49,6 +50,12 @@ class AddIncomeCommandTest {
                     "Nice! The following income has been tracked:\n" +
                             "Description                      Date          Amount        Goal\n" +
                             "red packet money                 " + date + "    50.00         PS5\n"
+            ),
+            new CommandTestCase(
+                    "in red packet money /amount 50 /goal PS5 /date 12102000",
+                    "Nice! The following income has been tracked:\n" +
+                            "Description                      Date          Amount        Goal\n" +
+                            "red packet money                 2000-10-12    50.00         PS5\n"
             ),
             new CommandTestCase(
                     "in pocket money /amount 50 /goal PS5 /recurrence weekly",
@@ -132,6 +139,33 @@ class AddIncomeCommandTest {
                     "in part-time job /amount -1 /goal car",
                     BAD_AMOUNT_EXCEPTION
             )
+        };
+        CommandTestCase.runTestCases(testCases);
+    }
+
+    @Test
+    void badDate() {
+        CommandTestCase[] testCases = new CommandTestCase[]{
+            new CommandTestCase(
+                    "in part-time job /amount 10 /date",
+                    BAD_DATE_EXCEPTION
+            ),
+            new CommandTestCase(
+                    "in part-time job /amount 10 /date 32102000",
+                    BAD_DATE_EXCEPTION
+            ),
+            new CommandTestCase(
+                    "in part-time job /amount 10 /date 12-10-2000",
+                    BAD_DATE_EXCEPTION
+            ),
+            new CommandTestCase(
+                    "in part-time job /amount 10 /date     ",
+                    BAD_DATE_EXCEPTION
+            ),
+            new CommandTestCase(
+                    "in part-time job /date     /amount 10",
+                    BAD_DATE_EXCEPTION
+            ),
         };
         CommandTestCase.runTestCases(testCases);
     }
