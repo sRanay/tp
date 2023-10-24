@@ -24,4 +24,13 @@ public class Income {
     public void setGoal(Goal goal) {
         this.goal = goal;
     }
+
+    public Income generateNextRecurrence() {
+        Transaction nextTransaction = transaction.generateNextRecurrence();
+        if (nextTransaction == null) {
+            return null;
+        }
+
+        return new Income(nextTransaction, goal);
+    }
 }

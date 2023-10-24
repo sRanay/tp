@@ -20,7 +20,7 @@ public abstract class AddTransactionCommand extends Command {
     private static final String BAD_RECURRENCE = "Invalid recurrence period specified...";
     private boolean isValidated = false;
 
-    public AddTransactionCommand(String description, HashMap<String, String> args) {
+    protected AddTransactionCommand(String description, HashMap<String, String> args) {
         super(description, args);
     }
 
