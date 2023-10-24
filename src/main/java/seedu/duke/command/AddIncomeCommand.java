@@ -1,5 +1,6 @@
 package seedu.duke.command;
 
+import seedu.duke.classes.Goal;
 import seedu.duke.classes.Income;
 import seedu.duke.classes.StateManager;
 import seedu.duke.classes.Transaction;
@@ -12,11 +13,12 @@ import java.util.HashMap;
 
 public class AddIncomeCommand extends Command {
     private static final String AMOUNT_ARG = "amount";
-    private static final String[] HEADERS = {"Description", "Amount"};
+    private static final String[] HEADERS = {"Description", "Amount", "Goal"};
 
     private static final String SUCCESS_PRINT = "Nice! The following income has been tracked:";
     private static final String MISSING_DESC = "Description cannot be empty...";
     private static final String MISSING_AMOUNT = "Amount cannot be empty...";
+    private static final String MISSING_GOAL = "Goal cannot be empty...";
     private static final String BAD_AMOUNT = "Invalid amount value specified...";
 
     public AddIncomeCommand(String description, HashMap<String, String> args) {
@@ -33,8 +35,9 @@ public class AddIncomeCommand extends Command {
         printSuccess(ui, income);
     }
 
-    private Income addNewIncome(Transaction transaction) {
-        Income income = new Income(transaction, null);
+    private Income addNewIncome(Transaction transaction) throws DukeException {
+        Goal goal = handleGoal();
+        Income income = new Income(transaction, goal);
         StateManager.getStateManager().addIncome(income);
         return income;
     }
@@ -50,6 +53,7 @@ public class AddIncomeCommand extends Command {
         ArrayList<String> printValues = new ArrayList<>();
         printValues.add(transaction.getDescription());
         printValues.add(ui.formatAmount(transaction.getAmount()));
+        printValues.add(income.getGoal().getDescription());
         ui.print(SUCCESS_PRINT);
         ui.printTableRow(printValues, HEADERS);
     }
@@ -72,6 +76,22 @@ public class AddIncomeCommand extends Command {
         Double amount = Parser.parseNonNegativeDouble(amountArg);
         if (amount == null) {
             throw new DukeException(BAD_AMOUNT);
+        }
+        String goal = getArg("goal");
+        if (goal == null || goal.isBlank()) {
+            throw new DukeException(MISSING_GOAL);
+        }
+    }
+
+    private Goal handleGoal() throws DukeException {
+        StateManager state = StateManager.getStateManager();
+        String goal = getArg("goal");
+        int index = state.getGoalIndex(goal);
+        if (index == -1) {
+            String failedGoalMessage = "Please add '" + goal + "' as a goal first.";
+            throw new DukeException(failedGoalMessage);
+        } else {
+            return state.getGoal(index);
         }
     }
 }

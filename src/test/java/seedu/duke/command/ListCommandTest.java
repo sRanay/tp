@@ -47,6 +47,8 @@ class ListCommandTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Ui ui = new Ui(outputStream);
         try {
+            parser.parse("goal /add car /amount 5000").execute(ui);
+            parser.parse("goal /add PS5 /amount 300").execute(ui);
             parser.parse("in part-time job /amount 500 /goal car").execute(ui);
             parser.parse("in red packet money /amount 50 /goal PS5 /date 18092023").execute(ui);
         } catch (DukeException e) {
@@ -80,8 +82,8 @@ class ListCommandTest {
         assertEquals("Alright! Displaying 2 transactions.\n"
                         + "=============================== IN TRANSACTIONS ================================\n"
                         + "ID    Description                      Date         Amount       Goal\n"
-                        + "1     part-time job                    " + currentDate.toString() + "   500.00       TBC\n"
-                        + "2     red packet money                 " + currentDate.toString() + "   50.00        TBC\n"
+                        + "1     part-time job                    " + currentDate + "   500.00       car\n"
+                        + "2     red packet money                 " + currentDate + "   50.00        PS5\n"
                         + "=============================== IN TRANSACTIONS ================================\n"
                 , outputStream.toString());
 
@@ -98,9 +100,9 @@ class ListCommandTest {
         command.execute(ui);
         assertEquals("Alright! Displaying 2 transactions.\n"
                         + "=============================== OUT TRANSACTIONS ===============================\n"
-                        + "ID    Description                      Date         Amount       Goal\n"
-                        + "1     dinner                           " + currentDate.toString() + "   10.5         TBC\n"
-                        + "2     pokemon card pack                " + currentDate.toString() + "   10.5         TBC\n"
+                        + "ID    Description                      Date         Amount       Category\n"
+                        + "1     dinner                           " + currentDate + "   10.50        food\n"
+                        + "2     pokemon card pack                " + currentDate + "   10.50        games\n"
                         + "=============================== OUT TRANSACTIONS ===============================\n"
                 , outputStream.toString());
 

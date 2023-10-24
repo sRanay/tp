@@ -2,14 +2,14 @@ package seedu.duke.classes;
 
 public class Goal {
     private String description;
-    private int amount;
+    private double amount;
 
-    public Goal(String description, int amount) {
+    public Goal(String description, double amount) {
         this.description = description;
         this.amount = amount;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 

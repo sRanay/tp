@@ -16,6 +16,7 @@ class ParserTest {
     @Test
     void parse_validIncome_incomeCommand() throws DukeException {
         Parser parser = new Parser();
+        parser.parse("goal /add car /amount 5000");
         Command command = parser.parse("in job /amount 100 /goal car");
         assertEquals(AddIncomeCommand.class, command.getClass());
     }
