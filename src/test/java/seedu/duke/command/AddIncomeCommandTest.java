@@ -223,7 +223,7 @@ class AddIncomeCommandTest {
                     "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + goodDate,
                     "Nice! The following income has been tracked:\n" +
                             "Description                      Date          Amount        Goal\n" +
-                            "pocket money                     2023-10-18    50.00         PS5\n"
+                            "pocket money                     " + date.minusDays(6) + "    50.00         PS5\n"
             ),
             new CommandTestCase(
                     "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + badDate,
