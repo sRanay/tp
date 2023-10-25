@@ -14,7 +14,7 @@ public class Csv {
     private static Csv csvFile = null;
     private CSVWriter writer;
 
-    private Csv() throws DukeException {
+    public Csv() throws DukeException {
         try {
             File directory = new File(FILE_PATH);
             directory.mkdir();
@@ -25,13 +25,6 @@ public class Csv {
         }
     }
 
-    public static Csv getInstance() throws DukeException {
-        if (csvFile == null) {
-            csvFile = new Csv();
-        }
-        return csvFile;
-    }
-
     public void write(String[] data) {
         assert writer != null;
         writer.writeNext(data);
@@ -40,12 +33,8 @@ public class Csv {
     public void close() throws DukeException {
         try {
             writer.close();
-            csvFile = null;
         } catch (IOException e) {
             throw new DukeException("Error Closing File");
         }
-    }
-    public CSVWriter getWriter() {
-        return writer;
     }
 }
