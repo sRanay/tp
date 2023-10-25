@@ -1,6 +1,8 @@
 package seedu.duke.command;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import seedu.duke.classes.StateManager;
 import seedu.duke.exception.DukeException;
 import seedu.duke.parser.Parser;
 import seedu.duke.ui.Ui;
@@ -13,6 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ListCommandTest {
+    @AfterEach
+    void clearStateManager() {
+        StateManager.clearStateManager();
+    }
 
     @Test
     void invalidList() {
