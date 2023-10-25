@@ -1,5 +1,7 @@
 package seedu.duke.command;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seedu.duke.classes.StateManager;
 import seedu.duke.exception.DukeException;
@@ -17,8 +19,12 @@ class RemoveTransactionCommandTest {
     private static ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private static Ui ui = new Ui(outputStream);
 
-    public static void populateStateManager() {
+    @BeforeEach
+    void populateStateManager() {
         try {
+            parser.parse("goal /add car /amount 1000").execute(ui);
+            parser.parse("goal /add ps5 /amount 1000").execute(ui);
+
             parser.parse("in part-time job /amount 1000 /goal car").execute(ui);
             parser.parse("in allowance /amount 500 /goal car").execute(ui);
             parser.parse("in sell stuff /amount 50 /goal ps5").execute(ui);
@@ -32,10 +38,13 @@ class RemoveTransactionCommandTest {
 
     }
 
+    @AfterEach
+    void clearStateManager() {
+        StateManager.clearStateManager();
+    }
 
     @Test
     void execute_missingIdx_exceptionThrown() throws DukeException {
-        populateStateManager();
         Command command = parser.parse("delete /type in");
         assertThrows(DukeException.class, () -> {
             command.execute(ui);
@@ -44,7 +53,6 @@ class RemoveTransactionCommandTest {
 
     @Test
     void execute_missingTypeArgument_exceptionThrown() throws DukeException {
-        populateStateManager();
         Command command = parser.parse("delete 1");
         assertThrows(DukeException.class, () -> {
             command.execute(ui);
@@ -53,7 +61,6 @@ class RemoveTransactionCommandTest {
 
     @Test
     void execute_missingTypeValue_exceptionThrown() throws DukeException {
-        populateStateManager();
         Command command = parser.parse("delete 1 /type");
         assertThrows(DukeException.class, () -> {
             command.execute(ui);
@@ -62,7 +69,6 @@ class RemoveTransactionCommandTest {
 
     @Test
     void execute_negativeIdx_exceptionThrown() throws DukeException {
-        populateStateManager();
         Command command = parser.parse("delete -1 /type in");
         assertThrows(DukeException.class, () -> {
             command.execute(ui);
@@ -71,7 +77,6 @@ class RemoveTransactionCommandTest {
 
     @Test
     void execute_outOfRangeIdx_exceptionThrown() throws DukeException {
-        populateStateManager();
         Command command = parser.parse("delete 1000 /type in");
         assertThrows(DukeException.class, () -> {
             command.execute(ui);
@@ -80,7 +85,6 @@ class RemoveTransactionCommandTest {
 
     @Test
     void execute_validIncomeIdx_removedFromStateManager() throws DukeException {
-        populateStateManager();
         Command command = parser.parse("delete 1 /type in");
         command.execute(ui);
         String transactionDescription = StateManager.getStateManager().getIncome(0) // 0-based indexing
@@ -90,7 +94,6 @@ class RemoveTransactionCommandTest {
 
     @Test
     void execute_validExpenseIdx_removedFromStateManager() throws DukeException {
-        populateStateManager();
         Command command = parser.parse("delete 2 /type out");
         command.execute(ui);
         String transactionDescription = StateManager.getStateManager().getExpense(1) // 0-based indexing
