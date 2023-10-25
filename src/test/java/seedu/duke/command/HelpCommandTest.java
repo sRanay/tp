@@ -27,7 +27,9 @@ public class HelpCommandTest {
                 "in           Adds an income towards goal\n" +
                 "out          Adds an expense for a category\n" +
                 "delete       Delete a specific transaction based on the index in the list\n" +
-                "list         Shows a list of all added transactions based on type\n\n", outputStream.toString());
+                "list         Shows a list of all added transactions based on type\n" +
+                "export       Exports the transactions stored into a CSV File. " +
+                "By Default, it will export ALL transactions\n\n", outputStream.toString());
     }
 
     @Test
@@ -45,7 +47,9 @@ public class HelpCommandTest {
                 "in           Adds an income towards goal\n" +
                 "out          Adds an expense for a category\n" +
                 "delete       Delete a specific transaction based on the index in the list\n" +
-                "list         Shows a list of all added transactions based on type\n\n", outputStream.toString());
+                "list         Shows a list of all added transactions based on type\n" +
+                "export       Exports the transactions stored into a CSV File. " +
+                "By Default, it will export ALL transactions\n\n", outputStream.toString());
     }
 
     @Test
@@ -156,7 +160,7 @@ public class HelpCommandTest {
         command.execute(ui);
         assertEquals("\nUsage: list /type (in | out) [/goal GOAL] [/category CATEGORY]\n" +
                 "Option       Description\n" +
-                "/type        To set whether it is a in or out transaction\n" +
+                "/type        To set whether to display in or out transaction\n" +
                 "/goal        The goal which it is classify under\n" +
                 "/category    The spending category it is classify under\n\n", outputStream.toString());
     }

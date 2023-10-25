@@ -40,10 +40,12 @@ public class HelpCommand extends Command {
                                                                     "The goal which it is classify under", 
                                                                     "The spending category it is classify under"};
     private static final String EXPORT_COMMAND = "export";
-    private static final String EXPORT_DESCRIPTION = "Exports the transactions stored into a CSV File. By Default, it will export ALL transactions";
+    private static final String EXPORT_DESCRIPTION = "Exports the transactions stored into a CSV File. " +
+                                                     "By Default, it will export ALL transactions";
     private static final String EXPORT_COMMAND_USAGE = " [/type (in | out)]";
     private static final String[] EXPORT_COMMAND_FLAGS = {"/type"};
-    private static final String[] EXPORT_COMMAND_FLAGS_DESCRIPTION = {"To set whether to extract in or out transaction"};
+    private static final String[] EXPORT_COMMAND_FLAGS_DESCRIPTION = {"To set whether to extract in " +
+                                                                      "or out transaction"};
     private static final String USAGE_PREFIX = "Usage: ";
     private static final String INVALID_COMMAND = "NO SUCH COMMAND";
     private ArrayList<ArrayList<String>> helpList;
@@ -121,7 +123,9 @@ public class HelpCommand extends Command {
         return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE;
     }
 
-    public String exportUsage() { return USAGE_PREFIX + EXPORT_COMMAND + EXPORT_COMMAND_USAGE; }
+    public String exportUsage() {
+        return USAGE_PREFIX + EXPORT_COMMAND + EXPORT_COMMAND_USAGE;
+    }
 
     public void convertIntoList(String[] flags, String[] description) {
         for (int i = 0; i < flags.length; i++) {
