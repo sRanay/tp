@@ -5,17 +5,22 @@ import java.time.LocalDate;
 public enum TransactionRecurrence {
     NONE, DAILY, WEEKLY, MONTHLY;
 
+    private static final String NONE_STR = "none";
+    private static final String DAILY_STR = "daily";
+    private static final String WEEKLY_STR = "weekly";
+    private static final String MONTHLY_STR = "monthly";
+
     public static TransactionRecurrence getRecurrence(String recurrence) {
         assert recurrence != null;
         String cleanedRecurrence = recurrence.strip().toLowerCase();
         switch (cleanedRecurrence) {
-        case "none":
+        case NONE_STR:
             return TransactionRecurrence.NONE;
-        case "daily":
+        case DAILY_STR:
             return TransactionRecurrence.DAILY;
-        case "weekly":
+        case WEEKLY_STR:
             return TransactionRecurrence.WEEKLY;
-        case "monthly":
+        case MONTHLY_STR:
             return TransactionRecurrence.MONTHLY;
         default:
             return null;
@@ -32,6 +37,22 @@ public enum TransactionRecurrence {
             return current.plusMonths(1);
         default:
             return current;
+        }
+    }
+
+    @Override
+    public String toString() {
+        switch (this) {
+        case NONE:
+            return NONE_STR;
+        case DAILY:
+            return DAILY_STR;
+        case WEEKLY:
+            return WEEKLY_STR;
+        case MONTHLY:
+            return MONTHLY_STR;
+        default:
+            return null;
         }
     }
 }
