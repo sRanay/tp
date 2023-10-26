@@ -1,5 +1,6 @@
 package seedu.duke.command;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import seedu.duke.classes.Goal;
 import seedu.duke.classes.StateManager;
@@ -15,6 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class GoalCommandTest {
+    @AfterEach
+    void clearStateManager() {
+        StateManager.clearStateManager();
+    }
+
     @Test
     void invalidGoal(){
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
