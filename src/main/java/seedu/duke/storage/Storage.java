@@ -12,6 +12,7 @@ import seedu.duke.exception.DukeException;
 import seedu.duke.csv.CsvReader;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
@@ -20,25 +21,20 @@ public class Storage {
     private static final String CATEGORY_STORAGE_FILENAME = "category-store.csv";
     private static final String INCOME_STORAGE_FILENAME = "income-store.csv";
     private static final String EXPENSE_STORAGE_FILENAME = "expense-store.csv";
-    private static final String UNSUCCESSFUL_IMPORT = "File failed to import";
+    private static final String DATE_PATTERN = "dd/MM/yyyy";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
     private static final String FAILED_CONVERT_TO_NON_NEG_DOUBLE = "Cannot convert amount into Double type in ";
     private static final String FAILED_CONVERT_TO_LOCALDATE = "Cannot convert date into LocalDate type in ";
     private static final String[] GOAL_HEADER = {"Description", "Amount"};
     private static final String[] CATEGORY_HEADER = {"Name"};
     private static final String[] INCOME_HEADER = {"Description", "Amount", "Date", "Goal", "Recurrence"};
     private static final String[] EXPENSE_HEADER = {"Description", "Amount", "Date", "Category", "Recurrence"};
-    private CsvReader goalCsvFile;
-    private CsvReader categoryCsvFile;
-    private CsvReader incomeCsvFile;
-    private CsvReader expenseCsvFile;
-    private CsvWriter goalStorageFile;
-    private CsvWriter categoryStorageFile;
-    private CsvWriter incomeStorageFile;
-    private CsvWriter expenseStorageFile;
+
 
 
     public Storage() {
     }
+
     public boolean validRow(String[] row) {
         for(String column : row) {
             if (column.isBlank() || column.isEmpty()) {
@@ -47,6 +43,7 @@ public class Storage {
         }
         return true;
     }
+
     public double validDouble(String amountStr, String fileName) throws DukeException {
         try {
             double amount = Double.parseDouble(amountStr);
@@ -58,43 +55,16 @@ public class Storage {
             throw new DukeException(FAILED_CONVERT_TO_NON_NEG_DOUBLE + fileName);
         }
     }
+
     public LocalDate validDate(String dateStr, String fileName) throws DukeException {
         try {
-            LocalDate date = LocalDate.parse(dateStr);
+            LocalDate date = LocalDate.parse(dateStr, FORMATTER);
             return date;
         } catch (DateTimeParseException e) {
             throw new DukeException(FAILED_CONVERT_TO_LOCALDATE + fileName);
         }
     }
-    public void loadGoal() throws DukeException {
-        String[] row;
-        double amount;
-        while ((row = goalCsvFile.readLine()) != null) {
-            if (validRow(row)) {
-                String description = row[0];
-                try {
-                    amount = validDouble(row[1], GOAL_STORAGE_FILENAME);
-                } catch (DukeException e) {
-                    System.out.println(e.getMessage());
-                    continue;
-                }
-                Goal goal = new Goal(description, amount);
-                StateManager.getStateManager().addGoal(goal);
-            }
-        }
-        goalCsvFile.close();
-    }
-    public void loadCategory() throws DukeException {
-        String[] row;
-        while ((row = categoryCsvFile.readLine()) != null) {
-            if (validRow(row)) {
-                String description = row[0];
-                Category category = new Category(description);
-                StateManager.getStateManager().addCategory(category);
-            }
-        }
-        categoryCsvFile.close();
-    }
+
     public Goal convertToGoal(String name) {
         int index = StateManager.getStateManager().getGoalIndex(name);
         Goal goal = StateManager.getStateManager().getGoal(index);
@@ -115,8 +85,40 @@ public class Storage {
         }
         return transaction;
     }
+    public void loadGoal() throws DukeException {
+        CsvReader goalCsvFile =  new CsvReader(GOAL_STORAGE_FILENAME);
+        String[] row;
+        double amount;
+        while ((row = goalCsvFile.readLine()) != null) {
+            if (validRow(row)) {
+                String description = row[0];
+                try {
+                    amount = validDouble(row[1], GOAL_STORAGE_FILENAME);
+                } catch (DukeException e) {
+                    System.out.println(e.getMessage());
+                    continue;
+                }
+                Goal goal = new Goal(description, amount);
+                StateManager.getStateManager().addGoal(goal);
+            }
+        }
+        goalCsvFile.close();
+    }
+    public void loadCategory() throws DukeException {
+        CsvReader categoryCsvFile = new CsvReader(CATEGORY_STORAGE_FILENAME);
+        String[] row;
+        while ((row = categoryCsvFile.readLine()) != null) {
+            if (validRow(row)) {
+                String description = row[0];
+                Category category = new Category(description);
+                StateManager.getStateManager().addCategory(category);
+            }
+        }
+        categoryCsvFile.close();
+    }
 
     public void loadIncome() throws DukeException {
+        CsvReader incomeCsvFile = new CsvReader(INCOME_STORAGE_FILENAME);
         String[] row;
         double amount;
         LocalDate date;
@@ -141,6 +143,7 @@ public class Storage {
     }
 
     public void loadExpense() throws DukeException {
+        CsvReader expenseCsvFile = new CsvReader(EXPENSE_STORAGE_FILENAME);
         String[] row;
         double amount;
         LocalDate date;
@@ -165,18 +168,14 @@ public class Storage {
     }
 
     public void load() throws DukeException {
-        this.goalCsvFile =  new CsvReader(GOAL_STORAGE_FILENAME);
         loadGoal();
-        this.categoryCsvFile = new CsvReader(CATEGORY_STORAGE_FILENAME);
         loadCategory();
-        this.incomeCsvFile = new CsvReader(INCOME_STORAGE_FILENAME);
         loadIncome();
-        this.expenseCsvFile = new CsvReader(EXPENSE_STORAGE_FILENAME);
         loadExpense();
     }
 
     public void saveGoal() throws DukeException {
-        this.goalStorageFile = new CsvWriter(GOAL_STORAGE_FILENAME);
+        CsvWriter goalStorageFile = new CsvWriter(GOAL_STORAGE_FILENAME);
         ArrayList<Goal> goalList = StateManager.getStateManager().getAllGoals();
         goalStorageFile.write(GOAL_HEADER);
         for (Goal goal : goalList) {
@@ -189,7 +188,7 @@ public class Storage {
     }
 
     public void saveCategory() throws DukeException {
-        categoryStorageFile = new CsvWriter(CATEGORY_STORAGE_FILENAME);
+        CsvWriter categoryStorageFile = new CsvWriter(CATEGORY_STORAGE_FILENAME);
         ArrayList<Category> categoryList = StateManager.getStateManager().getAllCategories();
         categoryStorageFile.write(CATEGORY_HEADER);
         for (Category category : categoryList) {
@@ -201,14 +200,14 @@ public class Storage {
     }
 
     public void saveIncome() throws DukeException {
-        incomeStorageFile = new CsvWriter(INCOME_STORAGE_FILENAME);
+        CsvWriter incomeStorageFile = new CsvWriter(INCOME_STORAGE_FILENAME);
         ArrayList<Income> incomesList = StateManager.getStateManager().getAllIncomes();
         incomeStorageFile.write(INCOME_HEADER);
         for (Income income : incomesList) {
             Transaction transaction = income.getTransaction();
             String description = transaction.getDescription();
             String amount = Double.toString(transaction.getAmount());
-            String date = transaction.getDate().toString();
+            String date = transaction.getDate().format(FORMATTER);
             String goal = income.getGoal().getDescription();
             String recurrence = transaction.getRecurrence().toString();
             String[] row = {description, amount, date, goal, recurrence};
@@ -218,14 +217,14 @@ public class Storage {
     }
 
     public void saveExpense() throws DukeException{
-        expenseStorageFile = new CsvWriter(EXPENSE_STORAGE_FILENAME);
+        CsvWriter expenseStorageFile = new CsvWriter(EXPENSE_STORAGE_FILENAME);
         ArrayList<Expense> expensesList = StateManager.getStateManager().getAllExpenses();
         expenseStorageFile.write(EXPENSE_HEADER);
         for (Expense expense : expensesList) {
             Transaction transaction = expense.getTransaction();
             String description = transaction.getDescription();
             String amount = Double.toString(transaction.getAmount());
-            String date = transaction.getDate().toString();
+            String date = transaction.getDate().format(FORMATTER);
             String category = expense.getCategory().getName();
             String recurrence = transaction.getRecurrence().toString();
             String[] row = {description, amount, date, category, recurrence};
