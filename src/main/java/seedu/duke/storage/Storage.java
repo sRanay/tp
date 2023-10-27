@@ -29,8 +29,10 @@ public class Storage {
     private static final String FAILED_CONVERT_BOOLEAN = "Cannot convert string into boolean type in ";
     private static final String[] GOAL_HEADER = {"Description", "Amount"};
     private static final String[] CATEGORY_HEADER = {"Name"};
-    private static final String[] INCOME_HEADER = {"Description", "Amount", "Date", "Goal", "Recurrence", "Has Next Recurrence"};
-    private static final String[] EXPENSE_HEADER = {"Description", "Amount", "Date", "Category", "Recurrence", "Has Next Reccurence"};
+    private static final String[] INCOME_HEADER = {"Description", "Amount", "Date", "Goal",
+                                                   "Recurrence", "Has Next Recurrence"};
+    private static final String[] EXPENSE_HEADER = {"Description", "Amount", "Date", "Category",
+                                                    "Recurrence", "Has Next Reccurence"};
 
 
 
@@ -74,7 +76,8 @@ public class Storage {
         return category;
     }
 
-    public Transaction prepareTransaction(String description, Double amount, LocalDate date, String recurrence, String hasRecurrence) {
+    public Transaction prepareTransaction(String description, Double amount, LocalDate date,
+                                          String recurrence, String hasRecurrence) {
         Transaction transaction = new Transaction(description, amount, date);
         transaction.setHasGeneratedNextRecurrence(Boolean.parseBoolean(hasRecurrence));
         if (recurrence != null) {
