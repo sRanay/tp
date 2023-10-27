@@ -8,17 +8,17 @@ import java.io.Writer;
 import com.opencsv.CSVWriter;
 import seedu.duke.exception.DukeException;
 
-public class Csv {
-    private static final String FILE_PATH = "./Exports/";
-    private static final String FILE_NAME = "transactions.csv" ;
-    private static Csv csvFile = null;
+public class CsvWriter {
+
     private CSVWriter writer;
 
-    public Csv() throws DukeException {
+    public CsvWriter(String fullPath) throws DukeException {
+        this(fullPath, false);
+    }
+
+    public CsvWriter(String fullPath, boolean isAppend) throws DukeException {
         try {
-            File directory = new File(FILE_PATH);
-            directory.mkdir();
-            Writer fileWriter = new FileWriter(FILE_PATH + FILE_NAME, false);
+            Writer fileWriter = new FileWriter(fullPath, isAppend);
             this.writer = new CSVWriter(fileWriter);
         } catch (IOException e) {
             throw new DukeException("Cannot create file");
