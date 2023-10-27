@@ -36,9 +36,16 @@ public class HelpCommand extends Command {
     private static final String LIST_DESCRIPTION = "Shows a list of all added transactions based on type";
     private static final String LIST_COMMAND_USAGE = " /type (in | out) [/goal GOAL] [/category CATEGORY]";
     private static final String[] LIST_COMMAND_FLAGS = {"/type", "/goal", "/category"};
-    private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether it is a in or out transaction", 
+    private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether to display in or out transaction",
                                                                     "The goal which it is classify under", 
                                                                     "The spending category it is classify under"};
+    private static final String EXPORT_COMMAND = "export";
+    private static final String EXPORT_DESCRIPTION = "Exports the transactions stored into a CSV File. " +
+                                                     "By Default, it will export ALL transactions";
+    private static final String EXPORT_COMMAND_USAGE = " [/type (in | out)]";
+    private static final String[] EXPORT_COMMAND_FLAGS = {"/type"};
+    private static final String[] EXPORT_COMMAND_FLAGS_DESCRIPTION = {"To set whether to extract in " +
+                                                                      "or out transaction"};
     private static final String USAGE_PREFIX = "Usage: ";
     private static final String INVALID_COMMAND = "NO SUCH COMMAND";
     private ArrayList<ArrayList<String>> helpList;
@@ -80,12 +87,18 @@ public class HelpCommand extends Command {
         return list;
     }
 
+    public ArrayList<String> printExportDescription() {
+        ArrayList<String> export = convertCommandList(EXPORT_COMMAND, EXPORT_DESCRIPTION);
+        return export;
+    }
+
     public ArrayList<ArrayList<String>> printFullList() {
         this.helpList.add(printHelpDescription());
         this.helpList.add(printInDescription());
         this.helpList.add(printOutDescription());
         this.helpList.add(printDeleteDescription());
         this.helpList.add(printListDescription());
+        this.helpList.add(printExportDescription());
         assert this.helpList != null;
         return this.helpList;
     }
@@ -108,6 +121,10 @@ public class HelpCommand extends Command {
 
     public String listUsage() {
         return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE;
+    }
+
+    public String exportUsage() {
+        return USAGE_PREFIX + EXPORT_COMMAND + EXPORT_COMMAND_USAGE;
     }
 
     public void convertIntoList(String[] flags, String[] description) {
@@ -145,6 +162,10 @@ public class HelpCommand extends Command {
         case "list":
             ui.print(listUsage());
             convertIntoList(LIST_COMMAND_FLAGS, LIST_COMMAND_FLAGS_DESCRIPTION);
+            break;
+        case "export":
+            ui.print(exportUsage());
+            convertIntoList(EXPORT_COMMAND_FLAGS, EXPORT_COMMAND_FLAGS_DESCRIPTION);
             break;
         default:
             ui.print(INVALID_COMMAND);

@@ -56,7 +56,7 @@ public class Parser {
         case "help":
             return new HelpCommand(description, argsMap);
         case "export":
-            return new ExportCommand();
+            return new ExportCommand(description, argsMap);
         case "category":
             return new CategoryCommand(description, argsMap);
         case "goal":
