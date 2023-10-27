@@ -108,17 +108,79 @@ ID   Description   Date          Amount      Goal
 2    Hongbao       13 SEP 2023   $10         KOREA STUDIES
 ==================== IN TRANSACTIONS =====================
 ```
+
+### Add Category: `category /add`
+Create a spending category
+
+Format: `category /add NAME`
+* Category name is case-insensitive. E.g. `Food` will match `food`
+
+**Usage Example:**
+
+`category /add Personal` - Create a spending category called `Personal`
+
+### Remove Category: `category /remove`
+Delete a spending category
+
+Format: `category /remove NAME`
+
+**Usage Example:**
+
+`category /remove Personal` - Delete a spending category called `Personal`
+
+### Add Goal: `goal /add`
+Add a goal for the user to add money towards
+
+Format: `goal /add NAME /amount AMOUNT`
+* Goal name is case-insensitive. E.g. `Car` will match `car`
+
+**Usage Example:**
+
+`goal /add Car Downpayment /amount 20000` - Add a goal called `Car Downpayment` with amount of `20000`
+
+`goal /add Holiday /amount 2000` - Add a goal called `Holiday` with amount of `2000`
+
+### Remove Goal: `goal /remove`
+Remove a specific goal that the user created previous
+
+Format: `goal /remove NAME`
+
+**Usage Example:**
+
+`goal /remove Car Downpayment` - Remove a goal called `Car Downpayment`
+
+`goal /remove Holiday` - Remove a goal called `Holiday`
+
+### Export Transactions: `export`
+Exports all transaction data into a CSV file called `Transactions.csv`
+
+Format: `export [/type (in \| out)]`
+* If `/type` is not specified, by default it will extract **ALL** transactions.
+
+**Usage Example:**
+
+`export /type in` - Export all in transactions
+
+`export /type out` - Export all out transactions
+
 ### End Program: `bye`
 Safely ends the program.
 
 ## Command Summary
 
-| Action                  | Format                                                                      | Example                                                   |
-|-------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Help                    | `help`                                                                      |                                                           |
-| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]`         | `in part-time job /amount 500 /goal car`                  |
-| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]`| `out dinner /amount 10.50 /category food`                 |
-| Delete Transaction      | `delete INDEX /type (in | out)`                                             | `delete 1 /type in`                                       |
-| List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY]`                   | `list /type in`                                           |
-| End program             | `bye`                                                                       |                                                           |
+| Action                  | Format                                                                       | Example                                   |
+|-------------------------|------------------------------------------------------------------------------|-------------------------------------------|
+| Help                    | `help`                                                                       |                                           |
+| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]`          | `in part-time job /amount 500 /goal car`  |
+| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]` | `out dinner /amount 10.50 /category food` |
+| Delete Transaction      | `delete INDEX /type (in \| out)`                                             | `delete 1 /type in`                       |
+| List Transactions       | `list /type (in \| out) [/goal GOAL] [/category CATEGORY]`                   | `list /type in`                           |
+| Add Category            | `category /add NAME`                                                         | `category /add Personal`                  |
+| Remove Category         | `category /remove Name`                                                      | `category /remove Personal`               |
+| Add Goal                | `goal /add NAME /amount AMOUNT`                                              | `goal /add Car Downpayment /amount 20000` |
+| Remove Goal             | `goal /remove NAME`                                                          | `goal /remove Car Downpayment`            |
+| Export Transactions     | `export [/type (in \| out)]`                                                 | `export /type in`                         |
+| End program             | `bye`                                                                        |                                           |
+
+
 
