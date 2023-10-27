@@ -1,5 +1,7 @@
 package seedu.duke;
 
+import seedu.duke.classes.StateManager;
+import seedu.duke.classes.TransactionRecurrence;
 import seedu.duke.command.Command;
 import seedu.duke.command.ExitCommand;
 import seedu.duke.exception.DukeException;
@@ -16,12 +18,26 @@ public class Duke {
         ui = new Ui();
         storage = new Storage();
     }
+
     public void load() {
         try {
             storage.load();
+            syncTransactions();
         } catch (DukeException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void save() throws DukeException {
+        syncTransactions();
+        storage.save();
+    }
+
+    public void syncTransactions() {
+        TransactionRecurrence.generateRecurrentTransactions(
+                StateManager.getStateManager().getAllIncomes(),
+                StateManager.getStateManager().getAllExpenses()
+        );
     }
 
     public void run() {
@@ -33,10 +49,10 @@ public class Duke {
                 Command command = new Parser().parse(userInput);
                 command.execute(ui);
 
+                save();
                 if (command instanceof ExitCommand) {
                     break;
                 }
-                storage.save();
             } catch (DukeException e) {
                 System.out.println(e.getMessage());
             }
