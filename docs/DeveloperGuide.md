@@ -14,6 +14,7 @@ The bulk of the app's work is done by the following three components:
 - `Command`: Command's logic and execution
 
 ### UI component
+
 ![UI Sequence Diagram](./images/cs2113-ui-sequence.jpg "UI Sequence Diagram")
 
 The `UI` consists of a `Scanner` and an `OutputStream` object. Together, these objects abstract the functionalities of
@@ -25,6 +26,7 @@ The `UI` component:
 - provide methods to print output in tabular format
 
 ### Parser component
+
 The `Parser` functionality is to take in a user input, parse it and return the relevant `Command` object based on 
 the input.
 
@@ -39,8 +41,9 @@ Note: The `Parser` will not do any validation of arguments or description of the
 respective `Command` object.
 
 ### Command component
+
 The Command component consists of the individual command objects (listed in table below) and an abstract
-class `Command`. The `Command` component is responsible for executing the commands after it has been parsed by `Parser`.
+class `Command`. The `Command` component is responsible for executing the commands after it has been parsed by `Parser`. \
 All error handling is handled here and any errors/output would be passed to the `UI` component for printing and
 formatting of the output.
 
@@ -73,13 +76,16 @@ Step 2. The user executes `in part-time job /amount 500 /goal car` to create a t
 Step 3. So when the user executes `export`, it will get all the transactions that the program stored and exports to a CSV file using OpenCSV 
 
 ## Product scope
+
 ### Target user profile
 
-{Describe the target user profile}
+ Users who prefer a CLI interface over a GUI and want to better manage their finances to gauge their financial health.
 
 ### Value proposition
 
-{Describe the value proposition: what problem does it solve?}
+Personal finance tracker to make it easy for users to track and manage their spending, \
+and generate daily/weekly/monthly reports to break down how they spend (e.g. spending categories, \
+whether they spend above their income, etc).
 
 ## User Stories
 
