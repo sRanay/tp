@@ -1,6 +1,7 @@
 package seedu.duke.classes;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public enum TransactionRecurrence {
     NONE, DAILY, WEEKLY, MONTHLY;
@@ -38,6 +39,71 @@ public enum TransactionRecurrence {
         default:
             return current;
         }
+    }
+
+    public static ArrayList<Income> generateRecurrentIncomes(Income income) {
+        ArrayList<Income> recurrentIncomes = new ArrayList<>();
+        while (true) {
+            Income recurrentIncome = income.generateNextRecurrence();
+            if (recurrentIncome == null) {
+                break;
+            }
+
+            income.getTransaction().setHasGeneratedNextRecurrence(true);
+            recurrentIncomes.add(recurrentIncome);
+            income = recurrentIncome;
+        }
+        return recurrentIncomes;
+    }
+
+    public static ArrayList<Income> generateRecurrentIncomes(ArrayList<Income> incomes) {
+        ArrayList<Income> recurrentIncomes = new ArrayList<>();
+        for (Income income : incomes) {
+            recurrentIncomes.addAll(generateRecurrentIncomes(income));
+        }
+
+        recurrentIncomes.sort((Income a, Income b) -> {
+            LocalDate aDate = a.getTransaction().getDate();
+            LocalDate bDate = b.getTransaction().getDate();
+            return aDate.compareTo(bDate);
+        });
+
+        return recurrentIncomes;
+    }
+
+    public static ArrayList<Expense> generateRecurrentExpenses(Expense expense) {
+        ArrayList<Expense> recurrentExpenses = new ArrayList<>();
+        while (true) {
+            Expense recurrentExpense = expense.generateNextRecurrence();
+            if (recurrentExpense == null) {
+                break;
+            }
+
+            expense.getTransaction().setHasGeneratedNextRecurrence(true);
+            recurrentExpenses.add(recurrentExpense);
+            expense = recurrentExpense;
+        }
+        return recurrentExpenses;
+    }
+
+    public static ArrayList<Expense> generateRecurrentExpenses(ArrayList<Expense> expenses) {
+        ArrayList<Expense> recurrentExpenses = new ArrayList<>();
+        for (Expense expense : expenses) {
+            recurrentExpenses.addAll(generateRecurrentExpenses(expense));
+        }
+
+        recurrentExpenses.sort((Expense a, Expense b) -> {
+            LocalDate aDate = a.getTransaction().getDate();
+            LocalDate bDate = b.getTransaction().getDate();
+            return aDate.compareTo(bDate);
+        });
+
+        return recurrentExpenses;
+    }
+
+    public static void generateRecurrentTransactions(ArrayList<Income> incomes, ArrayList<Expense> expenses) {
+        incomes.addAll(generateRecurrentIncomes(incomes));
+        expenses.addAll(generateRecurrentExpenses(expenses));
     }
 
     @Override
