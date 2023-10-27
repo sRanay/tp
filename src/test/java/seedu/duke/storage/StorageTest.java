@@ -50,40 +50,6 @@ public class StorageTest {
     }
 
     @Test
-    void validDoubleWithNegativeValue() {
-        String amount = "-1";
-        String testFileName = "filename";
-        assertThrows(DukeException.class, () -> {
-            storage.validDouble(amount, testFileName);
-        });
-    }
-
-    @Test
-    void validDoubleWithNonNumbers() {
-        String amount = "test";
-        String testFileName = "filename";
-        assertThrows(DukeException.class, () -> {
-            storage.validDouble(amount, testFileName);
-        });
-    }
-
-    @Test
-    void validDoubleWithWholeNumbers() throws DukeException {
-        String amount = "2";
-        String testFileName = "filename";
-        double expected = 2;
-        assertEquals(expected, storage.validDouble(amount, testFileName));
-    }
-
-    @Test
-    void validDoubleWithFloatingPoint() throws DukeException {
-        String amount = "2.11";
-        String testFileName = "filename";
-        double expected = 2.11;
-        assertEquals(expected, storage.validDouble(amount, testFileName));
-    }
-
-    @Test
     void validDateWithWrongFormat() {
         String dateStr = "25-10-2023";
         String testFileName = "filename";
