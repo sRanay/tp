@@ -1,3 +1,4 @@
+Test failed!
 Welcome to FinText, your personal finance tracker.
 Sorry I do not understand your command
 Bye Bye!
