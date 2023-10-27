@@ -4,32 +4,31 @@ import seedu.duke.classes.Expense;
 import seedu.duke.classes.Income;
 import seedu.duke.classes.StateManager;
 import seedu.duke.classes.Transaction;
-import seedu.duke.csv.Csv;
+import seedu.duke.csv.CsvWriter;
 import seedu.duke.exception.DukeException;
 import seedu.duke.ui.Ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ExportCommand extends Command {
+    enum TransactionType {
+        IN, OUT, ALL, ERROR
+    }
     private static final String SUCESSFUL_MSG = "Transaction Data extracted";
-    private static final String UNSUCESSFUL_MSG = "Transaction Data extraction failed";
-    private static final String IN = "in";
-    private static final String OUT = "out";
-    private static final String ALL = "all";
-    private static final String ERROR = "error";
     private static final String TYPE_ARG = "type";
     private static final String WRONG_TYPE_MSG = "Wrong type entered. Please enter /type in, /type out or blank";
     private static final String[] HEADERS = {"Description", "Date", "Amount", "Goal", "Category"};
 
     private ArrayList<Income> incomeArray;
     private ArrayList<Expense> expenseArray;
-    private Csv csvFile;
+    private CsvWriter csvFile;
     private Ui ui;
 
-    public ExportCommand(String description, HashMap<String, String> args) {
+    public ExportCommand(String description, HashMap<String, String> args) throws DukeException {
         super(description, args);
         this.incomeArray = StateManager.getStateManager().getAllIncomes();
         this.expenseArray = StateManager.getStateManager().getAllExpenses();
+        this.csvFile = new CsvWriter("Transactions.csv");
     }
 
     public void writeHeader() {
@@ -65,21 +64,21 @@ public class ExportCommand extends Command {
         }
     }
 
-    public String checkType() {
+    public TransactionType checkType() {
         String type = getArg(TYPE_ARG);
         if (type == null) {
-            return ALL;
+            return TransactionType.ALL;
         }
-        if (type.equals(IN)) {
-            return IN;
+        if (type.equals("in")) {
+            return TransactionType.IN;
         }
-        if (type.equals(OUT)) {
-            return OUT;
+        if (type.equals("out")) {
+            return TransactionType.OUT;
         }
-        return ERROR;
+        return TransactionType.ERROR;
     }
 
-    void exportData(String type) {
+    void exportData(TransactionType type) {
         switch(type) {
         case IN:
             exportIncomeData();
@@ -96,20 +95,14 @@ public class ExportCommand extends Command {
     @Override
     public void execute(Ui ui) throws DukeException {
         this.ui = ui;
-        String type = checkType();
-        if(type.equals(ERROR)) {
+        TransactionType transactionType = checkType();
+        if(transactionType.equals(TransactionType.ERROR)) {
             ui.print(WRONG_TYPE_MSG);
             return;
         }
-        try {
-            this.csvFile = new Csv();
-            writeHeader();
-            exportData(type);
-            ui.print(SUCESSFUL_MSG);
-            csvFile.close();
-        } catch (DukeException e) {
-            ui.print(e.getMessage());
-            ui.print(UNSUCESSFUL_MSG);
-        }
+        writeHeader();
+        exportData(transactionType);
+        ui.print(SUCESSFUL_MSG);
+        csvFile.close();
     }
 }
