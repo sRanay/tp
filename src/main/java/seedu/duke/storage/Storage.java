@@ -10,6 +10,7 @@ import seedu.duke.classes.TransactionRecurrence;
 import seedu.duke.csv.CsvWriter;
 import seedu.duke.exception.DukeException;
 import seedu.duke.csv.CsvReader;
+import seedu.duke.parser.Parser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,10 +26,11 @@ public class Storage {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
     private static final String FAILED_CONVERT_TO_NON_NEG_DOUBLE = "Cannot convert amount into Double type in ";
     private static final String FAILED_CONVERT_TO_LOCALDATE = "Cannot convert date into LocalDate type in ";
+    private static final String FAILED_CONVERT_BOOLEAN = "Cannot convert string into boolean type in ";
     private static final String[] GOAL_HEADER = {"Description", "Amount"};
     private static final String[] CATEGORY_HEADER = {"Name"};
-    private static final String[] INCOME_HEADER = {"Description", "Amount", "Date", "Goal", "Recurrence"};
-    private static final String[] EXPENSE_HEADER = {"Description", "Amount", "Date", "Category", "Recurrence"};
+    private static final String[] INCOME_HEADER = {"Description", "Amount", "Date", "Goal", "Recurrence", "Has Next Recurrence"};
+    private static final String[] EXPENSE_HEADER = {"Description", "Amount", "Date", "Category", "Recurrence", "Has Next Reccurence"};
 
 
 
@@ -44,18 +46,6 @@ public class Storage {
         return true;
     }
 
-    public double validDouble(String amountStr, String fileName) throws DukeException {
-        try {
-            double amount = Double.parseDouble(amountStr);
-            if (amount < 0) {
-                throw new NumberFormatException();
-            }
-            return amount;
-        } catch (NumberFormatException e) {
-            throw new DukeException(FAILED_CONVERT_TO_NON_NEG_DOUBLE + fileName);
-        }
-    }
-
     public LocalDate validDate(String dateStr, String fileName) throws DukeException {
         try {
             LocalDate date = LocalDate.parse(dateStr, FORMATTER);
@@ -63,6 +53,13 @@ public class Storage {
         } catch (DateTimeParseException e) {
             throw new DukeException(FAILED_CONVERT_TO_LOCALDATE + fileName);
         }
+    }
+
+    public boolean validBoolean(String booleanStr) {
+        if(booleanStr.toLowerCase().equals("true") || booleanStr.toLowerCase().equals("false")) {
+            return true;
+        }
+        return false;
     }
 
     public Goal convertToGoal(String name) {
@@ -77,9 +74,10 @@ public class Storage {
         return category;
     }
 
-    public Transaction prepareTransaction(String description, Double amount, LocalDate date, String recurrence) {
+    public Transaction prepareTransaction(String description, Double amount, LocalDate date, String recurrence, String hasRecurrence) {
         Transaction transaction = new Transaction(description, amount, date);
-        if(recurrence != null) {
+        transaction.setHasGeneratedNextRecurrence(Boolean.parseBoolean(hasRecurrence));
+        if (recurrence != null) {
             TransactionRecurrence transactionRecurrence = TransactionRecurrence.getRecurrence(recurrence);
             transaction.setRecurrence(transactionRecurrence);
         }
@@ -92,12 +90,11 @@ public class Storage {
         while ((row = goalCsvFile.readLine()) != null) {
             if (validRow(row)) {
                 String description = row[0];
-                try {
-                    amount = validDouble(row[1], GOAL_STORAGE_FILENAME);
-                } catch (DukeException e) {
-                    System.out.println(e.getMessage());
+                if (Parser.parseNonNegativeDouble(row[1]) == null) {
+                    System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + GOAL_STORAGE_FILENAME);
                     continue;
                 }
+                amount = Parser.parseNonNegativeDouble(row[1]);
                 Goal goal = new Goal(description, amount);
                 StateManager.getStateManager().addGoal(goal);
             }
@@ -122,19 +119,29 @@ public class Storage {
         String[] row;
         double amount;
         LocalDate date;
+        Transaction transaction;
         while ((row = incomeCsvFile.readLine()) != null) {
             if (validRow(row)) {
                 String description = row[0];
+                Goal goal = convertToGoal(row[3]);
+                String recurrence = row[4];
+                String hasRecurrence = row[5];
+                if (!(validBoolean(hasRecurrence))) {
+                    System.out.println(FAILED_CONVERT_BOOLEAN + INCOME_STORAGE_FILENAME);
+                    continue;
+                }
+                if (Parser.parseNonNegativeDouble(row[1]) == null) {
+                    System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + INCOME_STORAGE_FILENAME);
+                    continue;
+                }
+                amount = Parser.parseNonNegativeDouble(row[1]);
                 try {
-                    amount = validDouble(row[1], INCOME_STORAGE_FILENAME);
                     date = validDate(row[2], INCOME_STORAGE_FILENAME);
+                    transaction = prepareTransaction(description, amount, date, recurrence, hasRecurrence);
                 } catch (DukeException e) {
                     System.out.println(e.getMessage());
                     continue;
                 }
-                Goal goal = convertToGoal(row[3]);
-                String recurrence = row[4];
-                Transaction transaction = prepareTransaction(description, amount, date, recurrence);
                 Income income = new Income(transaction, goal);
                 StateManager.getStateManager().addIncome(income);
             }
@@ -147,19 +154,29 @@ public class Storage {
         String[] row;
         double amount;
         LocalDate date;
+        Transaction transaction;
         while ((row = expenseCsvFile.readLine()) != null) {
             if (validRow(row)) {
                 String description = row[0];
+                Category category = convertToCategory(row[3]);
+                String recurrence = row[4];
+                String hasRecurrence = row[5];
+                if (!(validBoolean(hasRecurrence))) {
+                    System.out.println(FAILED_CONVERT_BOOLEAN + EXPENSE_STORAGE_FILENAME);
+                    continue;
+                }
+                if (Parser.parseNonNegativeDouble(row[1]) == null) {
+                    System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + EXPENSE_STORAGE_FILENAME);
+                    continue;
+                }
+                amount = Parser.parseNonNegativeDouble(row[1]);
                 try {
-                    amount = validDouble(row[1], EXPENSE_STORAGE_FILENAME);
                     date = validDate(row[2], EXPENSE_STORAGE_FILENAME);
+                    transaction = prepareTransaction(description, amount, date, recurrence, hasRecurrence);
                 } catch (DukeException e) {
                     System.out.println(e.getMessage());
                     continue;
                 }
-                Category category = convertToCategory(row[3]);
-                String recurrence = row[4];
-                Transaction transaction = prepareTransaction(description, amount, date, recurrence);
                 Expense expense = new Expense(transaction, category);
                 StateManager.getStateManager().addExpense(expense);
             }
@@ -210,7 +227,8 @@ public class Storage {
             String date = transaction.getDate().format(FORMATTER);
             String goal = income.getGoal().getDescription();
             String recurrence = transaction.getRecurrence().toString();
-            String[] row = {description, amount, date, goal, recurrence};
+            String hasNextRecurrence = Boolean.toString(transaction.getHasGeneratedNextRecurrence());
+            String[] row = {description, amount, date, goal, recurrence, hasNextRecurrence};
             incomeStorageFile.write(row);
         }
         incomeStorageFile.close();
@@ -227,7 +245,8 @@ public class Storage {
             String date = transaction.getDate().format(FORMATTER);
             String category = expense.getCategory().getName();
             String recurrence = transaction.getRecurrence().toString();
-            String[] row = {description, amount, date, category, recurrence};
+            String hasNextRecurrence = Boolean.toString(transaction.getHasGeneratedNextRecurrence());
+            String[] row = {description, amount, date, category, recurrence, hasNextRecurrence};
             expenseStorageFile.write(row);
         }
         expenseStorageFile.close();
