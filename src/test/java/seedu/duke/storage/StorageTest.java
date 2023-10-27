@@ -7,15 +7,14 @@ import seedu.duke.exception.DukeException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.SortedMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageTest {
-    private Storage storage;
     private static final String DATE_PATTERN = "dd/MM/yyyy";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
+    private Storage storage;
 
     @BeforeEach
     void initialise() {
@@ -89,7 +88,7 @@ public class StorageTest {
         String dateStr = "25-10-2023";
         String testFileName = "filename";
         assertThrows(DukeException.class, () -> {
-           storage.validDate(dateStr, testFileName);
+            storage.validDate(dateStr, testFileName);
         });
     }
 
