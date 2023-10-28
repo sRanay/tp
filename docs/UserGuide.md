@@ -142,15 +142,15 @@ Safely ends the program.
 
 ## Command Summary
 
-| Action                  | Format                                                                                                | Example                                                                     |
-|-------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| Help                    | `help`                                                                                                |                                                                             |
-| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`          | `in part-time job /amount 500 /goal car`                                    |
-| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]` | `out dinner /amount 10.50 /category food`                                   |
-| Delete Transaction      | `delete INDEX /type (in | out)`                                                                       | `delete 1 /type in`                                                         |
-| List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY]`                                             | `list /type in`                                                             |
-| Export Transactions     | `export [/type (in | out)]`                                                                           | `export /type in`                                                           |
-| End program             | `bye`                                                                                                 |                                                                             |
+| Action                  | Format                                                                                                | Example                                   |
+|-------------------------|-------------------------------------------------------------------------------------------------------|-------------------------------------------|
+| Help                    | `help`                                                                                                |                                           |
+| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`          | `in part-time job /amount 500 /goal car`  |
+| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]` | `out dinner /amount 10.50 /category food` |
+| Delete Transaction      | `delete INDEX /type (in | out)`                                                                       | `delete 1 /type in`                       |
+| List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY]`                                             | `list /type in`                           |
+| Export Transactions     | `export [/type (in | out)]`                                                                           | `export /type in`                         |
+| End program             | `bye`                                                                                                 |                                           |
 
 
 
