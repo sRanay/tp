@@ -124,17 +124,33 @@ ID   Description   Date          Amount      Goal
 2    Hongbao       13 SEP 2023   $10         KOREA STUDIES
 ==================== IN TRANSACTIONS =====================
 ```
+
+### Export Transactions: `export`
+Exports all transaction data into a CSV file called `Transactions.csv`
+
+Format: `export [/type (in \| out)]`
+* If `/type` is not specified, by default it will extract **ALL** transactions.
+
+**Usage Example:**
+
+`export /type in` - Export all in transactions
+
+`export /type out` - Export all out transactions
+
 ### End Program: `bye`
 Safely ends the program.
 
 ## Command Summary
 
-| Action                  | Format                                                                      | Example                                                   |
-|-------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Help                    | `help`                                                                      |                                                           |
-| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]`         | `in part-time job /amount 500 /goal car`                  |
-| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]`| `out dinner /amount 10.50 /category food`                 |
-| Delete Transaction      | `delete INDEX /type (in | out)`                                             | `delete 1 /type in`                                       |
-| List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY]`                   | `list /type in`                                           |
-| End program             | `bye`                                                                       |                                                           |
+| Action                  | Format                                                                       | Example                                   |
+|-------------------------|------------------------------------------------------------------------------|-------------------------------------------|
+| Help                    | `help`                                                                       |                                           |
+| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]`          | `in part-time job /amount 500 /goal car`  |
+| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]` | `out dinner /amount 10.50 /category food` |
+| Delete Transaction      | `delete INDEX /type (in \| out)`                                             | `delete 1 /type in`                       |
+| List Transactions       | `list /type (in \| out) [/goal GOAL] [/category CATEGORY]`                   | `list /type in`                           |
+| Export Transactions     | `export [/type (in \| out)]`                                                 | `export /type in`                         |
+| End program             | `bye`                                                                        |                                           |
+
+
 
