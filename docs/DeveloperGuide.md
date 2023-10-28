@@ -12,6 +12,7 @@ The bulk of the app's work is done by the following three components:
 - `UI`: The UI of the App.
 - `Parser`: Formats the user's input
 - `Command`: Command's logic and execution
+- `Storage`: Storage of data of the App
 
 ### UI component
 
@@ -56,24 +57,15 @@ formatting of the output.
 | GoalCommand              | Add/Remove a Goal (used for income)        |
 | HelpCommand              | Gives usage format information to the user |
 | ListCommand              | Lists all incoming/outgoing transactions   |
+| ExportCommand            | Exports transactions data into CSV FIle.   |
 | RemoveTransactionCommand | Deletes a transaction                      |
 
+### Storage component
+The `Storage` functionality is to load data from the storage files (`category-store.csv` , `expense-store.csv`, `goal-store.csv`, `income-store.csv`) into the application. It will also stores any data while the application is running.
+
+The `Storage` uses `CsvWriter` and `CsvReader` class to read and write to the storage files.
+
 ## Implementation
-
-### [Proposed] Export feature
-
-#### Proposed Implementation
-
-The proposed export feature is facilitated by `File`. It implements the following operation:
-- `File#exportTransaction()` - Exports all the transactions that is stored into a CSV format.
-
-Given below is an example usage scenario and how the export features behaves at each step.
-
-Step 1. The user launches the application for the first time. There would be no transactions available to be exported.
-
-Step 2. The user executes `in part-time job /amount 500 /goal car` to create a transaction with the description of `part-time job`, with the `amount` set to `500` and `goal` set to `car` and stores it in the program
-
-Step 3. So when the user executes `export`, it will get all the transactions that the program stored and exports to a CSV file using OpenCSV 
 
 ## Product scope
 
