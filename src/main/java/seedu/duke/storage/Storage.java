@@ -33,8 +33,13 @@ public class Storage {
                                                    "Recurrence", "Has Next Recurrence"};
     private static final String[] EXPENSE_HEADER = {"Description", "Amount", "Date", "Category",
                                                     "Recurrence", "Has Next Reccurence"};
-
-
+    private static final int DESCRIPTION = 0;
+    private static final int AMOUNT = 1;
+    private static final int DATE = 2;
+    private static final int GOAL = 3;
+    private static final int CATEGORY = 3;
+    private static final int RECURRENCE = 4;
+    private static final int HAS_NEXT_RECURRENCE = 5;
 
     public Storage() {
     }
@@ -92,12 +97,12 @@ public class Storage {
         double amount;
         while ((row = goalCsvFile.readLine()) != null) {
             if (validRow(row)) {
-                String description = row[0];
-                if (Parser.parseNonNegativeDouble(row[1]) == null) {
+                String description = row[DESCRIPTION];
+                if (Parser.parseNonNegativeDouble(row[AMOUNT]) == null) {
                     System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + GOAL_STORAGE_FILENAME);
                     continue;
                 }
-                amount = Parser.parseNonNegativeDouble(row[1]);
+                amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
                 Goal goal = new Goal(description, amount);
                 StateManager.getStateManager().addGoal(goal);
             }
@@ -109,7 +114,7 @@ public class Storage {
         String[] row;
         while ((row = categoryCsvFile.readLine()) != null) {
             if (validRow(row)) {
-                String description = row[0];
+                String description = row[DESCRIPTION];
                 Category category = new Category(description);
                 StateManager.getStateManager().addCategory(category);
             }
@@ -125,21 +130,21 @@ public class Storage {
         Transaction transaction;
         while ((row = incomeCsvFile.readLine()) != null) {
             if (validRow(row)) {
-                String description = row[0];
-                Goal goal = convertToGoal(row[3]);
-                String recurrence = row[4];
-                String hasRecurrence = row[5];
+                String description = row[DESCRIPTION];
+                Goal goal = convertToGoal(row[GOAL]);
+                String recurrence = row[RECURRENCE];
+                String hasRecurrence = row[HAS_NEXT_RECURRENCE];
                 if (!(validBoolean(hasRecurrence))) {
                     System.out.println(FAILED_CONVERT_BOOLEAN + INCOME_STORAGE_FILENAME);
                     continue;
                 }
-                if (Parser.parseNonNegativeDouble(row[1]) == null) {
+                if (Parser.parseNonNegativeDouble(row[AMOUNT]) == null) {
                     System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + INCOME_STORAGE_FILENAME);
                     continue;
                 }
-                amount = Parser.parseNonNegativeDouble(row[1]);
+                amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
                 try {
-                    date = validDate(row[2], INCOME_STORAGE_FILENAME);
+                    date = validDate(row[DATE], INCOME_STORAGE_FILENAME);
                     transaction = prepareTransaction(description, amount, date, recurrence, hasRecurrence);
                 } catch (DukeException e) {
                     System.out.println(e.getMessage());
@@ -160,21 +165,21 @@ public class Storage {
         Transaction transaction;
         while ((row = expenseCsvFile.readLine()) != null) {
             if (validRow(row)) {
-                String description = row[0];
-                Category category = convertToCategory(row[3]);
-                String recurrence = row[4];
-                String hasRecurrence = row[5];
+                String description = row[DESCRIPTION];
+                Category category = convertToCategory(row[CATEGORY]);
+                String recurrence = row[RECURRENCE];
+                String hasRecurrence = row[HAS_NEXT_RECURRENCE];
                 if (!(validBoolean(hasRecurrence))) {
                     System.out.println(FAILED_CONVERT_BOOLEAN + EXPENSE_STORAGE_FILENAME);
                     continue;
                 }
-                if (Parser.parseNonNegativeDouble(row[1]) == null) {
+                if (Parser.parseNonNegativeDouble(row[AMOUNT]) == null) {
                     System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + EXPENSE_STORAGE_FILENAME);
                     continue;
                 }
-                amount = Parser.parseNonNegativeDouble(row[1]);
+                amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
                 try {
-                    date = validDate(row[2], EXPENSE_STORAGE_FILENAME);
+                    date = validDate(row[DATE], EXPENSE_STORAGE_FILENAME);
                     transaction = prepareTransaction(description, amount, date, recurrence, hasRecurrence);
                 } catch (DukeException e) {
                     System.out.println(e.getMessage());

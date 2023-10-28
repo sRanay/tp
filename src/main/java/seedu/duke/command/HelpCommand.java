@@ -9,24 +9,30 @@ public class HelpCommand extends Command {
     private static final String LINE_DIVIDER = "";
     private static final String[] FULL_LIST_HEADERS = {"Command", "Description"};
     private static final String[] FLAG_DESCRIPTION_HEADERS = {"Option", "Description"};
-    private static final Integer[] CUSTOM_COLUMN_WIDTH = {10, 1000};
+    private static final Integer[] CUSTOM_COLUMN_WIDTH = {15, 1000};
     private static final String HELP_COMMAND = "help";
     private static final String HELP_DESCRIPTION = "Shows a list of all the commands available to the user";
     private static final String IN_COMMAND = "in";
     private static final String IN_DESCRIPTION = "Adds an income towards goal";
-    private static final String IN_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]";
-    private static final String[] IN_COMMAND_FLAGS = {"/amount", "/goal", "/date"};
+    private static final String IN_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]" +
+                                                   " [/recurrence RECURRENCE]";
+    private static final String[] IN_COMMAND_FLAGS = {"/amount", "/goal", "/date", "/recurrence"};
     private static final String[] IN_COMMAND_FLAGS_DESCRIPTION = {"Amount to be added", 
                                                                   "The goal to classify it under", 
-                                                                  "Date of the transaction"};
+                                                                  "Date of the transaction",
+                                                                  "Indicates whether of the income" +
+                                                                  " added is recurring."};
     private static final String OUT_COMMAND = "out";
     private static final String OUT_DESCRIPTION = "Adds an expense for a category";
     private static final String OUT_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT " +
-                                                    "/category CATEGORY [/date DATE in DDMMYYYY]";
-    private static final String[] OUT_COMMAND_FLAGS = {"/amount", "/category", "/date"};
+                                                    "/category CATEGORY [/date DATE in DDMMYYYY]" +
+                                                    " [/recurrence RECURRENCE]";
+    private static final String[] OUT_COMMAND_FLAGS = {"/amount", "/category", "/date", "/recurrence"};
     private static final String[] OUT_COMMAND_FLAGS_DESCRIPTION = {"Amount to be deducted", 
                                                                    "The spending category to classify it under", 
-                                                                   "Date of the transaction"};
+                                                                   "Date of the transaction",
+                                                                   "Indicates whether of the expense" +
+                                                                   " added is recurring"};
     private static final String DELETE_COMMAND = "delete";
     private static final String DELETE_DESCRIPTION = "Delete a specific transaction based on the index in the list";
     private static final String DELETE_COMMAND_USAGE = " INDEX /type (in | out)";
@@ -78,46 +84,46 @@ public class HelpCommand extends Command {
     }
 
     public ArrayList<String> printHelpDescription() {
-        ArrayList<String> help = convertCommandList(HELP_COMMAND, HELP_DESCRIPTION);
-        return help;
+        ArrayList<String> helpDescriptionList = convertCommandList(HELP_COMMAND, HELP_DESCRIPTION);
+        return helpDescriptionList;
     }
 
     public ArrayList<String> printInDescription() {
-        ArrayList<String> in = convertCommandList(IN_COMMAND, IN_DESCRIPTION);
-        return in;
+        ArrayList<String> inDescriptionList = convertCommandList(IN_COMMAND, IN_DESCRIPTION);
+        return inDescriptionList;
     }
 
     public ArrayList<String> printOutDescription() {
-        ArrayList<String> out = convertCommandList(OUT_COMMAND, OUT_DESCRIPTION);
-        return out;
+        ArrayList<String> outDescriptionList = convertCommandList(OUT_COMMAND, OUT_DESCRIPTION);
+        return outDescriptionList;
     }
 
     public ArrayList<String> printDeleteDescription() {
-        ArrayList<String> delete = convertCommandList(DELETE_COMMAND, DELETE_DESCRIPTION);
-        return delete;
+        ArrayList<String> deleteDescriptionList = convertCommandList(DELETE_COMMAND, DELETE_DESCRIPTION);
+        return deleteDescriptionList;
     }
 
     public ArrayList<String> printListDescription() {
-        ArrayList<String> list = convertCommandList(LIST_COMMAND, LIST_DESCRIPTION);
-        return list;
+        ArrayList<String> listDescriptionList = convertCommandList(LIST_COMMAND, LIST_DESCRIPTION);
+        return listDescriptionList;
     }
 
     public ArrayList<String> printExportDescription() {
-        ArrayList<String> export = convertCommandList(EXPORT_COMMAND, EXPORT_DESCRIPTION);
-        return export;
+        ArrayList<String> exportDescriptionList = convertCommandList(EXPORT_COMMAND, EXPORT_DESCRIPTION);
+        return exportDescriptionList;
     }
 
     public ArrayList<String> printCategoryDescription() {
-        ArrayList<String> category = convertCommandList(CATEGORY_COMMAND, CATEGORY_DESCRIPTION);
-        return category;
+        ArrayList<String> categoryDescriptionList = convertCommandList(CATEGORY_COMMAND, CATEGORY_DESCRIPTION);
+        return categoryDescriptionList;
     }
 
     public ArrayList<String> printGoalDescription() {
-        ArrayList<String> goal = convertCommandList(GOAL_COMMAND, GOAL_DESCRIPTION);
-        return goal;
+        ArrayList<String> goalDescriptionList = convertCommandList(GOAL_COMMAND, GOAL_DESCRIPTION);
+        return goalDescriptionList;
     }
 
-    public ArrayList<ArrayList<String>> printFullList() {
+    public void printFullList() {
         this.helpList.add(printHelpDescription());
         this.helpList.add(printInDescription());
         this.helpList.add(printOutDescription());
@@ -127,7 +133,6 @@ public class HelpCommand extends Command {
         this.helpList.add(printGoalDescription());
         this.helpList.add(printExportDescription());
         assert this.helpList != null;
-        return this.helpList;
     }
 
     public String helpUsage() {
