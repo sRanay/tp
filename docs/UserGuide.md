@@ -108,10 +108,11 @@ ID   Description   Date          Amount      Goal
 2    Hongbao       13 SEP 2023   $10         KOREA STUDIES
 ==================== IN TRANSACTIONS =====================
 ```
+
 ### Export Transactions: `export`
 Exports all transaction data into a CSV file called `Transactions.csv`
 
-Format: `export [/type (in | out)]`
+Format: `export [/type (in \| out)]`
 * If `/type` is not specified, by default it will extract **ALL** transactions.
 
 **Usage Example:**
