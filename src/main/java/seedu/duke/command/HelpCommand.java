@@ -42,9 +42,11 @@ public class HelpCommand extends Command {
     private static final String LIST_DESCRIPTION = "Shows a list of all added transactions based on type";
     private static final String LIST_COMMAND_USAGE = " /type (in | out) [/goal GOAL] [/category CATEGORY]";
     private static final String[] LIST_COMMAND_FLAGS = {"/type", "/goal", "/category"};
-    private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether to display \"in\" or \"out\" transactions",
+    private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether to display \"in\" or" +
+                                                                    " \"out\" transactions",
                                                                     "The goal which it is classified under",
-                                                                    "The spending category which it is classified under"};
+                                                                    "The spending category which" +
+                                                                    " it is classified under"};
     private static final String EXPORT_COMMAND = "export";
     private static final String EXPORT_DESCRIPTION = "Exports the transactions stored into a CSV File. " +
                                                      "By Default, it will export ALL transactions";
