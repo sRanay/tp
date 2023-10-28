@@ -38,10 +38,14 @@ Shows a list of all the commands available to the user.
 ### Adding an income entry: `in`
 Adds an income towards a goal.
 
-Format: `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE]`
+Format: `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
-*  `DATE` must be in format `DDMMYYYY`
+* `DATE` must be in format `DDMMYYYY`
+  * If `RECURRENCE` is specified, date must be less than 1 period away.
+    * i.e. If `RECURRENCE` is weekly, date specified must be less than 7 days away from current date.
+* `RECURRENCE` is a string that indicates whether of the income added is recurring.<br>
+  Possible values are `none`, `daily`, `weekly` and `monthly`. If this option is not specified, recurrence defaults to `none`.
 
 **Usage Example:**
 
@@ -52,13 +56,21 @@ Adds an income entry for 'part-time job' with an amount of 500 towards a goal ca
 Adds an income entry that happened on 18 Sept 2023 for 'red packet money' for an amount of 50 towards
 a goal called 'PS5'.
 
+`in pocket money saved /amount 25 /goal savings /recurrence weekly`<br>
+Adds an income entry for 'pocket money saved' for an amount of 25 towards
+a goal called 'savings' which recurs weekly.
+
 ### Adding an expense entry: `out`
 Adds an expense for a category.
 
-Format: `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]`
+Format: `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
-*  `DATE` must be in format `DDMMYYYY`
+* `DATE` must be in format `DDMMYYYY`
+  * If `RECURRENCE` is specified, date must be less than 1 period away.
+    * i.e. If `RECURRENCE` is weekly, date specified must be less than 7 days away from current date.
+* `RECURRENCE` is a string that indicates whether of the expense added is recurring.<br>
+  Possible values are `none`, `daily`, `weekly` and `monthly`. If this option is not specified, recurrence defaults to `none`.
 
 **Usage Example:**
 
@@ -68,6 +80,10 @@ Adds an expense entry for 'dinner' with an amount of 10.50 towards the 'food' ca
 `out pokemon card pack /amount 10.50 /category food /date 18092023`<br>
 Adds an expense entry that happened on 18 Sept 2023 for 'pokemon card pack' for an amount of 10.50 towards
 the 'game' category.
+
+`out spotify /amount 9 /category entertainment /recurring monthly`<br>
+Adds an expense entry for 'pokemon card pack' for an amount of 9 towards
+the 'entertainment' category which recurs monthly.
 
 ### Delete Transaction: `delete`
 Delete a specific transaction based on the index in the list.
@@ -126,15 +142,15 @@ Safely ends the program.
 
 ## Command Summary
 
-| Action                  | Format                                                                       | Example                                   |
-|-------------------------|------------------------------------------------------------------------------|-------------------------------------------|
-| Help                    | `help`                                                                       |                                           |
-| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]`          | `in part-time job /amount 500 /goal car`  |
-| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY]` | `out dinner /amount 10.50 /category food` |
-| Delete Transaction      | `delete INDEX /type (in \| out)`                                             | `delete 1 /type in`                       |
-| List Transactions       | `list /type (in \| out) [/goal GOAL] [/category CATEGORY]`                   | `list /type in`                           |
-| Export Transactions     | `export [/type (in \| out)]`                                                 | `export /type in`                         |
-| End program             | `bye`                                                                        |                                           |
+| Action                  | Format                                                                                                | Example                                   |
+|-------------------------|-------------------------------------------------------------------------------------------------------|-------------------------------------------|
+| Help                    | `help`                                                                                                |                                           |
+| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`          | `in part-time job /amount 500 /goal car`  |
+| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]` | `out dinner /amount 10.50 /category food` |
+| Delete Transaction      | `delete INDEX /type (in | out)`                                                                       | `delete 1 /type in`                       |
+| List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY]`                                             | `list /type in`                           |
+| Export Transactions     | `export [/type (in | out)]`                                                                           | `export /type in`                         |
+| End program             | `bye`                                                                                                 |                                           |
 
 
 
