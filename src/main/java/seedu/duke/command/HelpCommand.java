@@ -36,16 +36,31 @@ public class HelpCommand extends Command {
     private static final String LIST_DESCRIPTION = "Shows a list of all added transactions based on type";
     private static final String LIST_COMMAND_USAGE = " /type (in | out) [/goal GOAL] [/category CATEGORY]";
     private static final String[] LIST_COMMAND_FLAGS = {"/type", "/goal", "/category"};
-    private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether to display in or out transaction",
-                                                                    "The goal which it is classify under", 
-                                                                    "The spending category it is classify under"};
+    private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether to display \"in\" or \"out\" transactions",
+                                                                    "The goal which it is classified under",
+                                                                    "The spending category which it is classified under"};
     private static final String EXPORT_COMMAND = "export";
     private static final String EXPORT_DESCRIPTION = "Exports the transactions stored into a CSV File. " +
                                                      "By Default, it will export ALL transactions";
     private static final String EXPORT_COMMAND_USAGE = " [/type (in | out)]";
     private static final String[] EXPORT_COMMAND_FLAGS = {"/type"};
-    private static final String[] EXPORT_COMMAND_FLAGS_DESCRIPTION = {"To set whether to extract in " +
-                                                                      "or out transaction"};
+    private static final String[] EXPORT_COMMAND_FLAGS_DESCRIPTION = {"To set whether to extract all" +
+                                                                      " \"in\" or \"out\" transactions"};
+    private static final String GOAL_COMMAND = "goal";
+    private static final String GOAL_DESCRIPTION = "Add or remove goals";
+    private static final String GOAL_ADD_USAGE = " /add NAME /amount AMOUNT";
+    private static final String GOAL_REMOVE_USAGE = " /remove NAME";
+    private static final String[] GOAL_COMMAND_FLAGS = {"/add", "/amount", "/remove"};
+    private static final String[] GOAL_COMMAND_FLAGS_DESCRIPTION = {"Name of goal to be added",
+                                                                    "The amount set for the goal",
+                                                                    "Name of goal to be removed"};
+    private static final String CATEGORY_COMMAND = "category";
+    private static final String CATEGORY_DESCRIPTION = "Create or delete a spending category";
+    private static final String CATEGORY_ADD_USAGE = " /add NAME";
+    private static final String CATEGORY_REMOVE_USAGE = " /remove NAME";
+    private static final String[] CATEGORY_COMMAND_FLAGS = {"/add", "/remove"};
+    private static final String[] CATEGORY_COMMAND_FLAGS_DESCRIPTION = {"Name of spending category to be created",
+                                                                        "Name of spending cateogry to be deleted"};
     private static final String USAGE_PREFIX = "Usage: ";
     private static final String INVALID_COMMAND = "NO SUCH COMMAND";
     private ArrayList<ArrayList<String>> helpList;
@@ -74,7 +89,7 @@ public class HelpCommand extends Command {
 
     public ArrayList<String> printOutDescription() {
         ArrayList<String> out = convertCommandList(OUT_COMMAND, OUT_DESCRIPTION);
-        return out; 
+        return out;
     }
 
     public ArrayList<String> printDeleteDescription() {
@@ -92,12 +107,24 @@ public class HelpCommand extends Command {
         return export;
     }
 
+    public ArrayList<String> printCategoryDescription() {
+        ArrayList<String> category = convertCommandList(CATEGORY_COMMAND, CATEGORY_DESCRIPTION);
+        return category;
+    }
+
+    public ArrayList<String> printGoalDescription() {
+        ArrayList<String> goal = convertCommandList(GOAL_COMMAND, GOAL_DESCRIPTION);
+        return goal;
+    }
+
     public ArrayList<ArrayList<String>> printFullList() {
         this.helpList.add(printHelpDescription());
         this.helpList.add(printInDescription());
         this.helpList.add(printOutDescription());
         this.helpList.add(printDeleteDescription());
         this.helpList.add(printListDescription());
+        this.helpList.add(printCategoryDescription());
+        this.helpList.add(printGoalDescription());
         this.helpList.add(printExportDescription());
         assert this.helpList != null;
         return this.helpList;
@@ -126,6 +153,21 @@ public class HelpCommand extends Command {
     public String exportUsage() {
         return USAGE_PREFIX + EXPORT_COMMAND + EXPORT_COMMAND_USAGE;
     }
+    public String categoryAddUsage() {
+        return USAGE_PREFIX + CATEGORY_COMMAND + CATEGORY_ADD_USAGE;
+    }
+
+    public String categoryRemoveUsage() {
+        return USAGE_PREFIX + CATEGORY_COMMAND + CATEGORY_REMOVE_USAGE;
+    }
+
+    public String goalAddUsage() {
+        return USAGE_PREFIX + GOAL_COMMAND + GOAL_ADD_USAGE;
+    }
+
+    public String goalRemoveUsage() {
+        return USAGE_PREFIX + GOAL_COMMAND + GOAL_REMOVE_USAGE;
+    }
 
     public void convertIntoList(String[] flags, String[] description) {
         for (int i = 0; i < flags.length; i++) {
@@ -142,7 +184,7 @@ public class HelpCommand extends Command {
             ui.printTableRows(this.helpList, FULL_LIST_HEADERS, CUSTOM_COLUMN_WIDTH);
             return;
         }
-        
+
         switch (getDescription().toLowerCase()) {
         case "help":
             ui.print(helpUsage());
@@ -166,6 +208,16 @@ public class HelpCommand extends Command {
         case "export":
             ui.print(exportUsage());
             convertIntoList(EXPORT_COMMAND_FLAGS, EXPORT_COMMAND_FLAGS_DESCRIPTION);
+            break;
+        case "goal":
+            ui.print(goalAddUsage());
+            ui.print(goalRemoveUsage());
+            convertIntoList(GOAL_COMMAND_FLAGS, GOAL_COMMAND_FLAGS_DESCRIPTION);
+            break;
+        case "category":
+            ui.print(categoryAddUsage());
+            ui.print(categoryRemoveUsage());
+            convertIntoList(CATEGORY_COMMAND_FLAGS, CATEGORY_COMMAND_FLAGS_DESCRIPTION);
             break;
         default:
             ui.print(INVALID_COMMAND);
