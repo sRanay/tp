@@ -173,4 +173,70 @@ public class StorageTest {
 
         }
     }
+
+    @Nested
+    class WithEmptyColumns {
+        @BeforeEach
+        void copyFiles() throws IOException {
+            File src = new File("./TestCSV/empty/category-store.csv");
+            File dst = new File("category-store.csv");
+            Files.copy(src.toPath(), dst.toPath());
+            src = new File("./TestCSV/empty/goal-store.csv");
+            dst = new File("goal-store.csv");
+            Files.copy(src.toPath(), dst.toPath());
+            src = new File("./TestCSV/empty/expense-store.csv");
+            dst = new File("expense-store.csv");
+            Files.copy(src.toPath(), dst.toPath());
+            src = new File("./TestCSV/empty/income-store.csv");
+            dst = new File("income-store.csv");
+            Files.copy(src.toPath(), dst.toPath());
+        }
+
+        @AfterEach
+        void clearStateManager() {
+            File file = new File("category-store.csv");
+            file.delete();
+            file = new File("goal-store.csv");
+            file.delete();
+            file = new File("expense-store.csv");
+            file.delete();
+            file = new File("income-store.csv");
+            file.delete();
+            StateManager.clearStateManager();
+        }
+        @Test
+        void loadWithEmptyColumns() throws DukeException {
+            storage.load();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            Parser parser = new Parser();
+            Ui ui = new Ui(outputStream);
+            String userInput = "list /type in";
+            HashMap<String, String> args = parser.getArguments(userInput);
+            String commandWord = parser.getDescription(userInput);
+            ListCommand command = new ListCommand(commandWord, args);
+            command.execute(ui);
+            userInput = "list /type out";
+            args = parser.getArguments(userInput);
+            commandWord = parser.getDescription(userInput);
+            command = new ListCommand(commandWord, args);
+            command.execute(ui);
+            assertEquals("Alright! Displaying 3 transactions.\n"
+                            + "=============================== IN TRANSACTIONS ================================\n"
+                            + "ID    Description                      Date         Amount       Goal\n"
+                            + "1     part-time job                    2023-10-29   1000.00      car\n"
+                            + "2     allowance                        2023-10-29   500.00       car\n"
+                            + "3     sell stuff                       2023-10-29   50.00        ps5\n"
+                            + "=============================== IN TRANSACTIONS ================================\n"
+                            + "Alright! Displaying 3 transactions.\n"
+                            + "=============================== OUT TRANSACTIONS ===============================\n"
+                            + "ID    Description                      Date         Amount       Category\n"
+                            + "1     buy dinner                       2023-10-29   15.00        food\n"
+                            + "2     popmart                          2023-10-29   12.00        toy\n"
+                            + "3     grab                             2023-10-29   20.00        transport\n"
+                            + "=============================== OUT TRANSACTIONS ===============================\n"
+                    , outputStream.toString());
+
+
+        }
+    }
 }

@@ -1,0 +1,10 @@
+Description,Amount,Date,Goal,Recurrence,Has Next Recurrence
+part-time job,1000,29/10/2023,car,none,FALSE
+allowance,500,29/10/2023,car,monthly,FALSE
+,50,29/10/2023,ps5,none,FALSE
+sell stuff,,29/10/2023,ps5,none,FALSE
+sell stuff,50,,ps5,none,FALSE
+sell stuff,50,29/10/2023,,none,FALSE
+sell stuff,50,29/10/2023,ps5,,FALSE
+sell stuff,50,29/10/2023,ps5,none,
+sell stuff,50,29/10/2023,ps5,none,FALSE
