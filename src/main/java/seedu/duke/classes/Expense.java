@@ -25,6 +25,12 @@ public class Expense {
         this.category = category;
     }
 
+    /**
+     * Generate next recurrent entry for expense
+     *
+     * @return Generated expense if entry should be generated,
+     * otherwise returns {@code null}
+     */
     public Expense generateNextRecurrence() {
         Transaction nextTransaction = transaction.generateNextRecurrence();
         if (nextTransaction == null) {

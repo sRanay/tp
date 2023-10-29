@@ -60,6 +60,11 @@ public class Transaction {
         this.hasGeneratedNextRecurrence = hasGeneratedNextRecurrence;
     }
 
+    /**
+     * Checks if next recurrent entry should be generated.
+     *
+     * @return {@code true} if should be generated, otherwise {@code false}
+     */
     public boolean shouldGenerateNextRecurrence() {
         if (getRecurrence() == TransactionRecurrence.NONE || getHasGeneratedNextRecurrence()) {
             return false;
@@ -68,6 +73,12 @@ public class Transaction {
         return !TransactionRecurrence.getNextRecurrenceDate(getRecurrence(), getDate()).isAfter(LocalDate.now());
     }
 
+    /**
+     * Generate next recurrent entry for transaction
+     *
+     * @return Generated transaction if entry should be generated,
+     * otherwise returns {@code null}
+     */
     public Transaction generateNextRecurrence() {
         if (!shouldGenerateNextRecurrence()) {
             return null;

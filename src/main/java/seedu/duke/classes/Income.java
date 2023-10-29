@@ -25,6 +25,12 @@ public class Income {
         this.goal = goal;
     }
 
+    /**
+     * Generate next recurrent entry for income
+     *
+     * @return Generated income if entry should be generated,
+     * otherwise returns {@code null}
+     */
     public Income generateNextRecurrence() {
         Transaction nextTransaction = transaction.generateNextRecurrence();
         if (nextTransaction == null) {
