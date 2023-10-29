@@ -17,7 +17,6 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -315,12 +314,12 @@ public class StorageTest {
                 Parser parser = new Parser();
                 parser.parse("goal /add car /amount 1000").execute(ui);
                 parser.parse("goal /add ps5 /amount 1000").execute(ui);
-                parser.parse("in part-time job /amount 1000 /goal car").execute(ui);
-                parser.parse("in allowance /amount 500 /goal car /recurrence monthly").execute(ui);
-                parser.parse("in sell stuff /amount 50 /goal ps5").execute(ui);
-                parser.parse("out buy dinner /amount 15 /category food /recurrence daily").execute(ui);
-                parser.parse("out popmart /amount 12 /category toy").execute(ui);
-                parser.parse("out grab /amount 20 /category transport").execute(ui);
+                parser.parse("in part-time job /amount 1000 /goal car /date 29102023").execute(ui);
+                parser.parse("in allowance /amount 500 /goal car /date 29102023 /recurrence monthly").execute(ui);
+                parser.parse("in sell stuff /amount 50 /goal ps5 /date 29102023").execute(ui);
+                parser.parse("out buy dinner /amount 15 /category food /date 29102023 /recurrence daily").execute(ui);
+                parser.parse("out popmart /amount 12 /category toy /date 29102023").execute(ui);
+                parser.parse("out grab /amount 20 /category transport /date 29102023").execute(ui);
             } catch (DukeException e) {
                 System.out.println(e.getMessage());
             }
