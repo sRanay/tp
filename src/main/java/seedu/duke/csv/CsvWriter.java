@@ -18,7 +18,10 @@ public class CsvWriter {
     public CsvWriter(String fullPath, boolean isAppend) throws DukeException {
         try {
             Writer fileWriter = new FileWriter(fullPath, isAppend);
-            this.writer = new CSVWriter(fileWriter);
+            this.writer = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR,
+                                        CSVWriter.DEFAULT_QUOTE_CHARACTER,
+                                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                                        CSVWriter.RFC4180_LINE_END);
         } catch (IOException e) {
             throw new DukeException("Cannot create file");
         }

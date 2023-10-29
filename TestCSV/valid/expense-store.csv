@@ -1,4 +1,4 @@
-"Description","Amount","Date","Category","Recurrence","Has Next Reccurence"
-"buy dinner","15.0","29/10/2023","food","monthly","false"
-"popmart","12.0","29/10/2023","toy","none","false"
-"grab","20.0","29/10/2023","transport","none","false"
+Description,Amount,Date,Category,Recurrence,Has Next Reccurence
+buy dinner,15,29/10/2023,food,monthly,FALSE
+popmart,12,29/10/2023,toy,none,FALSE
+grab,20,29/10/2023,transport,none,FALSE
