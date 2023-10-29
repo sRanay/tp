@@ -1,0 +1,8 @@
+Description,Amount,Date,Category,Recurrence,Has Next Reccurence
+buy dinner,15,29/10/2023,food,daily,FALSE
+popmart,12,29/10/2023,toy,none,FALSE
+grab,-100,29/10/2023,transport,none,FALSE
+grab,20,asdas,transport,none,FALSE
+grab,asdasd,29/10/2023,transport,none,FALSE
+grab,20,29/10/2023,transport,none,asdasds
+grab,20,29/10/2023,transport,none,FALSE
