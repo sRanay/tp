@@ -342,9 +342,6 @@ public class StorageTest {
         void saveDataWorking() throws DukeException, IOException {
             storage.save();
             File output = new File("category-store.csv");
-            if(!(output.exists())) {
-                System.out.println("output exist");
-            }
             File testFile = new File("./TestCSV/valid/category-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
             output = new File("goal-store.csv");
