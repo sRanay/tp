@@ -1,0 +1,47 @@
+@startuml
+!include Style.puml
+hide circle
+skinparam classAttributeIconSize 0
+
+class Expense {
+    +Expense(transaction:Transaction, category:Category)
+    +getTransaction():Transaction
+    +getCategory():Category
+    +setTransaction(transaction:Transaction)
+    +setCategory(category:Category)
+    +generateNextRecurrence():Expense
+}
+
+class Transaction {
+    - description:String
+    - amount:double
+    - date:LocalDate
+    - recurrence:TransactionRecurrence
+    - hasGeneratedNextRecurrence:boolean
+    +Transaction(description:String, amount:Double, date:LocalDate)
+    +getAmount():double
+    +setAmount(amount:double)
+    +getDate():LocalDate
+    +setDate(date:LocalDate)
+    +getDescription()
+    +setDescription(description:String)
+    +getRecurrence():TransactionRecurrence
+    +setRecurrence(recurrence:TransactionRecurrence)
+    +getHasGeneratedNextRecurrence():boolean
+    +setHasGeneratedNextRecurrence(boolean hasGeneratedNextRecurrence)
+    +shouldGenerateNextRecurrence():boolean
+    +generateNextRecurrence():Transaction
+}
+
+class Category {
+    - name:String
+    +Category(name:String)
+    +getName():String
+    +setName(name:String)
+}
+
+Expense "1" o--> "1" Transaction
+Expense "*" o--> "1" Category
+
+
+@enduml

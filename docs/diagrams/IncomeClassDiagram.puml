@@ -1,0 +1,50 @@
+@startuml
+!include Style.puml
+hide circle
+skinparam classAttributeIconSize 0
+
+class Income {
+    +Income(transaction:Transaction, goal:Goal)
+    +getTransaction():Transaction
+    +getGoal():Goal
+    +setTransaction(transaction:Transaction)
+    +setGoal(goal:Goal)
+    +generateNextRecurrence():Income
+}
+
+class Transaction {
+    - description:String
+    - amount:double
+    - date:LocalDate
+    - recurrence:TransactionRecurrence
+    - hasGeneratedNextRecurrence:boolean
+    +Transaction(description:String, amount:Double, date:LocalDate)
+    +getAmount():double
+    +setAmount(amount:double)
+    +getDate():LocalDate
+    +setDate(date:LocalDate)
+    +getDescription()
+    +setDescription(description:String)
+    +getRecurrence():TransactionRecurrence
+    +setRecurrence(recurrence:TransactionRecurrence)
+    +getHasGeneratedNextRecurrence():boolean
+    +setHasGeneratedNextRecurrence(boolean hasGeneratedNextRecurrence)
+    +shouldGenerateNextRecurrence():boolean
+    +generateNextRecurrence():Transaction
+}
+
+class Goal {
+    - description:String
+    - amount:Double
+    +Goal(description:String, amount:double)
+    +getAmount():double
+    +setAmount(amount:double)
+    +getDescription():String
+    +setDescription(description:String)
+}
+
+Income "1" o--> "1" Transaction
+Income "*" o--> "1" Goal
+
+
+@enduml
