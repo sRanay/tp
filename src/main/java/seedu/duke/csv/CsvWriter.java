@@ -27,11 +27,21 @@ public class CsvWriter {
         }
     }
 
+    /**
+     * Writes data to the CSV File
+     *
+     * @param data array of data to be written into the file
+     */
     public void write(String[] data) {
         assert writer != null;
         writer.writeNext(data);
     }
 
+    /**
+     * Close the CSV File
+     *
+     * @throws DukeException if unable to close the CSV File
+     */
     public void close() throws DukeException {
         try {
             writer.close();

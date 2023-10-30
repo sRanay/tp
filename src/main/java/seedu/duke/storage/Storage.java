@@ -44,6 +44,12 @@ public class Storage {
     public Storage() {
     }
 
+    /**
+     * Check if the columns in each row is it blank or empty
+     *
+     * @param row Array of String from a row in the CSV File
+     * @return true if there is no empty or blank column, false if there is empty or blank column
+     */
     public boolean validRow(String[] row) {
         for(String column : row) {
             if (column.isBlank() || column.isEmpty()) {
@@ -53,6 +59,14 @@ public class Storage {
         return true;
     }
 
+    /**
+     * Check whether dateStr can be parsed into a LocalDate type and returns if possible
+     *
+     * @param dateStr String to be parsed into a LocalDate type
+     * @param fileName Current File that is using this function
+     * @return date after parsing successful
+     * @throws DukeException if unable to parse into a LocalDate type
+     */
     public LocalDate validDate(String dateStr, String fileName) throws DukeException {
         try {
             LocalDate date = LocalDate.parse(dateStr, FORMATTER);
@@ -62,6 +76,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Check if the string can be converted into boolean.
+     *
+     * @param booleanStr String to be converted into boolena
+     * @return true if can be converted, else return false
+     */
     public boolean validBoolean(String booleanStr) {
         if(booleanStr.toLowerCase().equals("true") || booleanStr.toLowerCase().equals("false")) {
             return true;
