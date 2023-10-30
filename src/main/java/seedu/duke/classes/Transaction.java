@@ -77,7 +77,7 @@ public class Transaction {
      * Generate next recurrent entry for transaction
      *
      * @return Generated transaction if entry should be generated,
-     * otherwise returns {@code null}
+     *         otherwise returns {@code null}
      */
     public Transaction generateNextRecurrence() {
         if (!shouldGenerateNextRecurrence()) {
