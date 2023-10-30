@@ -1,0 +1,73 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+class Storage {
+    - {static} GOAL_STORAGE_FILENAME:String
+    - {static} CATEGORY_STORAGE_FILENAME:String
+    - {static} INCOME_STORAGE_FILENAME:String
+    - {static} EXPENSE_STORAGE_FILENAME:String
+    - {static} FORMATTER:DateTimeFormatter
+    - {static} FAILED_CONVERT_TO_NON_NEG_DOUBLE:String
+    - {static} FAILED_CONVERT_TO_LOCALDATE:String
+    - {static} FAILED_CONVERT_BOOLEAN:String
+    - {static} GOAL_HEADER:String[]
+    - {static} CATEGORY_HEADER:String[]
+    - {static} INCOME_HEADER:String[]
+    - {static} EXPENSE_HEADER:String[]
+    - {static} DESCRIPTION:int
+    - {static} AMOUNT:int
+    - {static} DATE:int
+    - {static} GOAL:int
+    - {static} CATEGORY:int
+    - {static} RECURRENCE:int
+    - {static} HAS_NEXT_RECURRENCE:int
+    + Storage()
+    + validRow(row:String[]):boolean
+    + validDate(dateStr:String, fileName:String):LocalDate
+    + validBoolean(booleanStr:String):boolean
+    + convertToGoal(name:String):GOAL
+    + convertToCategory(name:String):Category
+    + prepareTransaction(description:String, amount:double, date:LocalDate, recurrence:String, hasRecurrence:String):Transaction
+    + loadGoal()
+    + loadCategory()
+    + loadIncome()
+    + loadExpense()
+    + load()
+    + saveCategory()
+    + saveIncome()
+    + saveExpense()
+    + save()
+}
+
+class CsvReader {
+    + CsvReader(filePath:String)
+    + readLine():String[]
+    + close()
+}
+
+package "com.opencsv" #DDDDDD {
+    class CSVReader {
+        + readNext():String[]
+    }
+    class CSVWriter {
+        + writeNext(data:String[])
+    }
+}
+
+class CsvWriter {
+    + CsvWriter(fullPath:String)
+    + CsvWriter(fullPath:String, isAppend:boolean)
+    + write(data:String[])
+    + close()
+}
+
+CsvReader ---> "0..1" CSVReader : > have
+CsvWriter --> "0..1" CSVWriter : > have
+
+Storage --> "0..4" CsvReader : > uses
+Storage --> "0..4" CsvWriter : > uses
+
+note left of "com.opencsv"
+    This is an 3rd Party Library (OpenCSV)
+endnote
+@enduml

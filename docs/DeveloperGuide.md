@@ -63,7 +63,14 @@ formatting of the output.
 ### Storage component
 The `Storage` functionality is to load data from the storage files (`category-store.csv` , `expense-store.csv`, `goal-store.csv`, `income-store.csv`) into the application. It will also stores any data while the application is running.
 
-The `Storage` uses `CsvWriter` and `CsvReader` class to read and write to the storage files.
+![Storage Class Diagram](./images/cs2113-storage-class.png "Storage Class Diagram")
+
+The `Storage` component:
+- Ensures that all the data that is loaded is able to be parsed properly and stored in the application when booting up
+- Skips any rows that have issue during the validation phase
+- Saves to storage file after each command completed
+- uses `CsvWriter` and `CsvReader` class to read and write to the storage files.
+- `CsvWriter` and `CsvReader` will use `CSVWriter` and `CSVReader` respectively from OpenCSV library to write and read from CSV Files 
 
 ## Implementation
 
