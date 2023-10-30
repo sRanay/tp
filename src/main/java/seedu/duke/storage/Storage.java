@@ -45,10 +45,10 @@ public class Storage {
     }
 
     /**
-     * Check if the columns in each row is it blank or empty
+     * Check if the columns in each row is it blank or empty.
      *
-     * @param row Array of String from a row in the CSV File
-     * @return true if there is no empty or blank column, false if there is empty or blank column
+     * @param row Array of String from a row in the CSV File.
+     * @return true if there is no empty or blank column, false if there is empty or blank column.
      */
     public boolean validRow(String[] row) {
         for(String column : row) {
@@ -60,12 +60,12 @@ public class Storage {
     }
 
     /**
-     * Check whether dateStr can be parsed into a LocalDate type and returns if possible
+     * Check whether dateStr can be parsed into a LocalDate type and returns if possible.
      *
-     * @param dateStr String to be parsed into a LocalDate type
-     * @param fileName Current File that is using this function
-     * @return date after parsing successful
-     * @throws DukeException if unable to parse into a LocalDate type
+     * @param dateStr String to be parsed into a LocalDate type.
+     * @param fileName Current File that is using this function.
+     * @return date after parsing successful.
+     * @throws DukeException if unable to parse into a LocalDate type.
      */
     public LocalDate validDate(String dateStr, String fileName) throws DukeException {
         try {
@@ -79,8 +79,8 @@ public class Storage {
     /**
      * Check if the string can be converted into boolean.
      *
-     * @param booleanStr String to be converted into boolena
-     * @return true if can be converted, else return false
+     * @param booleanStr String to be converted into boolean.
+     * @return true if can be converted, else return false.
      */
     public boolean validBoolean(String booleanStr) {
         if(booleanStr.toLowerCase().equals("true") || booleanStr.toLowerCase().equals("false")) {
@@ -89,18 +89,40 @@ public class Storage {
         return false;
     }
 
+    /**
+     * Get the goal based on the name provided.
+     *
+     * @param name goal name.
+     * @return Goal object that has that name.
+     */
     public Goal convertToGoal(String name) {
         int index = StateManager.getStateManager().getGoalIndex(name);
         Goal goal = StateManager.getStateManager().getGoal(index);
         return goal;
     }
 
+    /**
+     * Get the category based on the name provided.
+     *
+     * @param name category name.
+     * @return Category object that has that name.
+     */
     public Category convertToCategory(String name) {
         int index = StateManager.getStateManager().getCategoryIndex(name);
         Category category = StateManager.getStateManager().getCategory(index);
         return category;
     }
 
+    /**
+     * Convert all the data required into a Transaction Object.
+     *
+     * @param description Description of the Transaction.
+     * @param amount Amount that is stated in the Transaction.
+     * @param date Date of the Transaction that it occurred.
+     * @param recurrence Recurrence type.
+     * @param hasRecurrence String of boolean if it has recurring transaction.
+     * @return Transaction object created.
+     */
     public Transaction prepareTransaction(String description, Double amount, LocalDate date,
                                           String recurrence, String hasRecurrence) {
         Transaction transaction = new Transaction(description, amount, date);
@@ -111,6 +133,12 @@ public class Storage {
         }
         return transaction;
     }
+
+    /**
+     * Loads all Goals objects from the CSV File.
+     *
+     * @throws DukeException if GOAL_STORAGE_FILENAME cannot be opened.
+     */
     public void loadGoal() throws DukeException {
         CsvReader goalCsvFile =  new CsvReader(GOAL_STORAGE_FILENAME);
         String[] row;
@@ -129,6 +157,12 @@ public class Storage {
         }
         goalCsvFile.close();
     }
+
+    /**
+     * Loads all the Category objects from the CSV File.
+     *
+     * @throws DukeException if CATEGORY_STORAGE_FILENAME cannot be opened.
+     */
     public void loadCategory() throws DukeException {
         CsvReader categoryCsvFile = new CsvReader(CATEGORY_STORAGE_FILENAME);
         String[] row;
@@ -142,6 +176,11 @@ public class Storage {
         categoryCsvFile.close();
     }
 
+    /**
+     * Loads all the Income objects from the CSV File.
+     *
+     * @throws DukeException if INCOME_STORAGE_FILENAME cannot be opened.
+     */
     public void loadIncome() throws DukeException {
         CsvReader incomeCsvFile = new CsvReader(INCOME_STORAGE_FILENAME);
         String[] row;
@@ -177,6 +216,11 @@ public class Storage {
         incomeCsvFile.close();
     }
 
+    /**
+     * Loads all Expense Objects from the CSV File.
+     *
+     * @throws DukeException if EXPENSE_STORAGE_FILENAME cannot be opened.
+     */
     public void loadExpense() throws DukeException {
         CsvReader expenseCsvFile = new CsvReader(EXPENSE_STORAGE_FILENAME);
         String[] row;
@@ -219,6 +263,11 @@ public class Storage {
         loadExpense();
     }
 
+    /**
+     * Save the current state of Goal objects into the CSV File.
+     *
+     * @throws DukeException if GOAL_STORAGE_FILENAME cannot be opened.
+     */
     public void saveGoal() throws DukeException {
         CsvWriter goalStorageFile = new CsvWriter(GOAL_STORAGE_FILENAME);
         ArrayList<Goal> goalList = StateManager.getStateManager().getAllGoals();
@@ -232,6 +281,11 @@ public class Storage {
         goalStorageFile.close();
     }
 
+    /**
+     * Save the current state of Category objects into the CSV File.
+     *
+     * @throws DukeException if CATEGORY_STORAGE_FILENAME cannot be opened.
+     */
     public void saveCategory() throws DukeException {
         CsvWriter categoryStorageFile = new CsvWriter(CATEGORY_STORAGE_FILENAME);
         ArrayList<Category> categoryList = StateManager.getStateManager().getAllCategories();
@@ -244,6 +298,11 @@ public class Storage {
         categoryStorageFile.close();
     }
 
+    /**
+     * Saves the current state of Income objects into the CSV File.
+     *
+     * @throws DukeException if INCOME_STORAGE_FILENAME cannot be opened.
+     */
     public void saveIncome() throws DukeException {
         CsvWriter incomeStorageFile = new CsvWriter(INCOME_STORAGE_FILENAME);
         ArrayList<Income> incomesList = StateManager.getStateManager().getAllIncomes();
@@ -262,6 +321,11 @@ public class Storage {
         incomeStorageFile.close();
     }
 
+    /**
+     * Saves the current state of Expense objects into the CSV File.
+     *
+     * @throws DukeException if EXPENSE_STORAGE_FILENAME cannot be opened.
+     */
     public void saveExpense() throws DukeException{
         CsvWriter expenseStorageFile = new CsvWriter(EXPENSE_STORAGE_FILENAME);
         ArrayList<Expense> expensesList = StateManager.getStateManager().getAllExpenses();
