@@ -48,6 +48,47 @@ class ListCommandTest {
         });
     }
 
+    @Test
+    void invalidGoal() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "list /type in /goal ABC";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        ListCommand command = new ListCommand(commandWord, args);
+        assertThrows(DukeException.class, () -> {
+            command.execute(ui);
+        });
+    }
+
+    @Test
+    void invalidCategory() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "list /type out /category DEF";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        ListCommand command = new ListCommand(commandWord, args);
+        assertThrows(DukeException.class, () -> {
+            command.execute(ui);
+        });
+    }
+    @Test
+    void invalidCategoryGoal() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "list /type in /goal ABC /category DEF";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        ListCommand command = new ListCommand(commandWord, args);
+        assertThrows(DukeException.class, () -> {
+            command.execute(ui);
+        });
+    }
+
     private static void addInEntries() {
         Parser parser = new Parser();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -96,6 +137,24 @@ class ListCommandTest {
     }
 
     @Test
+    void validFilteredInList() throws DukeException {
+        addInEntries();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        LocalDate currentDate = LocalDate.now();
+        Command command = parser.parse("list /type in /goal car");
+        command.execute(ui);
+        assertEquals("Alright! Displaying 1 transaction.\n"
+                        + "=============================== IN TRANSACTIONS ================================\n"
+                        + "ID    Description                      Date         Amount       Goal\n"
+                        + "1     part-time job                    " + currentDate + "   500.00       car\n"
+                        + "=============================== IN TRANSACTIONS ================================\n"
+                , outputStream.toString());
+
+    }
+
+    @Test
     void validOutList() throws DukeException {
         addOutEntries();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -109,6 +168,23 @@ class ListCommandTest {
                         + "ID    Description                      Date         Amount       Category\n"
                         + "1     dinner                           " + currentDate + "   10.50        food\n"
                         + "2     pokemon card pack                2023-09-18   10.50        games\n"
+                        + "=============================== OUT TRANSACTIONS ===============================\n"
+                , outputStream.toString());
+
+    }
+
+    @Test
+    void validFilteredOutList() throws DukeException {
+        addOutEntries();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        Command command = parser.parse("list /type out /category games");
+        command.execute(ui);
+        assertEquals("Alright! Displaying 1 transaction.\n"
+                        + "=============================== OUT TRANSACTIONS ===============================\n"
+                        + "ID    Description                      Date         Amount       Category\n"
+                        + "1     pokemon card pack                2023-09-18   10.50        games\n"
                         + "=============================== OUT TRANSACTIONS ===============================\n"
                 , outputStream.toString());
 
