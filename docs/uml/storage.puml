@@ -6,6 +6,7 @@ class Storage {
     - {static} CATEGORY_STORAGE_FILENAME:String
     - {static} INCOME_STORAGE_FILENAME:String
     - {static} EXPENSE_STORAGE_FILENAME:String
+    - {static} DATE_PATTERN:String
     - {static} FORMATTER:DateTimeFormatter
     - {static} FAILED_CONVERT_TO_NON_NEG_DOUBLE:String
     - {static} FAILED_CONVERT_TO_LOCALDATE:String
@@ -33,6 +34,7 @@ class Storage {
     + loadIncome()
     + loadExpense()
     + load()
+    + saveGoal()
     + saveCategory()
     + saveIncome()
     + saveExpense()
