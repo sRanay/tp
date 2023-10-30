@@ -7,6 +7,9 @@ import seedu.duke.classes.Transaction;
 import seedu.duke.exception.DukeException;
 import seedu.duke.ui.Ui;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -82,6 +85,14 @@ public class ListCommand extends Command {
         if (incomeArray == null || incomeArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
         }
+
+        if (getArgs().containsKey("week")) {
+            incomeArray = filterIncome(incomeArray, false);
+        }
+        else if (getArgs().containsKey("month")) {
+            incomeArray = filterIncome(incomeArray, true);
+        }
+
         int index = 1;
         for (Income i : incomeArray) {
             Transaction currentTransaction = i.getTransaction();
@@ -102,6 +113,14 @@ public class ListCommand extends Command {
         if (expenseArray == null || expenseArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
         }
+
+        if (getArgs().containsKey("week")) {
+            expenseArray = filterExpense(expenseArray, false);
+        }
+        else if (getArgs().containsKey("month")) {
+            expenseArray = filterExpense(expenseArray, true);
+        }
+
         int index = 1;
         for (Expense i : expenseArray) {
             Transaction currentExpense = i.getTransaction();
@@ -114,5 +133,53 @@ public class ListCommand extends Command {
             index++;
         }
         printList(printExpenses, OUT);
+    }
+
+    private ArrayList<Income> filterIncome(ArrayList<Income> transactionsArrayList, boolean filterByMonth) {
+        ArrayList<Income> filteredArrayList = new ArrayList<>();
+        for (Income transaction : transactionsArrayList) {
+            LocalDate transactionDate = transaction.getTransaction().getDate();
+            if (!filterByMonth && isThisWeek(transactionDate)) {
+                filteredArrayList.add(transaction);
+            }
+            else if (filterByMonth && isThisMonth(transactionDate)){
+                filteredArrayList.add(transaction);
+            }
+        }
+        return filteredArrayList;
+    }
+
+    private ArrayList<Expense> filterExpense(ArrayList<Expense> transactionsArrayList, boolean filterByMonth) {
+        ArrayList<Expense> filteredArrayList = new ArrayList<>();
+        for (Expense transaction : transactionsArrayList) {
+            LocalDate transactionDate = transaction.getTransaction().getDate();
+            if (!filterByMonth && isThisWeek(transactionDate)) {
+                filteredArrayList.add(transaction);
+            }
+            else if (filterByMonth && isThisMonth(transactionDate)){
+                filteredArrayList.add(transaction);
+            }
+        }
+        return filteredArrayList;
+    }
+
+    private boolean isThisWeek(LocalDate transactionDate) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startOfWeek = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endOfWeek = currentDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+        if (transactionDate.isBefore(startOfWeek) || transactionDate.isAfter(endOfWeek)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isThisMonth(LocalDate transactionDate) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startOfMonth = currentDate.withDayOfMonth(1);
+        LocalDate endOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
+        if (transactionDate.isBefore(startOfMonth) || transactionDate.isAfter(endOfMonth)) {
+            return false;
+        }
+        return true;
     }
 }
