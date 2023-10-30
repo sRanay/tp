@@ -1,0 +1,40 @@
+@startuml
+activate ":Main" #FFBBBB
+":Main" -> ":UI": readUserInput()
+activate ":UI" #FFBBBB
+
+
+":UI" -> User: Gets user input
+activate "User" #FFBBBB
+User --> ":UI": "userInput: String"
+deactivate
+":UI" --> ":Main": "userInput: String"
+deactivate
+
+create ":Parser"
+":Main" -> ":Parser": new Parser()
+activate ":Parser" #FFBBBB
+":Parser" --> ":Main": "p: Parser"
+
+":Main" -> ":Parser": p.parse(userInput: String)
+create ":Command"
+":Parser" -> ":Command": new Command()
+activate ":Command" #FFBBBB
+":Command" --> ":Parser": "c: Command"
+deactivate
+":Parser" --> ":Main": "command: Command"
+destroy ":Parser"
+
+":Main" -> ":Command": command.execute(ui: UI)
+activate ":Command" #FFBBBB
+":Command" -> ":UI": Calls instance methods to print to UI
+activate ":UI" #FFBBBB
+":UI" -> "User": Prints to terminal UI
+activate "User" #FFBBBB
+"User" --> ":UI"
+deactivate
+":UI" --> ":Command"
+deactivate
+":Command" --> ":Main"
+destroy ":Command"
+@enduml
