@@ -17,6 +17,7 @@ The bulk of the app's work is done by the following three components:
 ### UI component
 
 ![UI Sequence Diagram](./images/cs2113-ui-sequence.png "UI Sequence Diagram")
+![UI Class Diagram](./images/ui-class-diagram.png "UI Class Diagram")
 
 The `UI` consists of a `Scanner` and an `OutputStream` object. Together, these objects abstract the functionalities of
 obtaining user input and providing feedback (output printed in terminal UI). The `UI` component provides a simple
