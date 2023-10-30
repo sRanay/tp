@@ -28,6 +28,13 @@ public enum TransactionRecurrence {
         }
     }
 
+    /**
+     * Gets next date at which a recurrent transaction should occur
+     *
+     * @param recurrence {@link TransactionRecurrence} enum indicating recurrence type
+     * @param current    date of the transaction
+     * @return date of next occurrence
+     */
     public static LocalDate getNextRecurrenceDate(TransactionRecurrence recurrence, LocalDate current) {
         switch (recurrence) {
         case DAILY:
@@ -41,6 +48,12 @@ public enum TransactionRecurrence {
         }
     }
 
+    /**
+     * Generates a list of recurrent incomes for a given income
+     *
+     * @param income Income object to generate recurrent transactions for
+     * @return List of generated recurrent transactions
+     */
     public static ArrayList<Income> generateRecurrentIncomes(Income income) {
         ArrayList<Income> recurrentIncomes = new ArrayList<>();
         while (true) {
@@ -56,6 +69,12 @@ public enum TransactionRecurrence {
         return recurrentIncomes;
     }
 
+    /**
+     * Generate a list of recurrent incomes for the list of incomes provided
+     *
+     * @param incomes List of incomes to generate recurrent transactions for
+     * @return List of generated recurrent transactions
+     */
     public static ArrayList<Income> generateRecurrentIncomes(ArrayList<Income> incomes) {
         ArrayList<Income> recurrentIncomes = new ArrayList<>();
         for (Income income : incomes) {
@@ -71,6 +90,12 @@ public enum TransactionRecurrence {
         return recurrentIncomes;
     }
 
+    /**
+     * Generates a list of recurrent expenses for a given expense
+     *
+     * @param expense Expense object to generate recurrent transactions for
+     * @return List of generated recurrent expenses
+     */
     public static ArrayList<Expense> generateRecurrentExpenses(Expense expense) {
         ArrayList<Expense> recurrentExpenses = new ArrayList<>();
         while (true) {
@@ -86,6 +111,12 @@ public enum TransactionRecurrence {
         return recurrentExpenses;
     }
 
+    /**
+     * Generate a list of recurrent expenses for the list of expenses provided
+     *
+     * @param expenses List of expenses to generate recurrent transactions for
+     * @return List of generated recurrent transactions
+     */
     public static ArrayList<Expense> generateRecurrentExpenses(ArrayList<Expense> expenses) {
         ArrayList<Expense> recurrentExpenses = new ArrayList<>();
         for (Expense expense : expenses) {
@@ -101,7 +132,15 @@ public enum TransactionRecurrence {
         return recurrentExpenses;
     }
 
+    /**
+     * Updates the provided lists with newly generated recurrent transactions
+     *
+     * @param incomes  List of incomes to update
+     * @param expenses List of expenses to update
+     */
     public static void generateRecurrentTransactions(ArrayList<Income> incomes, ArrayList<Expense> expenses) {
+        assert incomes != null;
+        assert expenses != null;
         incomes.addAll(generateRecurrentIncomes(incomes));
         expenses.addAll(generateRecurrentExpenses(expenses));
     }

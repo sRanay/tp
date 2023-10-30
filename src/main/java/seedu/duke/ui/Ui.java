@@ -56,7 +56,7 @@ public class Ui {
     }
 
     public void printTableRows(ArrayList<ArrayList<String>> rows) {
-        printTableRows(rows, null);
+        printTableRows(rows, null, null);
     }
 
     public void printTableRows(ArrayList<ArrayList<String>> rows, String[] headers) {
