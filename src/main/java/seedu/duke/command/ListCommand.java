@@ -88,8 +88,7 @@ public class ListCommand extends Command {
 
         if (getArgs().containsKey("week")) {
             incomeArray = filterIncome(incomeArray, false);
-        }
-        else if (getArgs().containsKey("month")) {
+        } else if (getArgs().containsKey("month")) {
             incomeArray = filterIncome(incomeArray, true);
         }
 
@@ -116,8 +115,7 @@ public class ListCommand extends Command {
 
         if (getArgs().containsKey("week")) {
             expenseArray = filterExpense(expenseArray, false);
-        }
-        else if (getArgs().containsKey("month")) {
+        } else if (getArgs().containsKey("month")) {
             expenseArray = filterExpense(expenseArray, true);
         }
 
@@ -141,8 +139,7 @@ public class ListCommand extends Command {
             LocalDate transactionDate = transaction.getTransaction().getDate();
             if (!filterByMonth && isThisWeek(transactionDate)) {
                 filteredArrayList.add(transaction);
-            }
-            else if (filterByMonth && isThisMonth(transactionDate)){
+            } else if (filterByMonth && isThisMonth(transactionDate)) {
                 filteredArrayList.add(transaction);
             }
         }
@@ -155,8 +152,7 @@ public class ListCommand extends Command {
             LocalDate transactionDate = transaction.getTransaction().getDate();
             if (!filterByMonth && isThisWeek(transactionDate)) {
                 filteredArrayList.add(transaction);
-            }
-            else if (filterByMonth && isThisMonth(transactionDate)){
+            } else if (filterByMonth && isThisMonth(transactionDate)) {
                 filteredArrayList.add(transaction);
             }
         }

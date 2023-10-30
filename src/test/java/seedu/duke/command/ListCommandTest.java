@@ -76,6 +76,35 @@ class ListCommandTest {
 
     }
 
+    private static void addInEntriesWithDates() {
+        Parser parser = new Parser();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Ui ui = new Ui(outputStream);
+        try {
+            parser.parse("goal /add car /amount 5000").execute(ui);
+            parser.parse("in part-time job /amount 500 /goal car /date 30102023").execute(ui);
+            parser.parse("in allowance job /amount 300 /goal car /date 23102023").execute(ui);
+            parser.parse("in red packet money /amount 150 /goal car /date 23092023").execute(ui);
+        } catch (DukeException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void addOutEntriesWithDates() {
+        Parser parser = new Parser();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Ui ui = new Ui(outputStream);
+        try {
+            parser.parse("out lunch /amount 7.50 /category food /date 30102023").execute(ui);
+            parser.parse("out dinner /amount 10.50 /category food /date 23102023").execute(ui);
+            parser.parse("out pokemon card pack /amount 10.50 /category games /date 18092023").execute(ui);
+        } catch (DukeException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+
     @Test
     void validInList() throws DukeException {
         addInEntries();
@@ -113,4 +142,109 @@ class ListCommandTest {
                 , outputStream.toString());
 
     }
+
+    @Test
+    void execute_listIncomeByWeek_printCurrentWeekTransactions() throws DukeException {
+        clearStateManager();
+        addInEntriesWithDates();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        Command command = parser.parse("list /type in /week");
+        command.execute(ui);
+        assertEquals("Alright! Displaying 1 transaction.\n"
+                        + "=============================== IN TRANSACTIONS ================================\n"
+                        + "ID    Description                      Date         Amount       Goal\n"
+                        + "1     part-time job                    2023-10-30   500.00       car\n"
+                        + "=============================== IN TRANSACTIONS ================================\n"
+                , outputStream.toString());
+    }
+
+    @Test
+    void execute_listExpenseByWeek_printCurrentWeekTransactions() throws DukeException {
+        clearStateManager();
+        addOutEntriesWithDates();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        Command command = parser.parse("list /type out /week");
+        command.execute(ui);
+        assertEquals("Alright! Displaying 1 transaction.\n"
+                        + "=============================== OUT TRANSACTIONS ===============================\n"
+                        + "ID    Description                      Date         Amount       Category\n"
+                        + "1     lunch                            2023-10-30   7.50         food\n"
+                        + "=============================== OUT TRANSACTIONS ===============================\n"
+                , outputStream.toString());
+    }
+
+    @Test
+    void execute_listIncomeByMonth_printCurrentMonthTransactions() throws DukeException {
+        clearStateManager();
+        addInEntriesWithDates();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        Command command = parser.parse("list /type in /month");
+        command.execute(ui);
+        assertEquals("Alright! Displaying 2 transactions.\n"
+                        + "=============================== IN TRANSACTIONS ================================\n"
+                        + "ID    Description                      Date         Amount       Goal\n"
+                        + "1     part-time job                    2023-10-30   500.00       car\n"
+                        + "2     allowance job                    2023-10-23   300.00       car\n"
+                        + "=============================== IN TRANSACTIONS ================================\n"
+                , outputStream.toString());
+    }
+
+    @Test
+    void execute_listExpenseByMonth_printCurrentMonthTransactions() throws DukeException {
+        clearStateManager();
+        addOutEntriesWithDates();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        Command command = parser.parse("list /type out /month");
+        command.execute(ui);
+        assertEquals("Alright! Displaying 2 transactions.\n"
+                        + "=============================== OUT TRANSACTIONS ===============================\n"
+                        + "ID    Description                      Date         Amount       Category\n"
+                        + "1     lunch                            2023-10-30   7.50         food\n"
+                        + "2     dinner                           2023-10-23   10.50        food\n"
+                        + "=============================== OUT TRANSACTIONS ===============================\n"
+                , outputStream.toString());
+    }
+
+    @Test
+    void execute_listIncomeByWeekAndMonth_printCurrentWeekTransactions() throws DukeException {
+        clearStateManager();
+        addInEntriesWithDates();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        Command command = parser.parse("list /type in /week /month");
+        command.execute(ui);
+        assertEquals("Alright! Displaying 1 transaction.\n"
+                        + "=============================== IN TRANSACTIONS ================================\n"
+                        + "ID    Description                      Date         Amount       Goal\n"
+                        + "1     part-time job                    2023-10-30   500.00       car\n"
+                        + "=============================== IN TRANSACTIONS ================================\n"
+                , outputStream.toString());
+    }
+
+    @Test
+    void execute_listExpenseByWeekAndMonth_printCurrentWeekTransactions() throws DukeException {
+        clearStateManager();
+        addOutEntriesWithDates();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        Command command = parser.parse("list /type out /week /month");
+        command.execute(ui);
+        assertEquals("Alright! Displaying 1 transaction.\n"
+                        + "=============================== OUT TRANSACTIONS ===============================\n"
+                        + "ID    Description                      Date         Amount       Category\n"
+                        + "1     lunch                            2023-10-30   7.50         food\n"
+                        + "=============================== OUT TRANSACTIONS ===============================\n"
+                , outputStream.toString());
+    }
+
 }
