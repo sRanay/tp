@@ -14,6 +14,8 @@ The bulk of the app's work is done by the following three components:
 - `Command`: Command's logic and execution
 - `Storage`: Storage of data of the App
 
+![Architecture Diagram](./images/ArchitectureDiagram.png "Architecture Diagram")
+
 ### UI component
 
 ![UI Sequence Diagram](./images/cs2113-ui-sequence.jpg "UI Sequence Diagram")
@@ -40,6 +42,9 @@ command if any.
 
 Note: The `Parser` will not do any validation of arguments or description of the command. Those will be handled by the 
 respective `Command` object.
+
+![Parser Sequence Diagram](./images/ParserSequence.png "Parser Sequence Diagram")
+
 
 ### Command component
 
