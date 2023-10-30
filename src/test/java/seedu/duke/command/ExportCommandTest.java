@@ -5,6 +5,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import seedu.duke.classes.StateManager;
 import seedu.duke.exception.DukeException;
 import seedu.duke.parser.Parser;
@@ -105,7 +107,8 @@ public class ExportCommandTest {
         }
 
         @Test
-        public void exportFileInTransactions() throws DukeException, IOException {
+        @EnabledOnOs({OS.WINDOWS})
+        public void exportFileInTransactionsWindows() throws DukeException, IOException {
             outputStream = new ByteArrayOutputStream();
             Ui ui = new Ui(outputStream);
             String userInput = "export /type in";
@@ -114,7 +117,37 @@ public class ExportCommandTest {
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
             File output = new File("Transactions.csv");
-            File testFile = new File("./TestCSV/valid/Transactions-in.csv");
+            File testFile = new File("./TestCSV/Windows/valid/Transactions-in.csv");
+            assertEquals(true, FileUtils.contentEquals(output, testFile));
+        }
+
+        @Test
+        @EnabledOnOs({OS.MAC})
+        public void exportFileInTransactionsMac() throws DukeException, IOException {
+            outputStream = new ByteArrayOutputStream();
+            Ui ui = new Ui(outputStream);
+            String userInput = "export /type in";
+            HashMap<String, String> args = parser.getArguments(userInput);
+            String commandWord = parser.getDescription(userInput);
+            ExportCommand command = new ExportCommand(commandWord, args);
+            command.execute(ui);
+            File output = new File("Transactions.csv");
+            File testFile = new File("./TestCSV/MacOS/valid/Transactions-in.csv");
+            assertEquals(true, FileUtils.contentEquals(output, testFile));
+        }
+
+        @Test
+        @EnabledOnOs({OS.LINUX})
+        public void exportFileInTransactionsLinux() throws DukeException, IOException {
+            outputStream = new ByteArrayOutputStream();
+            Ui ui = new Ui(outputStream);
+            String userInput = "export /type in";
+            HashMap<String, String> args = parser.getArguments(userInput);
+            String commandWord = parser.getDescription(userInput);
+            ExportCommand command = new ExportCommand(commandWord, args);
+            command.execute(ui);
+            File output = new File("Transactions.csv");
+            File testFile = new File("./TestCSV/Linux/valid/Transactions-in.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
     }
@@ -146,7 +179,8 @@ public class ExportCommandTest {
             StateManager.clearStateManager();
         }
         @Test
-        public void exportFileAllTransactions() throws DukeException, IOException {
+        @EnabledOnOs({OS.WINDOWS})
+        public void exportFileAllTransactionsWindows() throws DukeException, IOException {
             outputStream = new ByteArrayOutputStream();
             Ui ui = new Ui(outputStream);
             String userInput = "export";
@@ -155,7 +189,37 @@ public class ExportCommandTest {
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
             File output = new File("Transactions.csv");
-            File testFile = new File("./TestCSV/valid/Transactions-all.csv");
+            File testFile = new File("./TestCSV/Windows/valid/Transactions-all.csv");
+            assertEquals(true, FileUtils.contentEquals(output, testFile));
+        }
+
+        @Test
+        @EnabledOnOs({OS.MAC})
+        public void exportFileAllTransactionsMac() throws DukeException, IOException {
+            outputStream = new ByteArrayOutputStream();
+            Ui ui = new Ui(outputStream);
+            String userInput = "export";
+            HashMap<String, String> args = parser.getArguments(userInput);
+            String commandWord = parser.getDescription(userInput);
+            ExportCommand command = new ExportCommand(commandWord, args);
+            command.execute(ui);
+            File output = new File("Transactions.csv");
+            File testFile = new File("./TestCSV/MacOS/valid/Transactions-all.csv");
+            assertEquals(true, FileUtils.contentEquals(output, testFile));
+        }
+
+        @Test
+        @EnabledOnOs({OS.LINUX})
+        public void exportFileAllTransactionsLinux() throws DukeException, IOException {
+            outputStream = new ByteArrayOutputStream();
+            Ui ui = new Ui(outputStream);
+            String userInput = "export";
+            HashMap<String, String> args = parser.getArguments(userInput);
+            String commandWord = parser.getDescription(userInput);
+            ExportCommand command = new ExportCommand(commandWord, args);
+            command.execute(ui);
+            File output = new File("Transactions.csv");
+            File testFile = new File("./TestCSV/Linux/valid/Transactions-all.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
     }
@@ -188,7 +252,8 @@ public class ExportCommandTest {
         }
 
         @Test
-        public void exportFileOutTransactions() throws DukeException, IOException {
+        @EnabledOnOs({OS.WINDOWS})
+        public void exportFileOutTransactionsWindows() throws DukeException, IOException {
             outputStream = new ByteArrayOutputStream();
             Ui ui = new Ui(outputStream);
             String userInput = "export /type out";
@@ -197,7 +262,37 @@ public class ExportCommandTest {
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
             File output = new File("Transactions.csv");
-            File testFile = new File("./TestCSV/valid/Transactions-out.csv");
+            File testFile = new File("./TestCSV/Windows/valid/Transactions-out.csv");
+            assertEquals(true, FileUtils.contentEquals(output, testFile));
+        }
+
+        @Test
+        @EnabledOnOs({OS.MAC})
+        public void exportFileOutTransactionsMac() throws DukeException, IOException {
+            outputStream = new ByteArrayOutputStream();
+            Ui ui = new Ui(outputStream);
+            String userInput = "export /type out";
+            HashMap<String, String> args = parser.getArguments(userInput);
+            String commandWord = parser.getDescription(userInput);
+            ExportCommand command = new ExportCommand(commandWord, args);
+            command.execute(ui);
+            File output = new File("Transactions.csv");
+            File testFile = new File("./TestCSV/MacOS/valid/Transactions-out.csv");
+            assertEquals(true, FileUtils.contentEquals(output, testFile));
+        }
+
+        @Test
+        @EnabledOnOs({OS.LINUX})
+        public void exportFileOutTransactionsLinux() throws DukeException, IOException {
+            outputStream = new ByteArrayOutputStream();
+            Ui ui = new Ui(outputStream);
+            String userInput = "export /type out";
+            HashMap<String, String> args = parser.getArguments(userInput);
+            String commandWord = parser.getDescription(userInput);
+            ExportCommand command = new ExportCommand(commandWord, args);
+            command.execute(ui);
+            File output = new File("Transactions.csv");
+            File testFile = new File("./TestCSV/Linux/valid/Transactions-out.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
     }
@@ -224,8 +319,6 @@ public class ExportCommandTest {
 
         @AfterEach
         void clearStateManager() {
-            File file = new File("Transactions.csv");
-            file.delete();
             StateManager.clearStateManager();
         }
 
