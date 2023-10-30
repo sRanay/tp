@@ -20,6 +20,12 @@ public class CsvReader {
         }
     }
 
+    /**
+     * Reads a line in CSV File
+     *
+     * @return Array of String from a row in CSV File
+     * @throws DukeException if unable to read the file
+     */
     public String[] readLine() throws DukeException{
         try {
             String[] line = reader.readNext();
