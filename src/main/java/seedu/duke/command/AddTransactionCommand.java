@@ -50,47 +50,66 @@ public abstract class AddTransactionCommand extends Command {
             throws DukeException {
         assert getDescription() != null;
         assert getArgs() != null;
+        throwIfEmptyDesc();
+        throwIfInvalidAmount();
+        throwIfInvalidDate();
+        throwIfInvalidClassification(classificationKey, missingClassificationPrompt);
+        throwIfInvalidRecurrence();
+        isValidated = true;
+    }
 
+    private void throwIfEmptyDesc() throws DukeException {
         if (getDescription().isBlank()) {
             throw new DukeException(MISSING_DESC);
         }
+    }
 
+    private void throwIfInvalidAmount() throws DukeException {
         String amountArg = getArg(AMOUNT_ARG);
         if (amountArg == null || amountArg.isBlank()) {
             throw new DukeException(MISSING_AMOUNT);
-        }
-
-        String date = getArg(DATE_ARG);
-        LocalDate parsedDate = Parser.parseDate(date);
-        if (date != null && parsedDate == null) {
-            throw new DukeException(BAD_DATE);
         }
 
         Double amount = Parser.parseNonNegativeDouble(amountArg);
         if (amount == null) {
             throw new DukeException(BAD_AMOUNT);
         }
+    }
 
+    private void throwIfInvalidDate() throws DukeException {
+        String date = getArg(DATE_ARG);
+        LocalDate parsedDate = Parser.parseDate(date);
+        if (date != null && parsedDate == null) {
+            throw new DukeException(BAD_DATE);
+        }
+    }
+
+    private void throwIfInvalidClassification(String classificationKey, String missingClassificationPrompt)
+            throws DukeException {
         String assignedClassification = getArg(classificationKey);
         if (assignedClassification == null || assignedClassification.isBlank()) {
             throw new DukeException(missingClassificationPrompt);
         }
+    }
 
+    private void throwIfInvalidRecurrence() throws DukeException {
         String recurrence = getArg(RECURRENCE_ARG);
-        if (recurrence != null) {
-            TransactionRecurrence parsedRecurrence = TransactionRecurrence.getRecurrence(recurrence);
-            if (parsedRecurrence == null) {
-                throw new DukeException(BAD_RECURRENCE);
-            }
-
-            if (parsedRecurrence != TransactionRecurrence.NONE && parsedDate != null) {
-                LocalDate nextDate = TransactionRecurrence.getNextRecurrenceDate(parsedRecurrence, parsedDate);
-                if (!nextDate.isAfter(LocalDate.now())) {
-                    throw new DukeException(BAD_RECURRENCE_DATE);
-                }
-            }
+        if (recurrence == null) {
+            return;
         }
 
-        isValidated = true;
+        TransactionRecurrence parsedRecurrence = TransactionRecurrence.getRecurrence(recurrence);
+        if (parsedRecurrence == null) {
+            throw new DukeException(BAD_RECURRENCE);
+        }
+
+        String date = getArg(DATE_ARG);
+        LocalDate parsedDate = Parser.parseDate(date);
+        if (parsedRecurrence != TransactionRecurrence.NONE && parsedDate != null) {
+            LocalDate nextDate = TransactionRecurrence.getNextRecurrenceDate(parsedRecurrence, parsedDate);
+            if (!nextDate.isAfter(LocalDate.now())) {
+                throw new DukeException(BAD_RECURRENCE_DATE);
+            }
+        }
     }
 }

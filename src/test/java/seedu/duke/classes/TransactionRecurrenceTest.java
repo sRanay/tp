@@ -11,9 +11,9 @@ class TransactionRecurrenceTest {
     final Goal goal = new Goal("Test goal", 10.00);
     final Category category = new Category("Test Category");
 
-    Income generatePastIncome() {
+    Income generatePastIncome(int expectedRecurrenceToGenerate) {
         LocalDate timeNow = LocalDate.now();
-        LocalDate transactionDate = timeNow.minusDays(8);
+        LocalDate transactionDate = timeNow.minusDays(expectedRecurrenceToGenerate * 7L);
         Transaction transaction = new Transaction("Test Past", 10.00, transactionDate);
         transaction.setRecurrence(TransactionRecurrence.WEEKLY);
         return new Income(transaction, goal);
@@ -27,23 +27,32 @@ class TransactionRecurrenceTest {
         return new Income(transaction, goal);
     }
 
-    @Test
-    void generateRecurringIncomeEntries() {
+    void generateRecurringIncomeEntries(int firstAmt, int secondAmt) {
         ArrayList<Income> existingIncomeEntries = new ArrayList<>();
-        existingIncomeEntries.add(generatePastIncome());
+        existingIncomeEntries.add(generatePastIncome(firstAmt));
         existingIncomeEntries.add(generateFutureIncome());
-        existingIncomeEntries.add(generatePastIncome());
+        existingIncomeEntries.add(generatePastIncome(secondAmt));
         ArrayList<Income> newIncomes = TransactionRecurrence.generateRecurrentIncomes(existingIncomeEntries);
-        assertEquals(newIncomes.size(), 2);
+        assertEquals(newIncomes.size(), firstAmt + secondAmt);
 
         ArrayList<Income> emptyIncomes = TransactionRecurrence.generateRecurrentIncomes(existingIncomeEntries);
         emptyIncomes.addAll(TransactionRecurrence.generateRecurrentIncomes(newIncomes));
         assertEquals(emptyIncomes.size(), 0);
     }
 
-    Expense generatePastExpense() {
+    @Test
+    void generateSingleRecurrentIncomeEntry() {
+        generateRecurringIncomeEntries(1, 1);
+    }
+
+    @Test
+    void generateMultipleRecurrentIncomeEntries() {
+        generateRecurringIncomeEntries(5, 2);
+    }
+
+    Expense generatePastExpense(int expectedRecurrenceToGenerate) {
         LocalDate timeNow = LocalDate.now();
-        LocalDate transactionDate = timeNow.minusDays(8);
+        LocalDate transactionDate = timeNow.minusDays(expectedRecurrenceToGenerate * 7L);
         Transaction transaction = new Transaction("Test Past", 10.00, transactionDate);
         transaction.setRecurrence(TransactionRecurrence.WEEKLY);
         return new Expense(transaction, category);
@@ -57,17 +66,26 @@ class TransactionRecurrenceTest {
         return new Expense(transaction, category);
     }
 
-    @Test
-    void generateRecurringExpenseEntries() {
+    void generateRecurringExpenseEntries(int firstAmt, int secondAmt) {
         ArrayList<Expense> existingExpenseEntries = new ArrayList<>();
-        existingExpenseEntries.add(generatePastExpense());
+        existingExpenseEntries.add(generatePastExpense(firstAmt));
         existingExpenseEntries.add(generateFutureExpense());
-        existingExpenseEntries.add(generatePastExpense());
+        existingExpenseEntries.add(generatePastExpense(secondAmt));
         ArrayList<Expense> newExpenses = TransactionRecurrence.generateRecurrentExpenses(existingExpenseEntries);
-        assertEquals(newExpenses.size(), 2);
+        assertEquals(newExpenses.size(), firstAmt + secondAmt);
 
         ArrayList<Expense> emptyExpenses = TransactionRecurrence.generateRecurrentExpenses(existingExpenseEntries);
         emptyExpenses.addAll(TransactionRecurrence.generateRecurrentExpenses(newExpenses));
         assertEquals(emptyExpenses.size(), 0);
+    }
+
+    @Test
+    void generateSingleRecurrentExpenseEntry() {
+        generateRecurringExpenseEntries(1, 1);
+    }
+
+    @Test
+    void generateMultipleRecurrentExpenseEntries() {
+        generateRecurringExpenseEntries(5, 2);
     }
 }
