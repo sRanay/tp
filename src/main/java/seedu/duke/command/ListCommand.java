@@ -25,6 +25,11 @@ public class ListCommand extends Command {
     private static final String[] OUT_HEADERS = {"ID", "Description", "Date", "Amount", "Category", "Recurrence"};
     private static final String IN = "IN TRANSACTIONS";
     private static final String OUT = "OUT TRANSACTIONS";
+    private static final String GOAL = "goal";
+    private static final String CATEGORY = "category";
+    private static final String TYPE = "type";
+    private static final String WEEK = "week";
+    private static final String MONTH = "month";
     private Ui ui;
 
     public ListCommand(String description, HashMap<String, String> args) {
@@ -40,48 +45,44 @@ public class ListCommand extends Command {
 
     // Description gets ignored for list
     private void validateArgs() throws DukeException {
-        if (!getArgs().containsKey("type")) {
+        if (!getArgs().containsKey(TYPE)) {
             throw new DukeException(INVALID_TYPE_FORMAT);
         }
-
-        String type = getArg("type");
+        String type = getArg(TYPE);
         if (!type.equals("in") && !type.equals("out")) {
             throw new DukeException(INVALID_TYPE_FORMAT);
         }
 
-        if (getArgs().containsKey("goal") && getArgs().containsKey("category")) {
-            throw new DukeException("You can't use both /goal and /category");
-        }
+        if (getArgs().containsKey((GOAL))) {
+            if (getArgs().containsKey(CATEGORY)) {
+                throw new DukeException("You can't use both /goal and /category");
+            }
+            if (getArg(GOAL).isBlank()) {
+                throw new DukeException(INVALID_GOAL_FORMAT);
+            }
 
-        if (getArgs().containsKey("goal") && getArg("goal").isBlank()) {
-            throw new DukeException(INVALID_GOAL_FORMAT);
-        }
-
-        if (getArgs().containsKey("goal")) {
-            String goal = getArg("goal");
+            String goal = getArg(GOAL);
             int result = StateManager.getStateManager().getGoalIndex(goal);
             if (result == -1) {
                 throw new DukeException(INVALID_GOAL_FORMAT);
             }
-
         }
 
-        if (getArgs().containsKey("category") && getArg("category").isBlank()) {
-            throw new DukeException(INVALID_CATEGORY_FORMAT);
-        }
-
-        if (getArgs().containsKey("category")) {
-            String goal = getArg("category");
+        if (getArgs().containsKey(CATEGORY)) {
+            if (getArg(CATEGORY).isBlank()) {
+                throw new DukeException(INVALID_CATEGORY_FORMAT);
+            }
+            String goal = getArg(CATEGORY);
             int result = StateManager.getStateManager().getCategoryIndex(goal);
             if (result == -1) {
                 throw new DukeException(INVALID_CATEGORY_FORMAT);
             }
-
         }
+
     }
 
     private void listTypeHandler() throws DukeException {
-        String type = getArg("type");
+        String type = getArg(TYPE);
         assert type != null;
         if (type.equals("in")) {
             listIncome();
@@ -101,8 +102,8 @@ public class ListCommand extends Command {
 
     private void listIncome() throws DukeException {
         String filterGoal = null;
-        if (getArgs().containsKey("goal")) {
-            filterGoal = getArg("goal").toLowerCase();
+        if (getArgs().containsKey(GOAL)) {
+            filterGoal = getArg(GOAL).toLowerCase();
         }
         ArrayList<Income> incomeArray = StateManager.getStateManager().sortedIncomes();
         ArrayList<ArrayList<String>> printIncomes = new ArrayList<>();
@@ -110,9 +111,9 @@ public class ListCommand extends Command {
             throw new DukeException(EMPTY_LIST);
         }
 
-        if (getArgs().containsKey("week")) {
+        if (getArgs().containsKey(WEEK)) {
             incomeArray = filterIncome(incomeArray, false);
-        } else if (getArgs().containsKey("month")) {
+        } else if (getArgs().containsKey(MONTH)) {
             incomeArray = filterIncome(incomeArray, true);
         }
 
@@ -131,8 +132,8 @@ public class ListCommand extends Command {
 
     private void listExpenses() throws DukeException {
         String filterCategory = null;
-        if (getArgs().containsKey("category")) {
-            filterCategory = getArg("category").toLowerCase();
+        if (getArgs().containsKey(CATEGORY)) {
+            filterCategory = getArg(CATEGORY).toLowerCase();
         }
         ArrayList<Expense> expenseArray = StateManager.getStateManager().sortedExpenses();
         ArrayList<ArrayList<String>> printExpenses = new ArrayList<>();
@@ -140,9 +141,9 @@ public class ListCommand extends Command {
             throw new DukeException(EMPTY_LIST);
         }
 
-        if (getArgs().containsKey("week")) {
+        if (getArgs().containsKey(WEEK)) {
             expenseArray = filterExpense(expenseArray, false);
-        } else if (getArgs().containsKey("month")) {
+        } else if (getArgs().containsKey(MONTH)) {
             expenseArray = filterExpense(expenseArray, true);
         }
 
