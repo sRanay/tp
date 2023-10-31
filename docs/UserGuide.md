@@ -12,6 +12,8 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
     * [Adding an expense entry: `out`](#adding-an-expense-entry-out)
     * [Delete Transaction: `delete`](#delete-transaction-delete)
     * [List Transactions: `list`](#list-transactions-list)
+    * [Add/Remove Goal: `goal`](#addremove-a-goal-goal)
+    * [Add/Remove Category: `category`](#addremove-a-category-category)
     * [Export Transactions: `export`](#export-transactions-export)
     * [Edit Transactions: `[Coming Soon]`](#edit-transactions-coming-soon)
     * [End Program: `bye`](#end-program-bye)
@@ -137,16 +139,16 @@ ID    Description                      Date         Amount       Goal         Re
 3     pocket money saved               2023-10-31   25.00        PS5          weekly
 ====================================== IN TRANSACTIONS ======================================
 ```
-### Adding/Removing a goal: `goal`
-Creates or deletes a user's goal
+### Add/Remove a goal: `goal`
+Creates or deletes a user's goal (used for income)
 
 Format: `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`
 * At least one of the optional fields must be provided (either `/add` or `/remove`).
 * `GOAL` is case-insensitive.
 * `/add GOAL` has to be accompanied with `/amount AMOUNT`.
 
-### Adding/Removing a category: `category`
-Creates or deletes a user's goal
+### Add/Remove a category: `category`
+Creates or deletes a user's category (used for expenses)
 
 Format: `category [/add CATEGORY] [/remove CATEGORY]`
 * At least one of the optional fields must be provided (either `/add` or `/remove`).
