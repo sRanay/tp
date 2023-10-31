@@ -182,8 +182,8 @@ Safely ends the program.
 | Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]` | `out dinner /amount 10.50 /category food` |
 | Delete Transaction      | `delete INDEX /type (in | out)`                                                                       | `delete 1 /type in`                       |
 | List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`                            | `list /type in`                           |
-| Add/Remove Goal         | `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`                                                      | `goal /add PS5 /amount 600`               |
-| Add/Remove Category     | `category [/add CATEGORY] [/remove CATEGORY]`                                                         | `category /add Bills`                     |
+| Add/Remove a Goal       | `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`                                                      | `goal /add PS5 /amount 600`               |
+| Add/Remove a Category   | `category [/add CATEGORY] [/remove CATEGORY]`                                                         | `category /add Bills`                     |
 | Export Transactions     | `export [/type (in | out)]`                                                                           | `export /type in`                         |
 | End program             | `bye`                                                                                                 |                                           |
 
