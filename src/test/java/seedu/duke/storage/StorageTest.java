@@ -172,7 +172,8 @@ public class StorageTest {
                             "Alright! Displaying 3 transactions.\n" +
                             "===================================== OUT TRANSACTIONS =========================" +
                             "=============\n" +
-                            "ID    Description                      Date         Amount       Category     Recurrence\n" +
+                            "ID    Description                      Date         Amount       Category     " +
+                            "Recurrence\n" +
                             "1     buy dinner                       2023-10-29   15.00        food         monthly\n" +
                             "2     grab                             2023-10-29   20.00        transport    none\n" +
                             "3     popmart                          2023-10-29   12.00        toy          none\n" +
