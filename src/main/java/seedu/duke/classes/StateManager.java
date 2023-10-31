@@ -169,19 +169,19 @@ public class StateManager {
     }
 
     public ArrayList<Income> sortedIncomes() {
-        Comparator<Income> dateComparator = Comparator.comparing((Income i) -> i.getTransaction().getDate());
+        Comparator<Income> dateComparator = Comparator.comparing((Income i) -> i.getTransaction().getDate(),
+                Comparator.reverseOrder());
         Comparator<Income> nameComparator = Comparator.comparing((Income i) -> i.getTransaction().getDescription());
         ArrayList<Income> sortIncomes = incomes;
-        sortIncomes.sort(dateComparator);
         sortIncomes.sort(dateComparator.thenComparing(nameComparator));
         return sortIncomes;
     }
 
     public ArrayList<Expense> sortedExpenses() {
-        Comparator<Expense> dateComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDate());
+        Comparator<Expense> dateComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDate(),
+                Comparator.reverseOrder());
         Comparator<Expense> nameComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDescription());
         ArrayList<Expense> sortExpenses = expenses;
-        sortExpenses.sort(dateComparator);
         sortExpenses.sort(dateComparator.thenComparing(nameComparator));
         return sortExpenses;
     }
