@@ -2,26 +2,27 @@
 hide circle
 skinparam classAttributeIconSize 0
 class Storage {
-    - {static} GOAL_STORAGE_FILENAME:String
-    - {static} CATEGORY_STORAGE_FILENAME:String
-    - {static} INCOME_STORAGE_FILENAME:String
-    - {static} EXPENSE_STORAGE_FILENAME:String
-    - {static} DATE_PATTERN:String
-    - {static} FORMATTER:DateTimeFormatter
-    - {static} FAILED_CONVERT_TO_NON_NEG_DOUBLE:String
-    - {static} FAILED_CONVERT_TO_LOCALDATE:String
-    - {static} FAILED_CONVERT_BOOLEAN:String
-    - {static} GOAL_HEADER:String[]
-    - {static} CATEGORY_HEADER:String[]
-    - {static} INCOME_HEADER:String[]
-    - {static} EXPENSE_HEADER:String[]
-    - {static} DESCRIPTION:int
-    - {static} AMOUNT:int
-    - {static} DATE:int
-    - {static} GOAL:int
-    - {static} CATEGORY:int
-    - {static} RECURRENCE:int
-    - {static} HAS_NEXT_RECURRENCE:int
+    - {static} GOAL_STORAGE_FILENAME:String = "goal-store.csv"
+    - {static} CATEGORY_STORAGE_FILENAME:String = "category-store.csv"
+    - {static} INCOME_STORAGE_FILENAME:String = "income-store.csv"
+    - {static} EXPENSE_STORAGE_FILENAME:String = "expense-store.csv"
+    - {static} DATE_PATTERN:String = "dd/MM/yyyy"
+    - {static} FORMATTER:DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
+    - {static} FAILED_CONVERT_TO_NON_NEG_DOUBLE:String = "Cannot convert amount into Double type in "
+    - {static} FAILED_CONVERT_TO_LOCALDATE:String = "Cannot convert date into LocalDate type in "
+    - {static} FAILED_CONVERT_BOOLEAN:String = "Cannot convert string into boolean type in "
+    - {static} GOAL_HEADER:String[] = {"Description", "Amount"}
+    - {static} CATEGORY_HEADER:String[] = {"Name"}
+    - {static} INCOME_HEADER:String[] = {"Description", "Amount", "Date", "Goal", "Recurrence", "Has Next Recurrence"}
+    - {static} EXPENSE_HEADER:String[] = {"Description", "Amount", "Date", "Category", "Recurrence", "Has Next Reccurence"}
+    - {static} DESCRIPTION:int = 0
+    - {static} AMOUNT:int = 1
+    - {static} DATE:int = 2
+    - {static} GOAL:int = 3
+    - {static} CATEGORY:int = 3
+    - {static} RECURRENCE:int = 4
+    - {static} HAS_NEXT_RECURRENCE:int = 5
+    ----
     + Storage()
     + validRow(row:String[]):boolean
     + validDate(dateStr:String, fileName:String):LocalDate
