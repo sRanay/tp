@@ -21,8 +21,8 @@ public class ListCommand extends Command {
             "invalid category";
     private static final String EMPTY_LIST = "It appears that we have came up empty. Why not try adding some" +
             " transactions first?";
-    private static final String[] IN_HEADERS = {"ID", "Description", "Date", "Amount", "Goal"};
-    private static final String[] OUT_HEADERS = {"ID", "Description", "Date", "Amount", "Category"};
+    private static final String[] IN_HEADERS = {"ID", "Description", "Date", "Amount", "Goal", "Recurrence"};
+    private static final String[] OUT_HEADERS = {"ID", "Description", "Date", "Amount", "Category", "Recurrence"};
     private static final String IN = "IN TRANSACTIONS";
     private static final String OUT = "OUT TRANSACTIONS";
     private Ui ui;
@@ -101,7 +101,7 @@ public class ListCommand extends Command {
 
     private void listIncome() throws DukeException {
         String filterGoal = null;
-        if(getArgs().containsKey("goal")) {
+        if (getArgs().containsKey("goal")) {
             filterGoal = getArg("goal").toLowerCase();
         }
         ArrayList<Income> incomeArray = StateManager.getStateManager().getAllIncomes();
@@ -120,8 +120,7 @@ public class ListCommand extends Command {
         for (Income i : incomeArray) {
             String goal = i.getGoal().getDescription();
             if (filterGoal == null || filterGoal.equalsIgnoreCase(goal)) {
-                ArrayList<String> transaction = formatTransaction(i.getTransaction(), index);
-                transaction.add(goal);
+                ArrayList<String> transaction = formatTransaction(i.getTransaction(), index, goal);
                 printIncomes.add(transaction);
                 index++;
             }
@@ -132,7 +131,7 @@ public class ListCommand extends Command {
 
     private void listExpenses() throws DukeException {
         String filterCategory = null;
-        if(getArgs().containsKey("category")) {
+        if (getArgs().containsKey("category")) {
             filterCategory = getArg("category").toLowerCase();
         }
         ArrayList<Expense> expenseArray = StateManager.getStateManager().getAllExpenses();
@@ -150,9 +149,8 @@ public class ListCommand extends Command {
         int index = 1;
         for (Expense i : expenseArray) {
             String category = i.getCategory().getName();
-            if(filterCategory == null || filterCategory.equalsIgnoreCase(category)) {
-                ArrayList<String> transaction = formatTransaction(i.getTransaction(), index);
-                transaction.add(i.getCategory().getName());
+            if (filterCategory == null || filterCategory.equalsIgnoreCase(category)) {
+                ArrayList<String> transaction = formatTransaction(i.getTransaction(), index, category);
                 printExpenses.add(transaction);
                 index++;
             }
@@ -160,12 +158,14 @@ public class ListCommand extends Command {
         printList(printExpenses, OUT);
     }
 
-    private ArrayList<String> formatTransaction(Transaction transaction, int index) {
+    private ArrayList<String> formatTransaction(Transaction transaction, int index, String typeName) {
         ArrayList<String> transactionStrings = new ArrayList<>();
         transactionStrings.add(String.valueOf(index));
         transactionStrings.add(transaction.getDescription());
         transactionStrings.add(transaction.getDate().toString());
         transactionStrings.add(String.valueOf(ui.formatAmount(transaction.getAmount())));
+        transactionStrings.add(typeName);
+        transactionStrings.add(transaction.getRecurrence().toString());
         return transactionStrings;
     }
 

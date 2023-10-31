@@ -47,26 +47,26 @@ class AddIncomeCommandTest {
             new CommandTestCase(
                     "in part-time job /amount 500 /goal car",
                     "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal\n" +
-                            "part-time job                    " + date + "    500.00        car\n"
+                            "Description                      Date          Amount        Goal          Recurrence\n" +
+                            "part-time job                    2023-10-31    500.00        car           none\n"
             ),
             new CommandTestCase(
                     "in red packet money /amount 50 /goal PS5",
                     "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal\n" +
-                            "red packet money                 " + date + "    50.00         PS5\n"
+                            "Description                      Date          Amount        Goal          Recurrence\n" +
+                            "red packet money                 2023-10-31    50.00         PS5           none\n"
             ),
             new CommandTestCase(
                     "in red packet money /amount 50 /goal PS5 /date 12102000",
                     "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal\n" +
-                            "red packet money                 2000-10-12    50.00         PS5\n"
+                            "Description                      Date          Amount        Goal          Recurrence\n" +
+                            "red packet money                 2000-10-12    50.00         PS5           none\n"
             ),
             new CommandTestCase(
                     "in pocket money /amount 50 /goal PS5 /recurrence weekly",
                     "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal\n" +
-                            "pocket money                     " + date + "    50.00         PS5\n",
+                            "Description                      Date          Amount        Goal          Recurrence\n" +
+                            "pocket money                     " + date + "    50.00         PS5           weekly\n",
                     () -> {
                         ArrayList<Income> incomes = StateManager.getStateManager().getAllIncomes();
                         Income lastAddedIncome = incomes.get(incomes.size() - 1);
@@ -222,8 +222,8 @@ class AddIncomeCommandTest {
             new CommandTestCase(
                     "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + goodDate,
                     "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal\n" +
-                            "pocket money                     " + date.minusDays(6) + "    50.00         PS5\n"
+                            "Description                      Date          Amount        Goal          Recurrence\n" +
+                            "pocket money                     2023-10-25    50.00         PS5           weekly\n"
             ),
             new CommandTestCase(
                     "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + badDate,

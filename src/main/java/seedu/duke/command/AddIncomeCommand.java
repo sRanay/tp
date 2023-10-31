@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class AddIncomeCommand extends AddTransactionCommand {
     private static final String GOAL_ARG = "goal";
-    private static final String[] HEADERS = {"Description", "Date", "Amount", "Goal"};
+    private static final String[] HEADERS = {"Description", "Date", "Amount", "Goal", "Recurrence"};
 
     private static final String SUCCESS_PRINT = "Nice! The following income has been tracked:";
     private static final String MISSING_GOAL = "Goal cannot be empty...";
@@ -43,6 +43,7 @@ public class AddIncomeCommand extends AddTransactionCommand {
         printValues.add(transaction.getDate().toString());
         printValues.add(ui.formatAmount(transaction.getAmount()));
         printValues.add(income.getGoal().getDescription());
+        printValues.add(income.getTransaction().getRecurrence().toString());
         ui.print(SUCCESS_PRINT);
         ui.printTableRow(printValues, HEADERS, HEADERS_WIDTH);
     }
