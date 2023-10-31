@@ -16,7 +16,8 @@ The bulk of the app's work is done by the following three components:
 
 ### UI component
 
-![UI Sequence Diagram](./images/cs2113-ui-sequence.jpg "UI Sequence Diagram")
+![UI Sequence Diagram](./images/cs2113-ui-sequence.png "UI Sequence Diagram")
+![UI Class Diagram](./images/ui-class-diagram.png "UI Class Diagram")
 
 The `UI` consists of a `Scanner` and an `OutputStream` object. Together, these objects abstract the functionalities of
 obtaining user input and providing feedback (output printed in terminal UI). The `UI` component provides a simple
@@ -63,7 +64,14 @@ formatting of the output.
 ### Storage component
 The `Storage` functionality is to load data from the storage files (`category-store.csv` , `expense-store.csv`, `goal-store.csv`, `income-store.csv`) into the application. It will also stores any data while the application is running.
 
-The `Storage` uses `CsvWriter` and `CsvReader` class to read and write to the storage files.
+![Storage Class Diagram](./images/cs2113-storage-class.png "Storage Class Diagram")
+
+The `Storage` component:
+- Ensures that all the data that is loaded is able to be parsed properly and stored in the application when booting up
+- Skips any rows that have issue during the validation phase
+- Saves to storage file after each command completed
+- uses `CsvWriter` and `CsvReader` class to read and write to the storage files.
+- `CsvWriter` and `CsvReader` will use `CSVWriter` and `CSVReader` respectively from OpenCSV library to write and read from CSV Files 
 
 ## Implementation
 

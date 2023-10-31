@@ -102,9 +102,10 @@ Format: `delete INDEX /type (in | out)`
 ### List Transactions: `list`
 Shows a list of all added transactions based on type, with filters for goals and categories.
 
-Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY]`
+Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`
 * User must specify /type option to list either transactions added under income or expense
 * Deletion has to be based on the ID of the transaction without any filters.
+* User must only specify either /week or /month. If both are specified, then /week will take priority.
 
 **Usage Example:**
 
@@ -115,6 +116,10 @@ Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY]`
 `list /type in /goal Travel` - List all income transactions with the 'Travel' goal
 
 `list /type out /category Food` - List all expense transactions with the 'Food' category
+
+`list /type in /week` - List all income transactions in the current week
+
+`list /type in /month` - List all income transactions in the current month
 
 **Sample Output:**
 ```
@@ -148,7 +153,7 @@ Safely ends the program.
 | Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`          | `in part-time job /amount 500 /goal car`  |
 | Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]` | `out dinner /amount 10.50 /category food` |
 | Delete Transaction      | `delete INDEX /type (in | out)`                                                                       | `delete 1 /type in`                       |
-| List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY]`                                             | `list /type in`                           |
+| List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`                            | `list /type in`                           |
 | Export Transactions     | `export [/type (in | out)]`                                                                           | `export /type in`                         |
 | End program             | `bye`                                                                                                 |                                           |
 
