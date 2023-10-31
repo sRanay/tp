@@ -85,7 +85,7 @@ public class ListCommand extends Command {
         assert type != null;
         if (type.equals("in")) {
             listIncome();
-        } else {
+        } else if (type.equals("out")) {
             listExpenses();
         }
     }
@@ -93,7 +93,7 @@ public class ListCommand extends Command {
     private void printList(ArrayList<ArrayList<String>> listArray, String headerMessage) {
         if (headerMessage.equals(IN)) {
             ui.listTransactions(listArray, IN_HEADERS, headerMessage);
-        } else {
+        } else if (headerMessage.equals(OUT)) {
             ui.listTransactions(listArray, OUT_HEADERS, headerMessage);
         }
 
@@ -104,7 +104,7 @@ public class ListCommand extends Command {
         if (getArgs().containsKey("goal")) {
             filterGoal = getArg("goal").toLowerCase();
         }
-        ArrayList<Income> incomeArray = StateManager.getStateManager().getAllIncomes();
+        ArrayList<Income> incomeArray = StateManager.getStateManager().sortedIncomes();
         ArrayList<ArrayList<String>> printIncomes = new ArrayList<>();
         if (incomeArray == null || incomeArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
@@ -134,7 +134,7 @@ public class ListCommand extends Command {
         if (getArgs().containsKey("category")) {
             filterCategory = getArg("category").toLowerCase();
         }
-        ArrayList<Expense> expenseArray = StateManager.getStateManager().getAllExpenses();
+        ArrayList<Expense> expenseArray = StateManager.getStateManager().sortedExpenses();
         ArrayList<ArrayList<String>> printExpenses = new ArrayList<>();
         if (expenseArray == null || expenseArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
