@@ -11,22 +11,25 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class ListCommand extends Command {
     private static final String INVALID_TYPE_FORMAT = "I'm sorry, you need to specify a type in the format " +
             "'/type in' or '/type out'";
-    private static final String INVALID_GOAL_FORMAT = "You have entered /goal, but you did not enter anything" +
-            " after that";
-    private static final String INVALID_CATEGORY_FORMAT = "You have entered /category, but you did not enter" +
-            " anything after that";
+    private static final String INVALID_GOAL_FORMAT = "You have entered /goal, but you have entered an invalid goal";
+    private static final String INVALID_CATEGORY_FORMAT = "You have entered /category, but you have entered an " +
+            "invalid category";
     private static final String EMPTY_LIST = "It appears that we have came up empty. Why not try adding some" +
             " transactions first?";
-    private static final String[] IN_HEADERS = {"ID", "Description", "Date", "Amount", "Goal"};
-    private static final String[] OUT_HEADERS = {"ID", "Description", "Date", "Amount", "Category"};
+    private static final String[] IN_HEADERS = {"ID", "Description", "Date", "Amount", "Goal", "Recurrence"};
+    private static final String[] OUT_HEADERS = {"ID", "Description", "Date", "Amount", "Category", "Recurrence"};
     private static final String IN = "IN TRANSACTIONS";
     private static final String OUT = "OUT TRANSACTIONS";
+    private static final String GOAL = "goal";
+    private static final String CATEGORY = "category";
+    private static final String TYPE = "type";
+    private static final String WEEK = "week";
+    private static final String MONTH = "month";
     private Ui ui;
 
     public ListCommand(String description, HashMap<String, String> args) {
@@ -42,30 +45,48 @@ public class ListCommand extends Command {
 
     // Description gets ignored for list
     private void validateArgs() throws DukeException {
-        if (!getArgs().containsKey("type")) {
+        if (!getArgs().containsKey(TYPE)) {
             throw new DukeException(INVALID_TYPE_FORMAT);
         }
-
-        String type = getArg("type");
+        String type = getArg(TYPE);
         if (!type.equals("in") && !type.equals("out")) {
             throw new DukeException(INVALID_TYPE_FORMAT);
         }
 
-        if (getArgs().containsKey("goal") && getArg("goal").isBlank()) {
-            throw new DukeException(INVALID_GOAL_FORMAT);
+        if (getArgs().containsKey((GOAL))) {
+            if (getArgs().containsKey(CATEGORY)) {
+                throw new DukeException("You can't use both /goal and /category");
+            }
+            if (getArg(GOAL).isBlank()) {
+                throw new DukeException(INVALID_GOAL_FORMAT);
+            }
+
+            String goal = getArg(GOAL);
+            int result = StateManager.getStateManager().getGoalIndex(goal);
+            if (result == -1) {
+                throw new DukeException(INVALID_GOAL_FORMAT);
+            }
         }
 
-        if (getArgs().containsKey("category") && getArg("goal").isBlank()) {
-            throw new DukeException(INVALID_CATEGORY_FORMAT);
+        if (getArgs().containsKey(CATEGORY)) {
+            if (getArg(CATEGORY).isBlank()) {
+                throw new DukeException(INVALID_CATEGORY_FORMAT);
+            }
+            String goal = getArg(CATEGORY);
+            int result = StateManager.getStateManager().getCategoryIndex(goal);
+            if (result == -1) {
+                throw new DukeException(INVALID_CATEGORY_FORMAT);
+            }
         }
+
     }
 
     private void listTypeHandler() throws DukeException {
-        String type = getArg("type");
+        String type = getArg(TYPE);
         assert type != null;
         if (type.equals("in")) {
             listIncome();
-        } else {
+        } else if (type.equals("out")) {
             listExpenses();
         }
     }
@@ -73,64 +94,80 @@ public class ListCommand extends Command {
     private void printList(ArrayList<ArrayList<String>> listArray, String headerMessage) {
         if (headerMessage.equals(IN)) {
             ui.listTransactions(listArray, IN_HEADERS, headerMessage);
-        } else {
+        } else if (headerMessage.equals(OUT)) {
             ui.listTransactions(listArray, OUT_HEADERS, headerMessage);
         }
 
     }
 
     private void listIncome() throws DukeException {
-        ArrayList<Income> incomeArray = StateManager.getStateManager().getAllIncomes();
+        String filterGoal = null;
+        if (getArgs().containsKey(GOAL)) {
+            filterGoal = getArg(GOAL).toLowerCase();
+        }
+        ArrayList<Income> incomeArray = StateManager.getStateManager().sortedIncomes();
         ArrayList<ArrayList<String>> printIncomes = new ArrayList<>();
         if (incomeArray == null || incomeArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
         }
 
-        if (getArgs().containsKey("week")) {
+        if (getArgs().containsKey(WEEK)) {
             incomeArray = filterIncome(incomeArray, false);
-        } else if (getArgs().containsKey("month")) {
+        } else if (getArgs().containsKey(MONTH)) {
             incomeArray = filterIncome(incomeArray, true);
         }
 
         int index = 1;
         for (Income i : incomeArray) {
-            Transaction currentTransaction = i.getTransaction();
-            String description = currentTransaction.getDescription();
-            String date = currentTransaction.getDate().toString();
-            String amount = String.valueOf(ui.formatAmount(currentTransaction.getAmount()));
             String goal = i.getGoal().getDescription();
-            printIncomes.add(new ArrayList<>(Arrays.asList(String.valueOf(index), description, date, amount, goal)));
-            index++;
+            if (filterGoal == null || filterGoal.equalsIgnoreCase(goal)) {
+                ArrayList<String> transaction = formatTransaction(i.getTransaction(), index, goal);
+                printIncomes.add(transaction);
+                index++;
+            }
         }
         printList(printIncomes, IN);
 
     }
 
     private void listExpenses() throws DukeException {
-        ArrayList<Expense> expenseArray = StateManager.getStateManager().getAllExpenses();
+        String filterCategory = null;
+        if (getArgs().containsKey(CATEGORY)) {
+            filterCategory = getArg(CATEGORY).toLowerCase();
+        }
+        ArrayList<Expense> expenseArray = StateManager.getStateManager().sortedExpenses();
         ArrayList<ArrayList<String>> printExpenses = new ArrayList<>();
         if (expenseArray == null || expenseArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
         }
 
-        if (getArgs().containsKey("week")) {
+        if (getArgs().containsKey(WEEK)) {
             expenseArray = filterExpense(expenseArray, false);
-        } else if (getArgs().containsKey("month")) {
+        } else if (getArgs().containsKey(MONTH)) {
             expenseArray = filterExpense(expenseArray, true);
         }
 
         int index = 1;
         for (Expense i : expenseArray) {
-            Transaction currentExpense = i.getTransaction();
-            String description = currentExpense.getDescription();
-            String date = currentExpense.getDate().toString();
-            String amount = String.valueOf(ui.formatAmount(currentExpense.getAmount()));
             String category = i.getCategory().getName();
-            printExpenses.add(new ArrayList<>(Arrays.asList(String.valueOf(index), description, date,
-                    amount, category)));
-            index++;
+            if (filterCategory == null || filterCategory.equalsIgnoreCase(category)) {
+                ArrayList<String> transaction = formatTransaction(i.getTransaction(), index, category);
+                printExpenses.add(transaction);
+                index++;
+            }
         }
         printList(printExpenses, OUT);
+    }
+
+    private ArrayList<String> formatTransaction(Transaction transaction, int index, String typeName) {
+        ArrayList<String> transactionStrings = new ArrayList<>();
+        transactionStrings.add(String.valueOf(index));
+        transactionStrings.add(transaction.getDescription());
+        transactionStrings.add(transaction.getDate().toString());
+        transactionStrings.add(String.valueOf(ui.formatAmount(transaction.getAmount())));
+        transactionStrings.add(typeName);
+        transactionStrings.add(transaction.getRecurrence().toString());
+        return transactionStrings;
     }
 
     private ArrayList<Income> filterIncome(ArrayList<Income> transactionsArrayList, boolean filterByMonth) {

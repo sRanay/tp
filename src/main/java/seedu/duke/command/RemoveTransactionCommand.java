@@ -1,5 +1,7 @@
 package seedu.duke.command;
 
+import seedu.duke.classes.Expense;
+import seedu.duke.classes.Income;
 import seedu.duke.exception.DukeException;
 import seedu.duke.ui.Ui;
 import seedu.duke.classes.StateManager;
@@ -66,12 +68,12 @@ public class RemoveTransactionCommand extends Command {
         boolean isSuccess = false;
         String transactionDescription = "";
         if (type.equals("in")) {
-            transactionDescription = StateManager.getStateManager().getIncome(idx)
-                    .getTransaction().getDescription();
-            isSuccess = StateManager.getStateManager().removeIncome(idx);
+            Income incomeEntry = StateManager.getStateManager().sortedIncomes().get(idx);
+            transactionDescription = incomeEntry.getTransaction().getDescription();
+            isSuccess = StateManager.getStateManager().removeIncome(incomeEntry);
         } else if (type.equals("out")) {
-            transactionDescription = StateManager.getStateManager().getExpense(idx)
-                    .getTransaction().getDescription();
+            Expense expenseEntry = StateManager.getStateManager().sortedExpenses().get(idx);
+            transactionDescription = expenseEntry.getTransaction().getDescription();
             isSuccess = StateManager.getStateManager().removeExpense(idx);
         }
         if (!isSuccess) {

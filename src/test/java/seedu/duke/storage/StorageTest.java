@@ -159,20 +159,26 @@ public class StorageTest {
             commandWord = parser.getDescription(userInput);
             command = new ListCommand(commandWord, args);
             command.execute(ui);
-            assertEquals("Alright! Displaying 3 transactions.\n"
-                            + "=============================== IN TRANSACTIONS ================================\n"
-                            + "ID    Description                      Date         Amount       Goal\n"
-                            + "1     part-time job                    2023-10-29   1000.00      car\n"
-                            + "2     allowance                        2023-10-29   500.00       car\n"
-                            + "3     sell stuff                       2023-10-29   50.00        ps5\n"
-                            + "=============================== IN TRANSACTIONS ================================\n"
-                            + "Alright! Displaying 3 transactions.\n"
-                            + "=============================== OUT TRANSACTIONS ===============================\n"
-                            + "ID    Description                      Date         Amount       Category\n"
-                            + "1     buy dinner                       2023-10-29   15.00        food\n"
-                            + "2     popmart                          2023-10-29   12.00        toy\n"
-                            + "3     grab                             2023-10-29   20.00        transport\n"
-                            + "=============================== OUT TRANSACTIONS ===============================\n"
+            assertEquals("Alright! Displaying 3 transactions.\n" +
+                            "====================================== IN TRANSACTIONS ================================" +
+                            "======\n" +
+                            "ID    Description                      Date         Amount       Goal         " +
+                            "Recurrence\n" +
+                            "1     allowance                        2023-10-29   500.00       car          monthly\n" +
+                            "2     part-time job                    2023-10-29   1000.00      car          none\n" +
+                            "3     sell stuff                       2023-10-29   50.00        ps5          none\n" +
+                            "====================================== IN TRANSACTIONS =======================" +
+                            "===============\n" +
+                            "Alright! Displaying 3 transactions.\n" +
+                            "===================================== OUT TRANSACTIONS =========================" +
+                            "=============\n" +
+                            "ID    Description                      Date         Amount       Category     " +
+                            "Recurrence\n" +
+                            "1     buy dinner                       2023-10-29   15.00        food         monthly\n" +
+                            "2     grab                             2023-10-29   20.00        transport    none\n" +
+                            "3     popmart                          2023-10-29   12.00        toy          none\n" +
+                            "===================================== OUT TRANSACTIONS ===========================" +
+                            "===========\n"
                     , outputStream.toString());
 
 
@@ -225,20 +231,26 @@ public class StorageTest {
             commandWord = parser.getDescription(userInput);
             command = new ListCommand(commandWord, args);
             command.execute(ui);
-            assertEquals("Alright! Displaying 3 transactions.\n"
-                            + "=============================== IN TRANSACTIONS ================================\n"
-                            + "ID    Description                      Date         Amount       Goal\n"
-                            + "1     part-time job                    2023-10-29   1000.00      car\n"
-                            + "2     allowance                        2023-10-29   500.00       car\n"
-                            + "3     sell stuff                       2023-10-29   50.00        ps5\n"
-                            + "=============================== IN TRANSACTIONS ================================\n"
-                            + "Alright! Displaying 3 transactions.\n"
-                            + "=============================== OUT TRANSACTIONS ===============================\n"
-                            + "ID    Description                      Date         Amount       Category\n"
-                            + "1     buy dinner                       2023-10-29   15.00        food\n"
-                            + "2     popmart                          2023-10-29   12.00        toy\n"
-                            + "3     grab                             2023-10-29   20.00        transport\n"
-                            + "=============================== OUT TRANSACTIONS ===============================\n"
+            assertEquals("Alright! Displaying 3 transactions.\n" +
+                            "====================================== IN TRANSACTIONS ==============================" +
+                            "========\n" +
+                            "ID    Description                      Date         Amount       Goal         " +
+                            "Recurrence\n" +
+                            "1     allowance                        2023-10-29   500.00       car          monthly\n" +
+                            "2     part-time job                    2023-10-29   1000.00      car          none\n" +
+                            "3     sell stuff                       2023-10-29   50.00        ps5          none\n" +
+                            "====================================== IN TRANSACTIONS =============================" +
+                            "=========\n" +
+                            "Alright! Displaying 3 transactions.\n" +
+                            "===================================== OUT TRANSACTIONS ============================" +
+                            "==========\n" +
+                            "ID    Description                      Date         Amount       Category     " +
+                            "Recurrence\n" +
+                            "1     buy dinner                       2023-10-29   15.00        food         daily\n" +
+                            "2     grab                             2023-10-29   20.00        transport    none\n" +
+                            "3     popmart                          2023-10-29   12.00        toy          none\n" +
+                            "===================================== OUT TRANSACTIONS ========================" +
+                            "==============\n"
                     , outputStream.toString());
         }
     }
@@ -289,20 +301,26 @@ public class StorageTest {
             commandWord = parser.getDescription(userInput);
             command = new ListCommand(commandWord, args);
             command.execute(ui);
-            assertEquals("Alright! Displaying 3 transactions.\n"
-                            + "=============================== IN TRANSACTIONS ================================\n"
-                            + "ID    Description                      Date         Amount       Goal\n"
-                            + "1     part-time job                    2023-10-29   1000.00      car\n"
-                            + "2     allowance                        2023-10-29   500.00       car\n"
-                            + "3     sell stuff                       2023-10-29   50.00        ps5\n"
-                            + "=============================== IN TRANSACTIONS ================================\n"
-                            + "Alright! Displaying 3 transactions.\n"
-                            + "=============================== OUT TRANSACTIONS ===============================\n"
-                            + "ID    Description                      Date         Amount       Category\n"
-                            + "1     buy dinner                       2023-10-29   15.00        food\n"
-                            + "2     popmart                          2023-10-29   12.00        toy\n"
-                            + "3     grab                             2023-10-29   20.00        transport\n"
-                            + "=============================== OUT TRANSACTIONS ===============================\n"
+            assertEquals("Alright! Displaying 3 transactions.\n" +
+                            "====================================== IN TRANSACTIONS ===============================" +
+                            "=======\n" +
+                            "ID    Description                      Date         Amount       Goal         " +
+                            "Recurrence\n" +
+                            "1     allowance                        2023-10-29   500.00       car          monthly\n" +
+                            "2     part-time job                    2023-10-29   1000.00      car          none\n" +
+                            "3     sell stuff                       2023-10-29   50.00        ps5          none\n" +
+                            "====================================== IN TRANSACTIONS ===============================" +
+                            "=======\n" +
+                            "Alright! Displaying 3 transactions.\n" +
+                            "===================================== OUT TRANSACTIONS ==============================" +
+                            "========\n" +
+                            "ID    Description                      Date         Amount       Category     " +
+                            "Recurrence\n" +
+                            "1     buy dinner                       2023-10-29   15.00        food         daily\n" +
+                            "2     grab                             2023-10-29   20.00        transport    none\n" +
+                            "3     popmart                          2023-10-29   12.00        toy          none\n" +
+                            "===================================== OUT TRANSACTIONS =============================" +
+                            "=========\n"
                     , outputStream.toString());
         }
     }
@@ -317,9 +335,11 @@ public class StorageTest {
                 parser.parse("goal /add car /amount 1000").execute(ui);
                 parser.parse("goal /add ps5 /amount 1000").execute(ui);
                 parser.parse("in part-time job /amount 1000 /goal car /date 29102023").execute(ui);
-                parser.parse("in allowance /amount 500 /goal car /date 29102023 /recurrence monthly").execute(ui);
+                parser.parse("in allowance /amount 500 /goal car /date 29102023 /recurrence monthly")
+                        .execute(ui);
                 parser.parse("in sell stuff /amount 50 /goal ps5 /date 29102023").execute(ui);
-                parser.parse("out buy dinner /amount 15 /category food /date 29102023 /recurrence monthly").execute(ui);
+                parser.parse("out buy dinner /amount 15 /category food /date 29102023 /recurrence monthly")
+                        .execute(ui);
                 parser.parse("out popmart /amount 12 /category toy /date 29102023").execute(ui);
                 parser.parse("out grab /amount 20 /category transport /date 29102023").execute(ui);
             } catch (DukeException e) {

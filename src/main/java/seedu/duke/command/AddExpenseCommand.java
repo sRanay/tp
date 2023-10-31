@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class AddExpenseCommand extends AddTransactionCommand {
     private static final String CATEGORY_ARG = "category";
-    private static final String[] HEADERS = {"Description", "Date", "Amount", "Category"};
+    private static final String[] HEADERS = {"Description", "Date", "Amount", "Category", "Recurrence"};
 
     private static final String SUCCESS_PRINT = "Nice! The following expense has been tracked:";
     private static final String MISSING_CATEGORY = "Category cannot be empty...";
@@ -43,6 +43,7 @@ public class AddExpenseCommand extends AddTransactionCommand {
         printValues.add(transaction.getDate().toString());
         printValues.add(ui.formatAmount(transaction.getAmount()));
         printValues.add(expense.getCategory().getName());
+        printValues.add(expense.getTransaction().getRecurrence().toString());
         ui.print(SUCCESS_PRINT);
         ui.printTableRow(printValues, HEADERS, HEADERS_WIDTH);
     }

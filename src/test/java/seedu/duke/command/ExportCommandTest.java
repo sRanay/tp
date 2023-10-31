@@ -180,7 +180,7 @@ public class ExportCommandTest {
         }
         @Test
         @EnabledOnOs({OS.WINDOWS})
-        public void exportFileAllTransactionsWindows() throws DukeException, IOException {
+        public void  exportFileAllTransactionsWindows() throws DukeException, IOException {
             outputStream = new ByteArrayOutputStream();
             Ui ui = new Ui(outputStream);
             String userInput = "export";

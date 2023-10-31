@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public abstract class AddTransactionCommand extends Command {
     protected static final Integer[] HEADERS_WIDTH = {
-        Ui.LIST_COLUMN_WIDTH, Ui.COLUMN_WIDTH, Ui.COLUMN_WIDTH, Ui.COLUMN_WIDTH
+        Ui.LIST_COLUMN_WIDTH, Ui.COLUMN_WIDTH, Ui.COLUMN_WIDTH, Ui.COLUMN_WIDTH, Ui.COLUMN_WIDTH
     };
     protected static final String AMOUNT_ARG = "amount";
     protected static final String DATE_ARG = "date";
@@ -42,7 +42,6 @@ public abstract class AddTransactionCommand extends Command {
             TransactionRecurrence recurrence = TransactionRecurrence.getRecurrence(recurrenceValue);
             transaction.setRecurrence(recurrence);
         }
-
         return transaction;
     }
 

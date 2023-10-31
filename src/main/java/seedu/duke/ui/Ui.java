@@ -198,7 +198,8 @@ public class Ui {
             end = " transaction.";
         }
         print("Alright! Displaying " + list.size() + end);
-        Integer[] columnWidths = {ID_COLUMN_WIDTH, LIST_COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH};
+        Integer[] columnWidths = {ID_COLUMN_WIDTH, LIST_COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH,
+            COLUMN_WIDTH};
         int totalSpace = Arrays.stream(columnWidths)
                 .mapToInt(Integer::intValue)
                 .sum();

@@ -1,6 +1,7 @@
 package seedu.duke.classes;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.IntStream;
 
 public class StateManager {
@@ -9,6 +10,7 @@ public class StateManager {
     private final ArrayList<Category> categories = new ArrayList<>();
     private final ArrayList<Income> incomes = new ArrayList<>();
     private final ArrayList<Expense> expenses = new ArrayList<>();
+
 
     private StateManager() {
     }
@@ -165,4 +167,23 @@ public class StateManager {
                 .findFirst()
                 .orElse(-1);
     }
+
+    public ArrayList<Income> sortedIncomes() {
+        Comparator<Income> dateComparator = Comparator.comparing((Income i) -> i.getTransaction().getDate(),
+                Comparator.reverseOrder());
+        Comparator<Income> nameComparator = Comparator.comparing((Income i) -> i.getTransaction().getDescription());
+        ArrayList<Income> sortIncomes = incomes;
+        sortIncomes.sort(dateComparator.thenComparing(nameComparator));
+        return sortIncomes;
+    }
+
+    public ArrayList<Expense> sortedExpenses() {
+        Comparator<Expense> dateComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDate(),
+                Comparator.reverseOrder());
+        Comparator<Expense> nameComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDescription());
+        ArrayList<Expense> sortExpenses = expenses;
+        sortExpenses.sort(dateComparator.thenComparing(nameComparator));
+        return sortExpenses;
+    }
+
 }
