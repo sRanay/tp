@@ -134,9 +134,9 @@ Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month
 Alright! Displaying 3 transactions.
 ====================================== IN TRANSACTIONS ======================================
 ID    Description                      Date         Amount       Goal         Recurrence
-1     red packet money                 2023-09-18   50.00        PS5          none
-2     part-time job                    2023-10-31   500.00       car          none
-3     pocket money saved               2023-10-31   25.00        PS5          weekly
+1     part-time job                    2023-10-31   500.00       car          none
+2     pocket money saved               2023-10-31   25.00        PS5          weekly
+3     red packet money                 2023-09-18   50.00        PS5          none
 ====================================== IN TRANSACTIONS ======================================
 ```
 ### Add/Remove a goal: `goal`
