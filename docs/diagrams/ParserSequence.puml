@@ -1,0 +1,37 @@
+@startuml
+!include Style.puml
+
+participant ":Main" as Main LOGIC_COLOR
+participant ":Parser" as Parser LOGIC_COLOR
+participant ":Command" as Command LOGIC_COLOR
+
+create Parser
+Main -> Parser
+activate Parser
+
+Main -> Parser : parse(userInput: String)
+
+Parser -> Parser : getCommandWord(userInput: String)
+activate Parser
+return commandWord: String
+
+Parser -> Parser : getDescription(userInput: String)
+activate Parser
+return description: String
+
+Parser -> Parser : getArguments(userInput: String)
+activate Parser
+return argsMap: HashMap<String, String>
+
+Parser -> Parser : getCommand(commandWord: String, description: String, argsMap: HashMap<String, String>)
+activate Parser
+create Command
+Parser -> Command: Command(commandWord: String, description: String, argsMap: HashMap<String, String>)
+activate Command
+return command: Command
+
+return command: Command
+
+return command: Command
+
+@enduml

@@ -14,6 +14,8 @@ The bulk of the app's work is done by the following three components:
 - `Command`: Command's logic and execution
 - `Storage`: Storage of data of the App
 
+![Architecture Diagram](./images/ArchitectureDiagram.png "Architecture Diagram")
+
 ### UI component
 
 ![UI Sequence Diagram](./images/cs2113-ui-sequence.png "UI Sequence Diagram")
@@ -41,6 +43,9 @@ command if any.
 
 Note: The `Parser` will not do any validation of arguments or description of the command. Those will be handled by the 
 respective `Command` object.
+
+![Parser Sequence Diagram](./images/ParserSequence.png "Parser Sequence Diagram")
+
 
 ### Command component
 
@@ -72,6 +77,21 @@ The `Storage` component:
 - Saves to storage file after each command completed
 - uses `CsvWriter` and `CsvReader` class to read and write to the storage files.
 - `CsvWriter` and `CsvReader` will use `CSVWriter` and `CSVReader` respectively from OpenCSV library to write and read from CSV Files 
+
+## Common Classes
+### Income Class
+Income class is used to store information of the savings of the user. It is implemented by the aggregation of 
+Transaction and Goal classes. Each income is linked to one transaction and goal. The goal is a target set by 
+the user for which the money is saved for.
+
+![Income Class Diagram](./images/IncomeClassDiagram.png "Income Class Diagram")
+
+### Expense Class
+Expense class is used to store information of the spending of the user. It is implemented by the aggregation of 
+Transaction and Category classes. Each expense is linked to one transaction and category. The category is used for 
+grouping of related spending such as Food, Transport, School Fees, etc.
+
+![Expense Class Diagram](./images/ExpenseClassDiagram.png "Expense Class Diagram")
 
 ## Implementation
 
