@@ -12,6 +12,10 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
     * [Adding an expense entry: `out`](#adding-an-expense-entry-out)
     * [Delete Transaction: `delete`](#delete-transaction-delete)
     * [List Transactions: `list`](#list-transactions-list)
+    * [Add/Remove Goal: `goal`](#addremove-a-goal-goal)
+    * [Add/Remove Category: `category`](#addremove-a-category-category)
+    * [Export Transactions: `export`](#export-transactions-export)
+    * [Edit Transactions: `[Coming Soon]`](#edit-transactions-coming-soon)
     * [End Program: `bye`](#end-program-bye)
 * [Command Summary](#command-summary)
 
@@ -46,6 +50,7 @@ Format: `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/rec
     * i.e. If `RECURRENCE` is weekly, date specified must be less than 7 days away from current date.
 * `RECURRENCE` is a string that indicates whether of the income added is recurring.<br>
   Possible values are `none`, `daily`, `weekly` and `monthly`. If this option is not specified, recurrence defaults to `none`.
+* `GOAL` must already exist beforehand, if not the user would be prompted to create the goal first.
 
 **Usage Example:**
 
@@ -71,6 +76,7 @@ Format: `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYY
     * i.e. If `RECURRENCE` is weekly, date specified must be less than 7 days away from current date.
 * `RECURRENCE` is a string that indicates whether of the expense added is recurring.<br>
   Possible values are `none`, `daily`, `weekly` and `monthly`. If this option is not specified, recurrence defaults to `none`.
+* If `CATEGORY` was not created previously, a category would automatically be created for it.
 
 **Usage Example:**
 
@@ -92,6 +98,7 @@ Format: `delete INDEX /type (in | out)`
 * `/type` only accepts `in` or `out`.
 *  `INDEX` is based on the ID from the `list` command.
 
+
 **Usage Example:**
 
 `delete 1 /type in` - Deletes the first income entry.
@@ -100,12 +107,13 @@ Format: `delete INDEX /type (in | out)`
 
 
 ### List Transactions: `list`
-Shows a list of all added transactions based on type, with filters for goals and categories.
+Shows a sorted list of all added transactions based on type, with filters for goals and categories.
 
 Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`
 * User must specify /type option to list either transactions added under income or expense
 * Deletion has to be based on the ID of the transaction without any filters.
 * User must only specify either /week or /month. If both are specified, then /week will take priority.
+* The list that would be printed will be sorted by date, then transaction description.
 
 **Usage Example:**
 
@@ -123,17 +131,34 @@ Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month
 
 **Sample Output:**
 ```
-==================== IN TRANSACTIONS =====================
-ID   Description   Date          Amount      Goal
-1    Random        12 SEP 2023   $10         TRAVEL
-2    Hongbao       13 SEP 2023   $10         KOREA STUDIES
-==================== IN TRANSACTIONS =====================
+Alright! Displaying 3 transactions.
+====================================== IN TRANSACTIONS ======================================
+ID    Description                      Date         Amount       Goal         Recurrence
+1     part-time job                    2023-10-31   500.00       car          none
+2     pocket money saved               2023-10-31   25.00        PS5          weekly
+3     red packet money                 2023-09-18   50.00        PS5          none
+====================================== IN TRANSACTIONS ======================================
 ```
+### Add/Remove a goal: `goal`
+Creates or deletes a user's goal (used for income)
+
+Format: `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`
+* At least one of the optional fields must be provided (either `/add` or `/remove`).
+* `GOAL` is case-insensitive.
+* `/add GOAL` has to be accompanied with `/amount AMOUNT`.
+
+### Add/Remove a category: `category`
+Creates or deletes a user's category (used for expenses)
+
+Format: `category [/add CATEGORY] [/remove CATEGORY]`
+* At least one of the optional fields must be provided (either `/add` or `/remove`).
+* `CATEGORY` is case-insensitive.
+
 
 ### Export Transactions: `export`
 Exports all transaction data into a CSV file called `Transactions.csv`
 
-Format: `export [/type (in \| out)]`
+Format: `export [/type (in | out)]`
 * If `/type` is not specified, by default it will extract **ALL** transactions.
 
 **Usage Example:**
@@ -141,6 +166,9 @@ Format: `export [/type (in \| out)]`
 `export /type in` - Export all in transactions
 
 `export /type out` - Export all out transactions
+
+### Edit Transactions `[Coming Soon]`
+Details coming soon...
 
 ### End Program: `bye`
 Safely ends the program.
@@ -154,6 +182,8 @@ Safely ends the program.
 | Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]` | `out dinner /amount 10.50 /category food` |
 | Delete Transaction      | `delete INDEX /type (in | out)`                                                                       | `delete 1 /type in`                       |
 | List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`                            | `list /type in`                           |
+| Add/Remove a Goal       | `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`                                                      | `goal /add PS5 /amount 600`               |
+| Add/Remove a Category   | `category [/add CATEGORY] [/remove CATEGORY]`                                                         | `category /add Bills`                     |
 | Export Transactions     | `export [/type (in | out)]`                                                                           | `export /type in`                         |
 | End program             | `bye`                                                                                                 |                                           |
 
