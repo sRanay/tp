@@ -16,7 +16,7 @@ public class CsvReader {
             FileReader fileReader = new FileReader(filePath);
             this.reader = new CSVReaderBuilder(fileReader).withSkipLines(1).build();
         } catch (IOException e) {
-            throw new DukeException("File cannot be read");
+            throw new DukeException("");
         }
     }
 
