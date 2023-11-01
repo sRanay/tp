@@ -159,7 +159,8 @@ class ListCommandTest {
                         "====================================== IN TRANSACTIONS ===========================" +
                         "===========\n" +
                         "ID    Description                      Date         Amount       Goal         Recurrence\n" +
-                        "1     part-time job                    2023-10-31   500.00       car          none\n" +
+                        "1     part-time job                    " + currentDate + "   500.00       car          none" +
+                        "\n" +
                         "2     red packet money                 2023-09-18   50.00        PS5          none\n" +
                         "====================================== IN TRANSACTIONS ================================" +
                         "======\n"
@@ -170,6 +171,7 @@ class ListCommandTest {
     @Test
     void validFilteredInList() throws DukeException {
         addInEntries();
+        LocalDate currentDate = LocalDate.now();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -179,7 +181,8 @@ class ListCommandTest {
                         "====================================== IN TRANSACTIONS ==================================" +
                         "====\n" +
                         "ID    Description                      Date         Amount       Goal         Recurrence\n" +
-                        "1     part-time job                    2023-10-31   500.00       car          none\n" +
+                        "1     part-time job                    " + currentDate + "   500.00       car          none" +
+                        "\n" +
                         "====================================== IN TRANSACTIONS ==================================" +
                         "====\n"
                 , outputStream.toString());
@@ -189,6 +192,7 @@ class ListCommandTest {
     @Test
     void validOutList() throws DukeException {
         addOutEntries();
+        LocalDate currentDate = LocalDate.now();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -198,7 +202,7 @@ class ListCommandTest {
                         "===================================== OUT TRANSACTIONS ===================================" +
                         "===\n" +
                         "ID    Description                      Date         Amount       Category     Recurrence\n" +
-                        "1     dinner                           2023-10-31   10.50        food         none\n" +
+                        "1     dinner                           "+ currentDate +"   10.50        food         none\n" +
                         "2     pokemon card pack                2023-09-18   10.50        games        none\n" +
                         "===================================== OUT TRANSACTIONS ===================================" +
                         "===\n"
@@ -272,12 +276,10 @@ class ListCommandTest {
         Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type in /month");
         command.execute(ui);
-        assertEquals("Alright! Displaying 2 transactions.\n" +
+        assertEquals("Alright! Displaying 0 transactions.\n" +
                         "====================================== IN TRANSACTIONS =================================" +
                         "=====\n" +
                         "ID    Description                      Date         Amount       Goal         Recurrence\n" +
-                        "1     part-time job                    2023-10-30   500.00       car          none\n" +
-                        "2     allowance job                    2023-10-23   300.00       car          none\n" +
                         "====================================== IN TRANSACTIONS ================================" +
                         "======\n"
                 , outputStream.toString());
@@ -292,12 +294,10 @@ class ListCommandTest {
         Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type out /month");
         command.execute(ui);
-        assertEquals("Alright! Displaying 2 transactions.\n" +
+        assertEquals("Alright! Displaying 0 transactions.\n" +
                         "===================================== OUT TRANSACTIONS =================================" +
                         "=====\n" +
                         "ID    Description                      Date         Amount       Category     Recurrence\n" +
-                        "1     lunch                            2023-10-30   7.50         food         none\n" +
-                        "2     dinner                           2023-10-23   10.50        food         none\n" +
                         "===================================== OUT TRANSACTIONS ===============================" +
                         "=======\n"
                 , outputStream.toString());

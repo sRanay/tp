@@ -48,13 +48,13 @@ class AddIncomeCommandTest {
                     "in part-time job /amount 500 /goal car",
                     "Nice! The following income has been tracked:\n" +
                             "Description                      Date          Amount        Goal          Recurrence\n" +
-                            "part-time job                    2023-10-31    500.00        car           none\n"
+                            "part-time job                    " + date + "    500.00        car           none\n"
             ),
             new CommandTestCase(
                     "in red packet money /amount 50 /goal PS5",
                     "Nice! The following income has been tracked:\n" +
                             "Description                      Date          Amount        Goal          Recurrence\n" +
-                            "red packet money                 2023-10-31    50.00         PS5           none\n"
+                            "red packet money                 " + date + "    50.00         PS5           none\n"
             ),
             new CommandTestCase(
                     "in red packet money /amount 50 /goal PS5 /date 12102000",
@@ -216,14 +216,15 @@ class AddIncomeCommandTest {
     @Test
     void badRecurrenceDate() {
         LocalDate date = LocalDate.now();
-        String goodDate = date.minusDays(6).format(Parser.DATE_INPUT_FORMATTER);
+        LocalDate goodDate = date.minusDays(6);
+        String goodDateStr = goodDate.format(Parser.DATE_INPUT_FORMATTER);
         String badDate = date.minusWeeks(1).format(Parser.DATE_INPUT_FORMATTER);
         CommandTestCase[] testCases = new CommandTestCase[] {
             new CommandTestCase(
-                    "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + goodDate,
+                    "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + goodDateStr,
                     "Nice! The following income has been tracked:\n" +
                             "Description                      Date          Amount        Goal          Recurrence\n" +
-                            "pocket money                     2023-10-25    50.00         PS5           weekly\n"
+                            "pocket money                     " + goodDate + "    50.00         PS5           weekly\n"
             ),
             new CommandTestCase(
                     "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + badDate,
