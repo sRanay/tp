@@ -27,13 +27,13 @@ class AddExpenseCommandTest {
                     "out dinner /amount 10.50 /category food",
                     "Nice! The following expense has been tracked:\n" +
                             "Description                      Date          Amount        Category      Recurrence\n" +
-                            "dinner                           2023-10-31    10.50         food          none\n"
+                            "dinner                           " + date + "    10.50         food          none\n"
             ),
             new CommandTestCase(
                     "out pokemon card pack /amount 10.50 /category games",
                     "Nice! The following expense has been tracked:\n" +
                             "Description                      Date          Amount        Category      Recurrence\n" +
-                            "pokemon card pack                2023-10-31    10.50         games         none\n"
+                            "pokemon card pack                " + date + "    10.50         games         none\n"
             ),
         };
         CommandTestCase.runTestCases(testCases);
