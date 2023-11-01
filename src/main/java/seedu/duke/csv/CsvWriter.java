@@ -16,7 +16,9 @@ public class CsvWriter {
     }
 
     public CsvWriter(String fullPath, boolean isAppend) throws DukeException {
+        String property = System.getProperty("line.separator");
         try {
+            System.setProperty("line.separator", "\n");
             Writer fileWriter = new FileWriter(fullPath, isAppend);
             this.writer = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR,
                                         CSVWriter.DEFAULT_QUOTE_CHARACTER,
@@ -25,6 +27,7 @@ public class CsvWriter {
         } catch (IOException e) {
             throw new DukeException("Cannot create file");
         }
+        System.setProperty("line.separator", property);
     }
 
     /**
