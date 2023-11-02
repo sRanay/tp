@@ -18,7 +18,7 @@ public class Ui {
     private static final String PROGRAM_NAME = "FinText";
     private static final char FILLER_CHAR = ' ';
     private static final char LIST_SEPARATOR = '=';
-    private static final int ID_COLUMN_WIDTH = 3;
+    private static final int ID_COLUMN_PADDING = 2;
     private static final int SPACE_BETWEEN_COLS = 3;
 
     private static final String AMOUNT_FORMAT = "%.2f";
@@ -198,7 +198,7 @@ public class Ui {
             end = " transaction.";
         }
         print("Alright! Displaying " + list.size() + end);
-        Integer[] columnWidths = {ID_COLUMN_WIDTH, LIST_COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH,
+        Integer[] columnWidths = {Integer.toString(list.size()).length()+ID_COLUMN_PADDING, LIST_COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH,
             COLUMN_WIDTH};
         int totalSpace = Arrays.stream(columnWidths)
                 .mapToInt(Integer::intValue)
