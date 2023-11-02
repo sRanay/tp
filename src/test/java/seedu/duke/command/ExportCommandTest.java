@@ -10,6 +10,7 @@ import org.junit.jupiter.api.condition.OS;
 import seedu.duke.classes.StateManager;
 import seedu.duke.exception.DukeException;
 import seedu.duke.parser.Parser;
+import seedu.duke.storage.Storage;
 import seedu.duke.ui.Ui;
 
 import java.io.ByteArrayOutputStream;
@@ -19,23 +20,44 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 public class ExportCommandTest {
+
+    private static final String TEST_DIR = "./TestFiles";
+    private static final String GOAL_STORAGE_FILENAME = "./TestFiles/goal-store.csv";
+    private static final String CATEGORY_STORAGE_FILENAME = "./TestFiles/category-store.csv";
+    private static final String INCOME_STORAGE_FILENAME = "./TestFiles/income-store.csv";
+    private static final String EXPENSE_STORAGE_FILENAME = "./TestFiles/expense-store.csv";
+    private static final String EXPORT_STORAGE_FILENAME = "./TestFiles/Transactions.csv";
     private static Parser parser = new Parser();
     private ByteArrayOutputStream outputStream;
+    private Storage storage;
+
+    @BeforeEach
+    void initialise() {
+        File directory = new File(TEST_DIR);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        storage = new Storage(GOAL_STORAGE_FILENAME, CATEGORY_STORAGE_FILENAME, INCOME_STORAGE_FILENAME,
+                EXPENSE_STORAGE_FILENAME, EXPORT_STORAGE_FILENAME);
+    }
 
     @AfterEach
     void removeFile() {
-        File file = new File("Transactions.csv");
+        File file = new File(EXPORT_STORAGE_FILENAME);
         file.delete();
     }
+
     @Nested
     class ExportCommandOutput {
         @AfterEach
         void clearStateManager() {
-            File file = new File("Transactions.csv");
+            File file = new File(EXPORT_STORAGE_FILENAME);
             file.delete();
             StateManager.clearStateManager();
         }
+
         @BeforeEach
         void populateStateManager() {
             try {
@@ -101,7 +123,7 @@ public class ExportCommandTest {
 
         @AfterEach
         void clearStateManager() {
-            File file = new File("Transactions.csv");
+            File file = new File(EXPORT_STORAGE_FILENAME);
             file.delete();
             StateManager.clearStateManager();
         }
@@ -116,7 +138,7 @@ public class ExportCommandTest {
             String commandWord = parser.getDescription(userInput);
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
-            File output = new File("Transactions.csv");
+            File output = new File(EXPORT_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/Windows/valid/Transactions-in.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -131,7 +153,7 @@ public class ExportCommandTest {
             String commandWord = parser.getDescription(userInput);
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
-            File output = new File("Transactions.csv");
+            File output = new File(EXPORT_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/MacOS/valid/Transactions-in.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -146,7 +168,7 @@ public class ExportCommandTest {
             String commandWord = parser.getDescription(userInput);
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
-            File output = new File("Transactions.csv");
+            File output = new File(EXPORT_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/Linux/valid/Transactions-in.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -174,13 +196,14 @@ public class ExportCommandTest {
 
         @AfterEach
         void clearStateManager() {
-            File file = new File("Transactions.csv");
+            File file = new File(EXPORT_STORAGE_FILENAME);
             file.delete();
             StateManager.clearStateManager();
         }
+
         @Test
         @EnabledOnOs({OS.WINDOWS})
-        public void  exportFileAllTransactionsWindows() throws DukeException, IOException {
+        public void exportFileAllTransactionsWindows() throws DukeException, IOException {
             outputStream = new ByteArrayOutputStream();
             Ui ui = new Ui(outputStream);
             String userInput = "export";
@@ -188,7 +211,7 @@ public class ExportCommandTest {
             String commandWord = parser.getDescription(userInput);
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
-            File output = new File("Transactions.csv");
+            File output = new File(EXPORT_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/Windows/valid/Transactions-all.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -203,7 +226,7 @@ public class ExportCommandTest {
             String commandWord = parser.getDescription(userInput);
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
-            File output = new File("Transactions.csv");
+            File output = new File(EXPORT_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/MacOS/valid/Transactions-all.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -218,7 +241,7 @@ public class ExportCommandTest {
             String commandWord = parser.getDescription(userInput);
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
-            File output = new File("Transactions.csv");
+            File output = new File(EXPORT_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/Linux/valid/Transactions-all.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -246,7 +269,7 @@ public class ExportCommandTest {
 
         @AfterEach
         void clearStateManager() {
-            File file = new File("Transactions.csv");
+            File file = new File(EXPORT_STORAGE_FILENAME);
             file.delete();
             StateManager.clearStateManager();
         }
@@ -261,7 +284,7 @@ public class ExportCommandTest {
             String commandWord = parser.getDescription(userInput);
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
-            File output = new File("Transactions.csv");
+            File output = new File(EXPORT_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/Windows/valid/Transactions-out.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -276,7 +299,7 @@ public class ExportCommandTest {
             String commandWord = parser.getDescription(userInput);
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
-            File output = new File("Transactions.csv");
+            File output = new File(EXPORT_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/MacOS/valid/Transactions-out.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -291,7 +314,7 @@ public class ExportCommandTest {
             String commandWord = parser.getDescription(userInput);
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
-            File output = new File("Transactions.csv");
+            File output = new File(EXPORT_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/Linux/valid/Transactions-out.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -332,7 +355,7 @@ public class ExportCommandTest {
             ExportCommand command = new ExportCommand(commandWord, args);
             command.execute(ui);
             assertEquals("Wrong type entered. Please enter /type in, /type out or blank\n"
-                    ,outputStream.toString());
+                    , outputStream.toString());
         }
     }
 }
