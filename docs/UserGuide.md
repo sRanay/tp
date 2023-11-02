@@ -87,7 +87,7 @@ Adds an expense entry for 'dinner' with an amount of 10.50 towards the 'food' ca
 Adds an expense entry that happened on 18 Sept 2023 for 'pokemon card pack' for an amount of 10.50 towards
 the 'game' category.
 
-`out spotify /amount 9 /category entertainment /recurring monthly`<br>
+`out spotify /amount 9 /category entertainment /recurrence monthly`<br>
 Adds an expense entry for 'pokemon card pack' for an amount of 9 towards
 the 'entertainment' category which recurs monthly.
 
