@@ -24,6 +24,7 @@ activate ":Command" #FFBBBB
 deactivate
 ":Parser" --> ":Main": command: Command
 destroy ":Parser"
+note over ":Parser": ":Parser" lifeline\nends here
 
 ":Main" -> ":Command": command.execute(ui: UI)
 activate ":Command" #FFBBBB
