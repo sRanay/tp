@@ -24,6 +24,7 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
 
 1. Ensure that you have Java 11 installed on your computer.
 2. Download the latest version of `FinText` from [here](https://github.com/AY2324S1-CS2113-W12-3/tp/releases).
+3. Run the program by `java -jar FinText.jar`
 
 ## Features
 
@@ -34,10 +35,22 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
     command.
 > * Arguments can be in any order. <br>
     e.g. if a command has the arguments `/amount AMOUNT /goal GOAL`, `/goal GOAL /amount AMOUNT` is acceptable as well.
-
+> * Additional supplied arguments will be simply ignored.
+> * User is intentionally not restricted to input future or past date to the `/date DATE` argument to allow for flexibility in managing their transactions.
 
 ### Viewing Help: `help`
 Shows a list of all the commands available to the user.
+
+User can also view more details of a command.
+
+Format: `help COMMAND`
+
+**Usage Example:**
+
+`help in` - Shows details on how to use the `in` command.
+
+`help delete` - Shows details on how to use the `delete` command.
+
 
 ### Adding an income entry: `in`
 Adds an income towards a goal.
