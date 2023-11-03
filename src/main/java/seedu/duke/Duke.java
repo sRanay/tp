@@ -43,16 +43,19 @@ public class Duke {
     public void run() {
         ui.printGreeting();
         String userInput;
-        while (true) {
+        boolean continueRunning = true;
+        while (continueRunning) {
+            System.out.print("> User: ");
             userInput = ui.readUserInput();
             try {
                 Command command = new Parser().parse(userInput);
                 command.execute(ui);
 
-                save();
                 if (command instanceof ExitCommand) {
-                    break;
+                    continueRunning = false;
                 }
+                save();
+
             } catch (DukeException e) {
                 System.out.println(e.getMessage());
             }
