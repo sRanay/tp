@@ -21,17 +21,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageTest {
     private static final String DATE_PATTERN = "dd/MM/yyyy";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
+    private static final String TEST_DIR = "./TestFiles";
+    private static final String GOAL_STORAGE_FILENAME = "./TestFiles/goal-store.csv";
+    private static final String CATEGORY_STORAGE_FILENAME = "./TestFiles/category-store.csv";
+    private static final String INCOME_STORAGE_FILENAME = "./TestFiles/income-store.csv";
+    private static final String EXPENSE_STORAGE_FILENAME = "./TestFiles/expense-store.csv";
+    private static final String EXPORT_STORAGE_FILENAME = "./TestFiles/Transactions.csv";
+
     private Storage storage;
 
     @BeforeEach
     void initialise() {
-        storage = new Storage();
+        File directory = new File(TEST_DIR);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        storage = new Storage(GOAL_STORAGE_FILENAME, CATEGORY_STORAGE_FILENAME, INCOME_STORAGE_FILENAME,
+                EXPENSE_STORAGE_FILENAME, EXPORT_STORAGE_FILENAME);
     }
 
     @Test
@@ -77,11 +90,11 @@ public class StorageTest {
     }
 
     @Test
-    void validDateWithCorrectDateString()  throws DukeException {
+    void validDateWithCorrectDateString() throws DukeException {
         String dateStr = "25/10/2023";
         String testFileName = "filename";
         LocalDate date = LocalDate.parse("25/10/2023", FORMATTER);
-        assertEquals(date ,storage.validDate(dateStr, testFileName));
+        assertEquals(date, storage.validDate(dateStr, testFileName));
     }
 
     @Test
@@ -118,31 +131,32 @@ public class StorageTest {
         @BeforeEach
         void copyFiles() throws IOException {
             File src = new File("./TestCSV/Windows/valid/category-store.csv");
-            File dst = new File("category-store.csv");
+            File dst = new File(CATEGORY_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
             src = new File("./TestCSV/Windows/valid/goal-store.csv");
-            dst = new File("goal-store.csv");
+            dst = new File(GOAL_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
             src = new File("./TestCSV/Windows/valid/expense-store.csv");
-            dst = new File("expense-store.csv");
+            dst = new File(EXPENSE_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
             src = new File("./TestCSV/Windows/valid/income-store.csv");
-            dst = new File("income-store.csv");
+            dst = new File(INCOME_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
         }
 
         @AfterEach
         void clearStateManager() {
-            File file = new File("category-store.csv");
+            File file = new File(CATEGORY_STORAGE_FILENAME);
             file.delete();
-            file = new File("goal-store.csv");
+            file = new File(GOAL_STORAGE_FILENAME);
             file.delete();
-            file = new File("expense-store.csv");
+            file = new File(EXPENSE_STORAGE_FILENAME);
             file.delete();
-            file = new File("income-store.csv");
+            file = new File(INCOME_STORAGE_FILENAME);
             file.delete();
             StateManager.clearStateManager();
         }
+
         @Test
         void loadWithValidStorageFile() throws DukeException {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -190,31 +204,32 @@ public class StorageTest {
         @BeforeEach
         void copyFiles() throws IOException {
             File src = new File("./TestCSV/Windows/empty/category-store.csv");
-            File dst = new File("category-store.csv");
+            File dst = new File(CATEGORY_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
             src = new File("./TestCSV/Windows/empty/goal-store.csv");
-            dst = new File("goal-store.csv");
+            dst = new File(GOAL_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
             src = new File("./TestCSV/Windows/empty/expense-store.csv");
-            dst = new File("expense-store.csv");
+            dst = new File(EXPENSE_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
             src = new File("./TestCSV/Windows/empty/income-store.csv");
-            dst = new File("income-store.csv");
+            dst = new File(INCOME_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
         }
 
         @AfterEach
         void clearStateManager() {
-            File file = new File("category-store.csv");
+            File file = new File(CATEGORY_STORAGE_FILENAME);
             file.delete();
-            file = new File("goal-store.csv");
+            file = new File(GOAL_STORAGE_FILENAME);
             file.delete();
-            file = new File("expense-store.csv");
+            file = new File(EXPENSE_STORAGE_FILENAME);
             file.delete();
-            file = new File("income-store.csv");
+            file = new File(INCOME_STORAGE_FILENAME);
             file.delete();
             StateManager.clearStateManager();
         }
+
         @Test
         void loadWithEmptyColumns() throws DukeException {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -254,33 +269,34 @@ public class StorageTest {
                     , outputStream.toString());
         }
     }
+
     @Nested
     class WithErrorColumns {
         @BeforeEach
         void copyFiles() throws IOException {
             File src = new File("./TestCSV/Windows/error/category-store.csv");
-            File dst = new File("category-store.csv");
+            File dst = new File(CATEGORY_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
             src = new File("./TestCSV/Windows/error/goal-store.csv");
-            dst = new File("goal-store.csv");
+            dst = new File(GOAL_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
             src = new File("./TestCSV/Windows/error/expense-store.csv");
-            dst = new File("expense-store.csv");
+            dst = new File(EXPENSE_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
             src = new File("./TestCSV/Windows/error/income-store.csv");
-            dst = new File("income-store.csv");
+            dst = new File(INCOME_STORAGE_FILENAME);
             Files.copy(src.toPath(), dst.toPath());
         }
 
         @AfterEach
         void clearStateManager() {
-            File file = new File("category-store.csv");
+            File file = new File(CATEGORY_STORAGE_FILENAME);
             file.delete();
-            file = new File("goal-store.csv");
+            file = new File(GOAL_STORAGE_FILENAME);
             file.delete();
-            file = new File("expense-store.csv");
+            file = new File(EXPENSE_STORAGE_FILENAME);
             file.delete();
-            file = new File("income-store.csv");
+            file = new File(INCOME_STORAGE_FILENAME);
             file.delete();
             StateManager.clearStateManager();
         }
@@ -324,6 +340,7 @@ public class StorageTest {
                     , outputStream.toString());
         }
     }
+
     @Nested
     class SaveToFile {
         @BeforeEach
@@ -349,13 +366,13 @@ public class StorageTest {
 
         @AfterEach
         void clearStateManager() {
-            File file = new File("category-store.csv");
+            File file = new File(CATEGORY_STORAGE_FILENAME);
             file.delete();
-            file = new File("goal-store.csv");
+            file = new File(GOAL_STORAGE_FILENAME);
             file.delete();
-            file = new File("expense-store.csv");
+            file = new File(EXPENSE_STORAGE_FILENAME);
             file.delete();
-            file = new File("income-store.csv");
+            file = new File(INCOME_STORAGE_FILENAME);
             file.delete();
             StateManager.clearStateManager();
         }
@@ -364,16 +381,16 @@ public class StorageTest {
         @EnabledOnOs({OS.WINDOWS})
         void saveDataWorkingWindows() throws DukeException, IOException {
             storage.save();
-            File output = new File("category-store.csv");
+            File output = new File(CATEGORY_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/Windows/valid/category-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
-            output = new File("goal-store.csv");
+            output = new File(GOAL_STORAGE_FILENAME);
             testFile = new File("./TestCSV/Windows/valid/goal-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
-            output = new File("income-store.csv");
+            output = new File(INCOME_STORAGE_FILENAME);
             testFile = new File("./TestCSV/Windows/valid/income-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
-            output = new File("expense-store.csv");
+            output = new File(EXPENSE_STORAGE_FILENAME);
             testFile = new File("./TestCSV/Windows/valid/expense-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -382,16 +399,16 @@ public class StorageTest {
         @EnabledOnOs({OS.MAC})
         void saveDataWorkingMac() throws DukeException, IOException {
             storage.save();
-            File output = new File("category-store.csv");
+            File output = new File(CATEGORY_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/MacOS/valid/category-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
-            output = new File("goal-store.csv");
+            output = new File(GOAL_STORAGE_FILENAME);
             testFile = new File("./TestCSV/MacOS/valid/goal-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
-            output = new File("income-store.csv");
+            output = new File(INCOME_STORAGE_FILENAME);
             testFile = new File("./TestCSV/MacOS/valid/income-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
-            output = new File("expense-store.csv");
+            output = new File(EXPENSE_STORAGE_FILENAME);
             testFile = new File("./TestCSV/MacOS/valid/expense-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
@@ -400,16 +417,16 @@ public class StorageTest {
         @EnabledOnOs({OS.LINUX})
         void saveDataWorkingLinux() throws DukeException, IOException {
             storage.save();
-            File output = new File("category-store.csv");
+            File output = new File(CATEGORY_STORAGE_FILENAME);
             File testFile = new File("./TestCSV/Linux/valid/category-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
-            output = new File("goal-store.csv");
+            output = new File(GOAL_STORAGE_FILENAME);
             testFile = new File("./TestCSV/Linux/valid/goal-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
-            output = new File("income-store.csv");
+            output = new File(INCOME_STORAGE_FILENAME);
             testFile = new File("./TestCSV/Linux/valid/income-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
-            output = new File("expense-store.csv");
+            output = new File(EXPENSE_STORAGE_FILENAME);
             testFile = new File("./TestCSV/Linux/valid/expense-store.csv");
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
