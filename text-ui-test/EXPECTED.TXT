@@ -1,4 +1,3 @@
-
 Welcome to FinText, your personal finance tracker.
 > User: Sorry I do not understand your command
 > User: Bye Bye!
