@@ -19,7 +19,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class Storage {
-
+    public static String exportStorageFileName;
     private static final String DATE_PATTERN = "dd/MM/yyyy";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
     private static final String FAILED_CONVERT_TO_NON_NEG_DOUBLE = "Cannot convert amount into Double type in ";
@@ -49,16 +49,7 @@ public class Storage {
     private static String categoryStorageFileName;
     private static String incomeStorageFileName;
     private static String expenseStorageFileName;
-    public static String exportStorageFileName;
 
-    public boolean checkDirExist() {
-        File directory = new File(STORAGE_DIR);
-        if (!directory.exists()) {
-            directory.mkdir();
-            return false;
-        }
-        return true;
-    }
     public Storage() {
         goalStorageFileName = GOAL_STORAGE_FILE_NAME;
         categoryStorageFileName = CATEGORY_STORAGE_FILE_NAME;
@@ -76,6 +67,14 @@ public class Storage {
         exportStorageFileName = exportFileName;
     }
 
+    public boolean checkDirExist() {
+        File directory = new File(STORAGE_DIR);
+        if (!directory.exists()) {
+            directory.mkdir();
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Check if the columns in each row is it blank or empty.

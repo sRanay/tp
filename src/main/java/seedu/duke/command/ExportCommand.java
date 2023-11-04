@@ -1,6 +1,9 @@
 package seedu.duke.command;
 
-import seedu.duke.classes.*;
+import seedu.duke.classes.Expense;
+import seedu.duke.classes.Transaction;
+import seedu.duke.classes.Income;
+import seedu.duke.classes.StateManager;
 import seedu.duke.csv.CsvWriter;
 import seedu.duke.exception.DukeException;
 import seedu.duke.ui.Ui;
