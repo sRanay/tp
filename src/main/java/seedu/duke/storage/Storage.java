@@ -26,11 +26,11 @@ public class Storage {
     private static final String FAILED_CONVERT_TO_LOCALDATE = "Cannot convert date into LocalDate type in ";
     private static final String FAILED_CONVERT_BOOLEAN = "Cannot convert string into boolean type in ";
     private static final String STORAGE_DIR = "./data";
-    private static final String GOAL_STORAGE_FILE_NAME = "./data/goal-store.csv";
-    private static final String CATEGORY_STORAGE_FILE_NAME = "./data/category-store.csv";
-    private static final String INCOME_STORAGE_FILE_NAME = "./data/income-store.csv";
-    private static final String EXPENSE_STORAGE_FILE_NAME = "./data/expense-store.csv";
-    private static final String EXPORT_STORAGE_FILE_NAME = "./data/Transactions.csv";
+    private static final String GOAL_STORAGE_FILE_NAME = STORAGE_DIR + "/goal-store.csv";
+    private static final String CATEGORY_STORAGE_FILE_NAME = STORAGE_DIR + "/category-store.csv";
+    private static final String INCOME_STORAGE_FILE_NAME = STORAGE_DIR + "/income-store.csv";
+    private static final String EXPENSE_STORAGE_FILE_NAME = STORAGE_DIR + "/expense-store.csv";
+    private static final String EXPORT_STORAGE_FILE_NAME = "./Transactions.csv";
     private static final String[] GOAL_HEADER = {"Description", "Amount"};
     private static final String[] CATEGORY_HEADER = {"Name"};
     private static final String[] INCOME_HEADER = {"Description", "Amount", "Date", "Goal",
