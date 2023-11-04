@@ -12,6 +12,7 @@ import seedu.duke.exception.DukeException;
 import seedu.duke.csv.CsvReader;
 import seedu.duke.parser.Parser;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -19,12 +20,17 @@ import java.util.ArrayList;
 
 public class Storage {
 
-    public static String exportStorageFileName;
     private static final String DATE_PATTERN = "dd/MM/yyyy";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
     private static final String FAILED_CONVERT_TO_NON_NEG_DOUBLE = "Cannot convert amount into Double type in ";
     private static final String FAILED_CONVERT_TO_LOCALDATE = "Cannot convert date into LocalDate type in ";
     private static final String FAILED_CONVERT_BOOLEAN = "Cannot convert string into boolean type in ";
+    private static final String STORAGE_DIR = "./data";
+    private static final String GOAL_STORAGE_FILE_NAME = "./data/goal-store.csv";
+    private static final String CATEGORY_STORAGE_FILE_NAME = "./data/category-store.csv";
+    private static final String INCOME_STORAGE_FILE_NAME = "./data/income-store.csv";
+    private static final String EXPENSE_STORAGE_FILE_NAME = "./data/expense-store.csv";
+    private static final String EXPORT_STORAGE_FILE_NAME = "./data/Transactions.csv";
     private static final String[] GOAL_HEADER = {"Description", "Amount"};
     private static final String[] CATEGORY_HEADER = {"Name"};
     private static final String[] INCOME_HEADER = {"Description", "Amount", "Date", "Goal",
@@ -43,14 +49,22 @@ public class Storage {
     private static String categoryStorageFileName;
     private static String incomeStorageFileName;
     private static String expenseStorageFileName;
+    public static String exportStorageFileName;
 
-
+    public boolean checkDirExist() {
+        File directory = new File(STORAGE_DIR);
+        if (!directory.exists()) {
+            directory.mkdir();
+            return false;
+        }
+        return true;
+    }
     public Storage() {
-        goalStorageFileName = "goal-store.csv";
-        categoryStorageFileName = "category-store.csv";
-        incomeStorageFileName = "income-store.csv";
-        expenseStorageFileName = "expense-store.csv";
-        exportStorageFileName = "Transactions.csv";
+        goalStorageFileName = GOAL_STORAGE_FILE_NAME;
+        categoryStorageFileName = CATEGORY_STORAGE_FILE_NAME;
+        incomeStorageFileName = INCOME_STORAGE_FILE_NAME;
+        expenseStorageFileName = EXPENSE_STORAGE_FILE_NAME;
+        exportStorageFileName = EXPORT_STORAGE_FILE_NAME;
     }
 
     public Storage(String goalFileName, String categoryFileName, String incomeFileName, String expenseFileName,
@@ -276,10 +290,12 @@ public class Storage {
     }
 
     public void load() throws DukeException {
-        loadGoal();
-        loadCategory();
-        loadIncome();
-        loadExpense();
+        if (checkDirExist()) {
+            loadGoal();
+            loadCategory();
+            loadIncome();
+            loadExpense();
+        }
     }
 
     /**
@@ -364,6 +380,7 @@ public class Storage {
     }
 
     public void save() throws DukeException {
+        checkDirExist();
         saveGoal();
         saveCategory();
         saveIncome();
