@@ -31,7 +31,8 @@ public class HelpCommandTest {
                 "category          Create or delete a spending category\n" +
                 "goal              Add or remove goals\n" +
                 "export            Exports the transactions stored into a CSV File. " +
-                "By Default, it will export ALL transactions\n\n", outputStream.toString());
+                "By Default, it will export ALL transactions\n" +
+                "bye               Exits the program\n\n", outputStream.toString());
     }
 
     @Test
@@ -53,7 +54,8 @@ public class HelpCommandTest {
                 "category          Create or delete a spending category\n" +
                 "goal              Add or remove goals\n" +
                 "export            Exports the transactions stored into a CSV File. " +
-                "By Default, it will export ALL transactions\n\n", outputStream.toString());
+                "By Default, it will export ALL transactions\n" +
+                "bye               Exits the program\n\n", outputStream.toString());
     }
 
     @Test
@@ -188,6 +190,19 @@ public class HelpCommandTest {
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
         assertEquals("\nUsage: help\n\n", outputStream.toString());
+    }
+
+    @Test
+    void helpCommand_withValidByeCommand() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "help bye";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        HelpCommand command = new HelpCommand(commandWord, args);
+        command.execute(ui);
+        assertEquals("\nUsage: bye\n\n", outputStream.toString());
     }
 
     @Test

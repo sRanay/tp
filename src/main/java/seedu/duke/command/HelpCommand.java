@@ -69,6 +69,8 @@ public class HelpCommand extends Command {
     private static final String[] CATEGORY_COMMAND_FLAGS = {"/add", "/remove"};
     private static final String[] CATEGORY_COMMAND_FLAGS_DESCRIPTION = {"Name of spending category to be created",
                                                                         "Name of spending cateogry to be deleted"};
+    private static final String BYE_COMMAND = "bye";
+    private static final String BYE_DESCRIPTION = "Exits the program";
     private static final String USAGE_PREFIX = "Usage: ";
     private static final String INVALID_COMMAND = "NO SUCH COMMAND";
     private ArrayList<ArrayList<String>> helpList;
@@ -78,6 +80,13 @@ public class HelpCommand extends Command {
         helpList = new ArrayList<ArrayList<String>>();
     }
 
+    /**
+     * Adds command name and its description to the ArrayList.
+     *
+     * @param command Command name.
+     * @param description Description of the command.
+     * @return ArrayList that contains both the command name and its description.
+     */
     public ArrayList<String> convertCommandList(String command, String description) {
         ArrayList<String> tableData = new ArrayList<String>();
         tableData.add(command);
@@ -85,46 +94,99 @@ public class HelpCommand extends Command {
         return tableData;
     }
 
+    /**
+     * Returns the help command and its description.
+     *
+     * @return ArrayList that contains both the help command and its description.
+     */
     public ArrayList<String> printHelpDescription() {
         ArrayList<String> helpDescriptionList = convertCommandList(HELP_COMMAND, HELP_DESCRIPTION);
         return helpDescriptionList;
     }
 
+    /**
+     * Returns the bye command and its description.
+     *
+     * @return ArrayList that contains both the bye command and its description.
+     */
+    public ArrayList<String> printByeDescription() {
+        ArrayList<String> byeDescriptionList = convertCommandList(BYE_COMMAND, BYE_DESCRIPTION);
+        return byeDescriptionList;
+    }
+
+    /**
+     * Returns the in command and its description.
+     *
+     * @return ArrayList that contains both the in command and its description.
+     */
     public ArrayList<String> printInDescription() {
         ArrayList<String> inDescriptionList = convertCommandList(IN_COMMAND, IN_DESCRIPTION);
         return inDescriptionList;
     }
 
+    /**
+     * Returns the out command and its description.
+     *
+     * @return ArrayList that contains both the out command and its description.
+     */
     public ArrayList<String> printOutDescription() {
         ArrayList<String> outDescriptionList = convertCommandList(OUT_COMMAND, OUT_DESCRIPTION);
         return outDescriptionList;
     }
 
+    /**
+     * Returns the delete command and its description.
+     *
+     * @return ArrayList that contains both the delete command and its description.
+     */
     public ArrayList<String> printDeleteDescription() {
         ArrayList<String> deleteDescriptionList = convertCommandList(DELETE_COMMAND, DELETE_DESCRIPTION);
         return deleteDescriptionList;
     }
 
+    /**
+     * Returns the list command and its description.
+     *
+     * @return ArrayList that contains both the list command and its description.
+     */
     public ArrayList<String> printListDescription() {
         ArrayList<String> listDescriptionList = convertCommandList(LIST_COMMAND, LIST_DESCRIPTION);
         return listDescriptionList;
     }
 
+    /**
+     * Returns the export command and its description.
+     *
+     * @return ArrayList that contains both the export command and its description.
+     */
     public ArrayList<String> printExportDescription() {
         ArrayList<String> exportDescriptionList = convertCommandList(EXPORT_COMMAND, EXPORT_DESCRIPTION);
         return exportDescriptionList;
     }
 
+    /**
+     * Returns the category command and its description.
+     *
+     * @return ArrayList that contains both the category command and its description.
+     */
     public ArrayList<String> printCategoryDescription() {
         ArrayList<String> categoryDescriptionList = convertCommandList(CATEGORY_COMMAND, CATEGORY_DESCRIPTION);
         return categoryDescriptionList;
     }
 
+    /**
+     * Returns the goal command and its description.
+     *
+     * @return ArrayList that contains both the goal command and its description.
+     */
     public ArrayList<String> printGoalDescription() {
         ArrayList<String> goalDescriptionList = convertCommandList(GOAL_COMMAND, GOAL_DESCRIPTION);
         return goalDescriptionList;
     }
 
+    /**
+     * Add all the commands into helpList to be printed out.
+     */
     public void printFullList() {
         this.helpList.add(printHelpDescription());
         this.helpList.add(printInDescription());
@@ -134,48 +196,115 @@ public class HelpCommand extends Command {
         this.helpList.add(printCategoryDescription());
         this.helpList.add(printGoalDescription());
         this.helpList.add(printExportDescription());
+        this.helpList.add(printByeDescription());
         assert this.helpList != null;
     }
 
+    /**
+     * Crafts the help usage string.
+     *
+     * @return help usage string.
+     */
     public String helpUsage() {
         return USAGE_PREFIX + HELP_COMMAND;
     }
 
+    /**
+     * Crafts the bye usage string.
+     *
+     * @return bye usage string.
+     */
+    public String byeUsage() {
+        return USAGE_PREFIX + BYE_COMMAND;
+    }
+
+    /**
+     * Crafts the in usage string.
+     *
+     * @return in usage string.
+     */
     public String inUsage() {
         return USAGE_PREFIX + IN_COMMAND + IN_COMMAND_USAGE;
     }
 
+    /**
+     * Crafts the out usage string.
+     *
+     * @return out usage string.
+     */
     public String outUsage() {
         return USAGE_PREFIX + OUT_COMMAND + OUT_COMMAND_USAGE;
     }
 
+    /**
+     * Crafts the delete usage string.
+     *
+     * @return delete usage string.
+     */
     public String deleteUsage() {
         return USAGE_PREFIX + DELETE_COMMAND + DELETE_COMMAND_USAGE;
     }
 
+    /**
+     * Crafts the list usage string.
+     *
+     * @return list usage string.
+     */
     public String listUsage() {
         return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE;
     }
 
+    /**
+     * Crafts the export usage string.
+     *
+     * @return export usage string.
+     */
     public String exportUsage() {
         return USAGE_PREFIX + EXPORT_COMMAND + EXPORT_COMMAND_USAGE;
     }
+
+    /**
+     * Crafts the category add string.
+     *
+     * @return category add usage string.
+     */
     public String categoryAddUsage() {
         return USAGE_PREFIX + CATEGORY_COMMAND + CATEGORY_ADD_USAGE;
     }
 
+    /**
+     * Crafts the category remove usage string.
+     *
+     * @return category remove usage string.
+     */
     public String categoryRemoveUsage() {
         return USAGE_PREFIX + CATEGORY_COMMAND + CATEGORY_REMOVE_USAGE;
     }
 
+    /**
+     * Crafts the goal add string.
+     *
+     * @return goal add usage string.
+     */
     public String goalAddUsage() {
         return USAGE_PREFIX + GOAL_COMMAND + GOAL_ADD_USAGE;
     }
 
+    /**
+     * Crafts the goal remove usage string.
+     *
+     * @return goal remove usage string.
+     */
     public String goalRemoveUsage() {
         return USAGE_PREFIX + GOAL_COMMAND + GOAL_REMOVE_USAGE;
     }
 
+    /**
+     * Converts the command flags and description into ArrayList and stores it into helpList.
+     *
+     * @param flags Flags for the command.
+     * @param description Description for the flags.
+     */
     public void convertIntoList(String[] flags, String[] description) {
         for (int i = 0; i < flags.length; i++) {
             ArrayList<String> row = new ArrayList<String>();
@@ -185,6 +314,11 @@ public class HelpCommand extends Command {
         }
     }
 
+    /**
+     * Prints all the commands and their description or the specific commands's flag and their description.
+     *
+     * @param ui Ui class that is used to print in table format.
+     */
     public void updateOutput(Ui ui) {
         if (getDescription().isBlank()) {
             printFullList();
@@ -226,6 +360,9 @@ public class HelpCommand extends Command {
             ui.print(categoryRemoveUsage());
             convertIntoList(CATEGORY_COMMAND_FLAGS, CATEGORY_COMMAND_FLAGS_DESCRIPTION);
             break;
+        case "bye":
+            ui.print(byeUsage());
+            break;
         default:
             ui.print(INVALID_COMMAND);
             break;
@@ -236,6 +373,11 @@ public class HelpCommand extends Command {
         }
     }
 
+    /**
+     * Executes the command.
+     *
+     * @param ui Ui class that is used to print in table format.
+     */
     @Override
     public void execute(Ui ui) {
         ui.print(LINE_DIVIDER);
