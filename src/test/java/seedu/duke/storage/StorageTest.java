@@ -122,7 +122,16 @@ public class StorageTest {
     @Test
     void loadWithNoStorageFile() {
         assertThrows(DukeException.class, () -> {
-            storage.load();
+            storage.loadIncome();
+        });
+        assertThrows(DukeException.class, () -> {
+            storage.loadExpense();
+        });
+        assertThrows(DukeException.class, () -> {
+            storage.loadGoal();
+        });
+        assertThrows(DukeException.class, () -> {
+            storage.loadCategory();
         });
     }
 
