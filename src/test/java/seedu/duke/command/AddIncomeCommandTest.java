@@ -24,7 +24,7 @@ class AddIncomeCommandTest {
     private static final DukeException BAD_RECURRENCE = new DukeException("Invalid recurrence period specified...");
     private static final DukeException BAD_RECURRENCE_DATE_EXCEPTION = new DukeException(
             "Cannot specify date for recurring transaction" +
-                    "to be larger than 1 period in the past..."
+                    " to be larger than 1 period in the past..."
     );
 
     @BeforeEach
