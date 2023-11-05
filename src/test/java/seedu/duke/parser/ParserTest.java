@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ParserTest {
 
@@ -96,4 +97,29 @@ class ParserTest {
         assertEquals(EMPTY_STRING, args.get("goal"));
     }
 
+    @Test
+    void parseDoublePositive() {
+        assertEquals(Parser.parseNonNegativeDouble("18"), 18);
+        assertEquals(Parser.parseNonNegativeDouble("18."), 18);
+        assertEquals(Parser.parseNonNegativeDouble("0.5"), 0.5);
+        assertEquals(Parser.parseNonNegativeDouble(".5"), 0.5);
+        assertEquals(Parser.parseNonNegativeDouble("18.5"), 18.5);
+    }
+
+    @Test
+    void parseDoublePositiveZero() {
+        assertEquals(Parser.parseNonNegativeDouble("0"), 0);
+    }
+
+    @Test
+    void parseDoubleNegativeZero() {
+        assertNull(Parser.parseNonNegativeDouble("-0"));
+    }
+
+    @Test
+    void parseNegativeDouble() {
+        assertNull(Parser.parseNonNegativeDouble("-18.5"));
+        assertNull(Parser.parseNonNegativeDouble("-18."));
+        assertNull(Parser.parseNonNegativeDouble("-.5"));
+    }
 }
