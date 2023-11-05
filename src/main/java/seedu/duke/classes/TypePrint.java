@@ -1,14 +1,14 @@
 package seedu.duke.classes;
 
-public class Classification {
+public class TypePrint {
     private String description;
     private double currentAmount;
     private double targetAmount;
 
-    public Classification(String description, double currentAmount) {
+    public TypePrint(String description, double currentAmount) {
         this(description, currentAmount, 0.0);
     }
-    public Classification(String description, double currentAmount, double targetAmount) {
+    public TypePrint(String description, double currentAmount, double targetAmount) {
         this.description = description;
         this.currentAmount = currentAmount;
         this.targetAmount = targetAmount;

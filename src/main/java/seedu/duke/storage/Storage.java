@@ -17,8 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
-public class
-Storage {
+public class Storage {
 
     public static String exportStorageFileName;
     private static final String DATE_PATTERN = "dd/MM/yyyy";
