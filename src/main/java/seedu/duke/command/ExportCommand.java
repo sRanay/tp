@@ -29,7 +29,7 @@ public class ExportCommand extends Command {
     private static final int GOAL = 3;
     private static final int CATEGORY = 4;
     private static final int RECURRENCE = 5;
-    private static final String EMPTY_DATA = "empty";
+    private static final String EMPTY_DATA = null;
     private ArrayList<Income> incomeArray;
     private ArrayList<Expense> expenseArray;
     private CsvWriter csvFile;
