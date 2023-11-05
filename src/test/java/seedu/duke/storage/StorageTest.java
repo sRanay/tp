@@ -29,11 +29,11 @@ public class StorageTest {
     private static final String DATE_PATTERN = "dd/MM/yyyy";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
     private static final String TEST_DIR = "./TestFiles";
-    private static final String GOAL_STORAGE_FILENAME = "./TestFiles/goal-store.csv";
-    private static final String CATEGORY_STORAGE_FILENAME = "./TestFiles/category-store.csv";
-    private static final String INCOME_STORAGE_FILENAME = "./TestFiles/income-store.csv";
-    private static final String EXPENSE_STORAGE_FILENAME = "./TestFiles/expense-store.csv";
-    private static final String EXPORT_STORAGE_FILENAME = "./TestFiles/Transactions.csv";
+    private static final String GOAL_STORAGE_FILENAME = TEST_DIR + "/goal-store.csv";
+    private static final String CATEGORY_STORAGE_FILENAME = TEST_DIR + "/category-store.csv";
+    private static final String INCOME_STORAGE_FILENAME = TEST_DIR + "/income-store.csv";
+    private static final String EXPENSE_STORAGE_FILENAME = TEST_DIR + "/expense-store.csv";
+    private static final String EXPORT_STORAGE_FILENAME = TEST_DIR + "/Transactions.csv";
 
     private Storage storage;
 
@@ -122,7 +122,16 @@ public class StorageTest {
     @Test
     void loadWithNoStorageFile() {
         assertThrows(DukeException.class, () -> {
-            storage.load();
+            storage.loadIncome();
+        });
+        assertThrows(DukeException.class, () -> {
+            storage.loadExpense();
+        });
+        assertThrows(DukeException.class, () -> {
+            storage.loadGoal();
+        });
+        assertThrows(DukeException.class, () -> {
+            storage.loadCategory();
         });
     }
 

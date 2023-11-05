@@ -68,7 +68,8 @@ public class ExportCommandTest {
                 parser.parse("in part-time job /amount 1000 /goal car /date 29102023").execute(ui);
                 parser.parse("in allowance /amount 500 /goal car /date 29102023").execute(ui);
                 parser.parse("in sell stuff /amount 50 /goal ps5 /date 29102023").execute(ui);
-                parser.parse("out buy dinner /amount 15 /category food /date 29102023").execute(ui);
+                parser.parse("out buy dinner /amount 15 /category food /date 29102023 /recurrence monthly")
+                        .execute(ui);
                 parser.parse("out popmart /amount 12 /category toy /date 29102023").execute(ui);
                 parser.parse("out grab /amount 20 /category transport /date 29102023").execute(ui);
             } catch (DukeException e) {
@@ -113,7 +114,8 @@ public class ExportCommandTest {
                 parser.parse("in part-time job /amount 1000 /goal car /date 29102023").execute(ui);
                 parser.parse("in allowance /amount 500 /goal car /date 29102023").execute(ui);
                 parser.parse("in sell stuff /amount 50 /goal ps5 /date 29102023").execute(ui);
-                parser.parse("out buy dinner /amount 15 /category food /date 29102023").execute(ui);
+                parser.parse("out buy dinner /amount 15 /category food /date 29102023 /recurrence monthly")
+                        .execute(ui);
                 parser.parse("out popmart /amount 12 /category toy /date 29102023").execute(ui);
                 parser.parse("out grab /amount 20 /category transport /date 29102023").execute(ui);
             } catch (DukeException e) {
@@ -186,7 +188,8 @@ public class ExportCommandTest {
                 parser.parse("in part-time job /amount 1000 /goal car /date 29102023").execute(ui);
                 parser.parse("in allowance /amount 500 /goal car /date 29102023").execute(ui);
                 parser.parse("in sell stuff /amount 50 /goal ps5 /date 29102023").execute(ui);
-                parser.parse("out buy dinner /amount 15 /category food /date 29102023").execute(ui);
+                parser.parse("out buy dinner /amount 15 /category food /date 29102023 /recurrence monthly")
+                        .execute(ui);
                 parser.parse("out popmart /amount 12 /category toy /date 29102023").execute(ui);
                 parser.parse("out grab /amount 20 /category transport /date 29102023").execute(ui);
             } catch (DukeException e) {
@@ -259,7 +262,8 @@ public class ExportCommandTest {
                 parser.parse("in part-time job /amount 1000 /goal car /date 29102023").execute(ui);
                 parser.parse("in allowance /amount 500 /goal car /date 29102023").execute(ui);
                 parser.parse("in sell stuff /amount 50 /goal ps5 /date 29102023").execute(ui);
-                parser.parse("out buy dinner /amount 15 /category food /date 29102023").execute(ui);
+                parser.parse("out buy dinner /amount 15 /category food /date 29102023 /recurrence monthly")
+                        .execute(ui);
                 parser.parse("out popmart /amount 12 /category toy /date 29102023").execute(ui);
                 parser.parse("out grab /amount 20 /category transport /date 29102023").execute(ui);
             } catch (DukeException e) {

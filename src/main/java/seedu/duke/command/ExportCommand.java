@@ -1,9 +1,9 @@
 package seedu.duke.command;
 
 import seedu.duke.classes.Expense;
+import seedu.duke.classes.Transaction;
 import seedu.duke.classes.Income;
 import seedu.duke.classes.StateManager;
-import seedu.duke.classes.Transaction;
 import seedu.duke.csv.CsvWriter;
 import seedu.duke.exception.DukeException;
 import seedu.duke.ui.Ui;
@@ -21,8 +21,15 @@ public class ExportCommand extends Command {
     private static final String SUCESSFUL_MSG = "Transaction Data extracted";
     private static final String TYPE_ARG = "type";
     private static final String WRONG_TYPE_MSG = "Wrong type entered. Please enter /type in, /type out or blank";
-    private static final String[] HEADERS = {"Description", "Date", "Amount", "Goal", "Category"};
+    private static final String[] HEADERS = {"Description", "Date", "Amount", "Goal", "Category", "Recurrence"};
 
+    private static final int DESCRIPTION = 0;
+    private static final int AMOUNT = 1;
+    private static final int DATE = 2;
+    private static final int GOAL = 3;
+    private static final int CATEGORY = 4;
+    private static final int RECURRENCE = 5;
+    private static final String EMPTY_DATA = null;
     private ArrayList<Income> incomeArray;
     private ArrayList<Expense> expenseArray;
     private CsvWriter csvFile;
@@ -43,18 +50,19 @@ public class ExportCommand extends Command {
         String description = transaction.getDescription();
         String date = transaction.getDate().toString();
         String amount = String.valueOf(ui.formatAmount(transaction.getAmount()));
-        row[0] = description;
-        row[1] = date;
-        row[2] = amount;
+        row[DESCRIPTION] = description;
+        row[DATE] = date;
+        row[AMOUNT] = amount;
         return row;
     }
 
     public void exportIncomeData() {
         for (Income i : this.incomeArray) {
             Transaction currentTransaction = i.getTransaction();
-            String[] row = new String[5];
-            row[3] = i.getGoal().getDescription();
-            row[4] = null;
+            String[] row = new String[6];
+            row[GOAL] = i.getGoal().getDescription();
+            row[CATEGORY] = EMPTY_DATA;
+            row[RECURRENCE] = currentTransaction.getRecurrence().toString();
             this.csvFile.write(extractTransactionData(currentTransaction, row));
         }
     }
@@ -62,9 +70,10 @@ public class ExportCommand extends Command {
     public void exportExpenseData() {
         for (Expense e : this.expenseArray) {
             Transaction currentTransaction = e.getTransaction();
-            String[] row = new String[5];
-            row[3] = null;
-            row[4] = e.getCategory().getName();
+            String[] row = new String[6];
+            row[GOAL] = EMPTY_DATA;
+            row[CATEGORY] = e.getCategory().getName();
+            row[RECURRENCE] = currentTransaction.getRecurrence().toString();
             this.csvFile.write(extractTransactionData(currentTransaction, row));
         }
     }
