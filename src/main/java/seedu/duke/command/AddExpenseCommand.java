@@ -23,7 +23,7 @@ public class AddExpenseCommand extends AddTransactionCommand {
 
     @Override
     public void execute(Ui ui) throws DukeException {
-        throwIfInvalidDescOrArgs(CATEGORY_ARG, MISSING_CATEGORY);
+        throwIfInvalidDescOrArgs();
         Transaction transaction = prepareTransaction();
         Expense expense = addNewExpense(transaction);
         printSuccess(ui, expense);
@@ -51,6 +51,9 @@ public class AddExpenseCommand extends AddTransactionCommand {
     private Category handleCategory() {
         StateManager state = StateManager.getStateManager();
         String category = getArg(CATEGORY_ARG);
+        if (category == null || category.isBlank()) {
+            return state.getUncategorisedCategory();
+        }
         int index = state.getCategoryIndex(category);
         if (index == -1) {
             Category categoryToAdd = new Category(category);
