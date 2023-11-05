@@ -22,7 +22,7 @@ public abstract class AddTransactionCommand extends Command {
     private static final String BAD_DATE = "Invalid date specified...";
     private static final String BAD_RECURRENCE = "Invalid recurrence period specified...";
     private static final String BAD_RECURRENCE_DATE = "Cannot specify date for recurring transaction" +
-            "to be larger than 1 period in the past...";
+            " to be larger than 1 period in the past...";
     private boolean isValidated = false;
 
     protected AddTransactionCommand(String description, HashMap<String, String> args) {
