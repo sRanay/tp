@@ -12,6 +12,7 @@ import seedu.duke.exception.DukeException;
 import seedu.duke.csv.CsvReader;
 import seedu.duke.parser.Parser;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -131,6 +132,9 @@ public class Storage {
     public Goal convertToGoal(String name) {
         int index = StateManager.getStateManager().getGoalIndex(name);
         Goal goal = StateManager.getStateManager().getGoal(index);
+        if (goal == null) {
+            goal = StateManager.getStateManager().getUncategorisedGoal();
+        }
         return goal;
     }
 
@@ -143,6 +147,9 @@ public class Storage {
     public Category convertToCategory(String name) {
         int index = StateManager.getStateManager().getCategoryIndex(name);
         Category category = StateManager.getStateManager().getCategory(index);
+        if (category == null) {
+            category = StateManager.getStateManager().getUncategorisedCategory();
+        }
         return category;
     }
 
