@@ -1,6 +1,8 @@
 package seedu.duke.command;
 
+import seedu.duke.classes.Category;
 import seedu.duke.classes.Expense;
+import seedu.duke.classes.Goal;
 import seedu.duke.classes.Income;
 import seedu.duke.classes.StateManager;
 import seedu.duke.classes.Transaction;
@@ -45,13 +47,29 @@ public class ListCommand extends Command {
 
     // Description gets ignored for list
     private void validateArgs() throws DukeException {
-        if (!getArgs().containsKey(TYPE)) {
-            throw new DukeException(INVALID_TYPE_FORMAT);
+        if (getDescription() == null) {
+            throw new DukeException("Invalid usage, please refer to 'help list' for the correct usage");
         }
-        String type = getArg(TYPE);
-        if (!type.equals("in") && !type.equals("out")) {
-            throw new DukeException(INVALID_TYPE_FORMAT);
+        if(!getDescription().isBlank()) {
+            String description = getDescription();
+            if (!description.equalsIgnoreCase(GOAL) && !description.equalsIgnoreCase(CATEGORY)) {
+                throw new DukeException("If you wish to view status of goals/categories, please use " +
+                        "list goal or list category");
+            }
+            if(!getArgs().isEmpty()) {
+                throw new DukeException("If you wish to view status of goals/categories, please use " +
+                        "list goal or list category");
+            }
         }
+
+
+        if(getArgs().containsKey(TYPE)) {
+            String type = getArg(TYPE);
+            if (!type.equals("in") && !type.equals("out")) {
+                throw new DukeException(INVALID_TYPE_FORMAT);
+            }
+        }
+
 
         if (getArgs().containsKey((GOAL))) {
             if (getArgs().containsKey(CATEGORY)) {
@@ -82,12 +100,27 @@ public class ListCommand extends Command {
     }
 
     private void listTypeHandler() throws DukeException {
+        String description = getDescription();
+        if (description != null && !description.isBlank()) {
+            printClassificationStatus(description);
+            return;
+        }
         String type = getArg(TYPE);
         assert type != null;
         if (type.equals("in")) {
             listIncome();
         } else if (type.equals("out")) {
             listExpenses();
+        }
+    }
+
+    private void printClassificationStatus(String description) {
+        if (description.equalsIgnoreCase(GOAL)) {
+            HashMap<Goal, Double> map = StateManager.getStateManager().getGoalsStatus();
+            ui.printGoalsStatus(map);
+        } else if (description.equalsIgnoreCase(CATEGORY)) {
+            HashMap<Category,Double> map = StateManager.getStateManager().getCategoriesStatus();
+            ui.printCategoryStatus(map);
         }
     }
 

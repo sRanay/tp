@@ -1,11 +1,21 @@
 package seedu.duke.ui;
 
+import seedu.duke.classes.Category;
+import seedu.duke.classes.Classification;
+import seedu.duke.classes.Goal;
+import seedu.duke.classes.StateManager;
+
+import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -14,11 +24,13 @@ import java.util.stream.IntStream;
 public class Ui {
     public static final int COLUMN_WIDTH = 10;
     public static final int LIST_COLUMN_WIDTH = 30;
+    public static final int TYPE_WIDTH = 20;
     private static final String ELLIPSIS = "...";
     private static final String PROGRAM_NAME = "FinText";
     private static final char FILLER_CHAR = ' ';
     private static final char LIST_SEPARATOR = '=';
     private static final int ID_COLUMN_PADDING = 2;
+
     private static final int SPACE_BETWEEN_COLS = 3;
 
     private static final String AMOUNT_FORMAT = "%.2f";
@@ -37,8 +49,8 @@ public class Ui {
         scanner = new Scanner(System.in);
     }
 
-    public void printTableRow(ArrayList<String> rowValues) {
-        printTableRow(rowValues, null, null);
+    public void printTableRow(ArrayList<String> rowValues, Integer[] customWidths) {
+        printTableRow(rowValues, null, customWidths);
     }
 
     public void printTableRow(ArrayList<String> rowValues, String[] headers) {
@@ -199,7 +211,7 @@ public class Ui {
         }
         print("Alright! Displaying " + list.size() + end);
         Integer[] columnWidths = {Integer.toString(list.size()).length()+ID_COLUMN_PADDING, LIST_COLUMN_WIDTH,
-            COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH};
+            COLUMN_WIDTH, COLUMN_WIDTH, TYPE_WIDTH, COLUMN_WIDTH};
         int totalSpace = Arrays.stream(columnWidths)
                 .mapToInt(Integer::intValue)
                 .sum();
@@ -216,5 +228,129 @@ public class Ui {
         printTableRows(list, headers, columnWidths);
         print(wrapper.toString());
 
+    }
+
+    public void printGoalsStatus(HashMap<Goal,Double> goalsMap) {
+        ArrayList<Classification> goalsToPrint = new ArrayList<>();
+        Classification uncategorised = null;
+        Goal uncategorisedGoal = StateManager.getStateManager().getUncategorisedGoal();
+        if (goalsMap.containsKey(uncategorisedGoal)) {
+            String description = uncategorisedGoal.getDescription();
+            double currentAmount = goalsMap.get(uncategorisedGoal);
+            uncategorised = new Classification(description, currentAmount);
+            goalsMap.remove(uncategorisedGoal);
+        }
+        for (Map.Entry<Goal, Double> entry : goalsMap.entrySet()) {
+            String description = entry.getKey().getDescription();
+            double currentAmount = entry.getValue();
+            double targetAmount = entry.getKey().getAmount();
+            Classification goalEntry = new Classification(description, currentAmount, targetAmount);
+            goalsToPrint.add(goalEntry);
+        }
+        Comparator<Classification> typeComparator = Comparator.comparing(Classification::getDescription);
+        goalsToPrint.sort(typeComparator);
+        if (uncategorised != null) {
+            goalsToPrint.add(uncategorised);
+        }
+        print("GOALS STATUS: ");
+        printStatus(goalsToPrint);
+        printUnusedGoals(goalsMap);
+
+    }
+
+    private void printStatus(ArrayList<Classification> arrayToPrint) {
+        Integer[] columnWidths = {TYPE_WIDTH, TYPE_WIDTH};
+        String[] headers = {"Name", "Amount"};
+        for (Classification c : arrayToPrint) {
+            ArrayList<String> entry = new ArrayList<>();
+            entry.add(c.getDescription());
+            entry.add(c.getAmount());
+            printTableRow(entry, columnWidths);
+            if (c.targetAmountExists()) {
+                progressBar(c.getPercentage());
+            }
+        }
+    }
+
+    private void progressBar(Double percentage) {
+        int max_bars = 20;
+        int steps = 5;
+        double barCalculation = percentage/steps;
+        int barsToPrint = (int) Math.floor(barCalculation);
+        String openingSeparator = "[";
+        String closingSeparator = "]";
+        String progressBar = new String(new char[barsToPrint]).replace('\0', '=');
+        String filler = new String(new char[max_bars-barsToPrint]).replace('\0', ' ');
+        String progress = "Progress: " + openingSeparator + progressBar + filler
+                + closingSeparator + " " + formatAmount(percentage) + "%";
+        print(progress);
+    }
+
+    private void printUnusedGoals(HashMap<Goal, Double> goals) {
+        HashSet<Goal> keySet = new HashSet<>(goals.keySet());
+        List<String> unusedGoals = new ArrayList<>();
+        ArrayList<Goal> goalList = StateManager.getStateManager().getAllGoals();
+        for (Goal g : goalList) {
+            if(!keySet.contains(g)) {
+                unusedGoals.add(g.getDescription());
+            }
+        }
+        if (unusedGoals.isEmpty()) {
+            return;
+        }
+        unusedGoals.sort(String::compareToIgnoreCase);
+        String header = LINE_DELIMITER + "Unused Goals:";
+        print(header);
+        for (String s : unusedGoals) {
+            print(s);
+        }
+    }
+
+    public void printCategoryStatus(HashMap<Category, Double> categoryMap) {
+        ArrayList<Classification> categoriesToPrint = new ArrayList<>();
+        Category uncategorisedCategory = StateManager.getStateManager().getUncategorisedCategory();
+        Classification uncategorised = null;
+        if (categoryMap.containsKey(uncategorisedCategory)) {
+            String description = uncategorisedCategory.getName();
+            double currentAmount = categoryMap.get(uncategorisedCategory);
+            uncategorised = new Classification(description, currentAmount);
+            categoryMap.remove(uncategorisedCategory);
+        }
+
+        for (Map.Entry<Category, Double> entry : categoryMap.entrySet()) {
+            String description = entry.getKey().getName();
+            double currentAmount = entry.getValue();
+            Classification categoryEntry = new Classification(description, currentAmount);
+            categoriesToPrint.add(categoryEntry);
+        }
+        Comparator<Classification> typeComparator = Comparator.comparing(Classification::getDescription);
+        categoriesToPrint.sort(typeComparator);
+        if (uncategorised != null) {
+            categoriesToPrint.add(uncategorised);
+        }
+        print("Categories Status: ");
+        printStatus(categoriesToPrint);
+        printUnusedCategories(categoryMap);
+
+    }
+
+    private void printUnusedCategories(HashMap<Category, Double> categories) {
+        HashSet<Category> keySet = new HashSet<>(categories.keySet());
+        List<String> unusedCategories = new ArrayList<>();
+        ArrayList<Category> categoryList = StateManager.getStateManager().getAllCategories();
+        for (Category c : categoryList) {
+            if (!keySet.contains(c)) {
+                unusedCategories.add(c.getName());
+            }
+        }
+        if (unusedCategories.isEmpty()) {
+            return;
+        }
+        unusedCategories.sort(String::compareToIgnoreCase);
+        String header = LINE_DELIMITER + "Unused Categories:";
+        print(header);
+        for (String s : unusedCategories) {
+            print(s);
+        }
     }
 }
