@@ -3,17 +3,8 @@ hide circle
 skinparam classAttributeIconSize 0
 
 class Ui {
-
     {static} + COLUMN_WIDTH: int = 10
     {static} + LIST_COLUMN_WIDTH: int = 30
-    {static} - ELLIPSIS: String = "..."
-    {static} - PROGRAM_NAME: String = "FinText"
-    {static} - FILLER_CHAR: char = ' '
-    {static} - LIST_SEPARATOR: char = '='
-    {static} - ID_COLUMN_WIDTH: int = 3
-    {static} - SPACE_BETWEEN_COLS: int = 3
-    {static} - AMOUNT_FORMAT: String = "%.2f"
-    {static} - LINE_DELIMITER: char = '\\n'
 
     + Ui()
     + Ui(outputstream: OutputStream)
@@ -30,18 +21,11 @@ class Ui {
     + printBye(): String
     + readUserInput(): String
     + close(): void
-    - genColWidths(length: int, width: int): ArrayList<Integer>
-    - getDefaultColWidths(length: int): ArrayList<Integer>
-    - getPrintWidths(colWidths: ArrayList<Integer>, customWidths: Integer[]): ArrayList<Integer>
-    - mergeColWidths(colWidths: ArrayList<Integer>, customWidths: ArrayList<Integer>): ArrayList<Integer>
-    - mergeColWidths(colWidths: ArrayList<Integer>, customWidths: Integer[]): ArrayList<Integer>
-    - formatColumnValues(colWidths: ArrayList<Integer>, colValues: ArrayList<String>): String
-    - listTransactions(list: ArrayList<ArrayList<String>>, headers: String[], headerMessage: String): void
 }
 
 package "java.io" #DDDDDD {
-    class "{{abstract}}\nOutputStream" {
-        + <U+007B><U+007B>abstract<U+007D><U+007D> write(b: int): void
+    class "{abstract}\nOutputStream" {
+        + <U+007B>abstract<U+007D> write(b: int): void
         + write(b: byte[]): void
         + flush(): void
     }
@@ -56,6 +40,6 @@ package "java.util" #DDDDDD {
     }
 }
 
-Ui --> "{{abstract}}\nOutputStream" :> uses
+Ui -[dashed]-> "{abstract}\nOutputStream" :> uses
 Ui --> Scanner :> uses
 @enduml

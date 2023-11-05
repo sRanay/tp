@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class Parser {
     public static final String DATE_INPUT_PATTERN = "ddMMyyyy";
@@ -26,6 +27,8 @@ public class Parser {
     private static final String ARG_PREFIX = "/";
     private static final String DELIM = " ";
     private static final String EMPTY_STRING = "";
+    private static final Pattern DBL_POS_PATTERN = Pattern.compile("^(\\d*.?\\d+|\\d+.)$");
+    private static final Double DBL_POS_ZERO = 0.0;
 
     public Parser() {
     }
@@ -127,7 +130,10 @@ public class Parser {
 
     public static Double parseNonNegativeDouble(String value) {
         Double parsedValue = parseDouble(value);
-        if (parsedValue == null || parsedValue < 0) {
+        if (parsedValue == null
+                || !DBL_POS_PATTERN.matcher(value).matches()
+                || parsedValue.compareTo(DBL_POS_ZERO) < 0
+        ) {
             return null;
         }
 
