@@ -59,7 +59,7 @@ class ParserTest {
     }
 
     @Test
-    void getArguments_validArguments_hashmapOfArguments() {
+    void getArguments_validArguments_hashmapOfArguments() throws DukeException {
         Parser parser = new Parser();
         HashMap<String, String> args = parser.getArguments("in part time job /amount 100 /goal car");
         assertEquals("100", args.get("amount"));
@@ -67,14 +67,14 @@ class ParserTest {
     }
 
     @Test
-    void getArguments_noArgument_emptyHashMap() {
+    void getArguments_noArgument_emptyHashMap() throws DukeException {
         Parser parser = new Parser();
         HashMap<String, String> args = parser.getArguments("in part time job");
         assertEquals(0, args.size());
     }
 
     @Test
-    void getArguments_argumentWithoutValue_emptyString() {
+    void getArguments_argumentWithoutValue_emptyString() throws DukeException {
         Parser parser = new Parser();
         HashMap<String, String> args = parser.getArguments("in part time job /amount /goal");
         assertEquals(EMPTY_STRING, args.get("amount"));
@@ -82,7 +82,7 @@ class ParserTest {
     }
 
     @Test
-    void getArguments_firstArgumentWithEmptyString_emptyString() {
+    void getArguments_firstArgumentWithEmptyString_emptyString() throws DukeException {
         Parser parser = new Parser();
         HashMap<String, String> args = parser.getArguments("in part time job /amount     /goal");
         assertEquals(EMPTY_STRING, args.get("amount"));
@@ -90,7 +90,7 @@ class ParserTest {
     }
 
     @Test
-    void getArguments_secondArgumentWithEmptyString_emptyString() {
+    void getArguments_secondArgumentWithEmptyString_emptyString() throws DukeException {
         Parser parser = new Parser();
         HashMap<String, String> args = parser.getArguments("in part time job /amount /goal    ");
         assertEquals(EMPTY_STRING, args.get("amount"));
