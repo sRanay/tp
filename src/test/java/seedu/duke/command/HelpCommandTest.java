@@ -2,6 +2,7 @@ package seedu.duke.command;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.duke.exception.DukeException;
 import seedu.duke.parser.Parser;
 import seedu.duke.ui.Ui;
 
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HelpCommandTest {
     
     @Test
-    void helpCommand_printFullList() {
+    void helpCommand_printFullList() throws DukeException  {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -36,7 +37,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_withEmptyCommand() {
+    void helpCommand_withEmptyCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -59,7 +60,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_withInvalidCommand() {
+    void helpCommand_withInvalidCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -72,7 +73,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_withValidInCommand() {
+    void helpCommand_withValidInCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -91,7 +92,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_commandCaseSensitive() {
+    void helpCommand_commandCaseSensitive() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -110,7 +111,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_commandAllUpperCase() {
+    void helpCommand_commandAllUpperCase() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -129,7 +130,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_withValidOutCommand() {
+    void helpCommand_withValidOutCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -148,7 +149,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_withValidDeleteCommand() {
+    void helpCommand_withValidDeleteCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -163,7 +164,7 @@ public class HelpCommandTest {
     }
     
     @Test
-    void helpCommand_withValidListCommand() {
+    void helpCommand_withValidListCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -180,7 +181,7 @@ public class HelpCommandTest {
     }
     
     @Test
-    void helpCommand_withValidHelpCommand() {
+    void helpCommand_withValidHelpCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -193,7 +194,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_withValidByeCommand() {
+    void helpCommand_withValidByeCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -206,7 +207,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_withValidGoalCommand() {
+    void helpCommand_withValidGoalCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -224,7 +225,7 @@ public class HelpCommandTest {
     }
 
     @Test
-    void helpCommand_withValidCategoryCommand() {
+    void helpCommand_withValidCategoryCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);

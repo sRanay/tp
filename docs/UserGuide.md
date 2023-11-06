@@ -37,6 +37,7 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
     e.g. if a command has the arguments `/amount AMOUNT /goal GOAL`, `/goal GOAL /amount AMOUNT` is acceptable as well.
 > * Additional supplied arguments will be simply ignored.
 > * User is intentionally not restricted to input future or past date to the `/date DATE` argument to allow for flexibility in managing their transactions.
+> * Duplicate arguments are not accepted by the program. A message will be shown in such cases.
 
 ### Viewing Help: `help`
 Shows a list of all the commands available to the user.
@@ -127,8 +128,8 @@ Shows a sorted list of all added transactions based on type, with filters for go
 Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`
 * User must specify /type option to list either transactions added under income or expense
 * Deletion has to be based on the ID of the transaction without any filters.
-* User must only specify either /week or /month. If both are specified, then /week will take priority.
-* The list that would be printed will be sorted by date, then transaction description.
+* User must only specify either `/week` or `/month`. If both are specified, then `/week` will take priority.
+* The list that would be printed will be sorted descending by date, then transaction description.
 
 **Usage Example:**
 
@@ -158,7 +159,7 @@ ID    Description                      Date         Amount       Goal         Re
 Creates or deletes a user's goal (used for income)
 
 Format: `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`
-* At least one of the optional fields must be provided (either `/add` or `/remove`).
+* Only either `/add` or `/remove` can be provided. They should not be provided together.
 * `GOAL` is case-insensitive.
 * `/add GOAL` has to be accompanied with `/amount AMOUNT`.
 
@@ -166,7 +167,7 @@ Format: `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`
 Creates or deletes a user's category (used for expenses)
 
 Format: `category [/add CATEGORY] [/remove CATEGORY]`
-* At least one of the optional fields must be provided (either `/add` or `/remove`).
+* Only either `/add` or `/remove` can be provided. They should not be provided together.
 * `CATEGORY` is case-insensitive.
 
 
