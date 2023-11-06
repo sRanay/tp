@@ -122,4 +122,28 @@ class ParserTest {
         assertNull(Parser.parseNonNegativeDouble("-18."));
         assertNull(Parser.parseNonNegativeDouble("-.5"));
     }
+
+    @Test
+    void getArguments_duplicateArgsWithValues_throwsDukeException() {
+        Parser parser = new Parser();
+        assertThrows(DukeException.class, () -> {
+            parser.getArguments("in part time job /amount 100 /goal car /goal house");
+        });
+    }
+
+    @Test
+    void getArguments_duplicateArgsWithOneEmptyValue_throwsDukeException() {
+        Parser parser = new Parser();
+        assertThrows(DukeException.class, () -> {
+            parser.getArguments("in part time job /amount 100 /goal car /goal");
+        });
+    }
+
+    @Test
+    void getArguments_duplicateArgsWithBothEmptyValue_throwsDukeException() {
+        Parser parser = new Parser();
+        assertThrows(DukeException.class, () -> {
+            parser.getArguments("in part time job /amount 100 /goal /goal");
+        });
+    }
 }
