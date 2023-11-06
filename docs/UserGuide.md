@@ -16,6 +16,7 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
     * [Add/Remove Category: `category`](#addremove-a-category-category)
     * [Export Transactions: `export`](#export-transactions-export)
     * [Edit Transactions: `[Coming Soon]`](#edit-transactions-coming-soon)
+    * [Transaction Summary: `summary`](#transaction-summary-summary)
     * [End Program: `bye`](#end-program-bye)
 * [Command Summary](#command-summary)
 
@@ -185,6 +186,33 @@ Format: `export [/type (in | out)]`
 ### Edit Transactions `[Coming Soon]`
 Details coming soon...
 
+### Transaction Summary: `summary`
+Shows the summarised total of transactions.
+
+Format: `summary /type (in | out) [/day] [/week] [/month]`
+* User must specify /type option to list either transactions added under income or expense
+* If neither `/day`, `/week` or `/month` are shown, then all transactions under income or expense will be summarised according to the `/type` specified. 
+* User must only specify either /day or /week or /month. If multiple are specified, then they will take priority in the order of `day`, `week`, `month`. 
+  * If both `/day` and `/week` are specified, then `/day` result will be shown.
+  * If `/week` and `/month` are specified, then `/week` result will be shown.
+  * If `/day`, `/week` and `/month` are all specified, then `/day` result will be shown.
+* `/day` will filter the transactions to those of the current day.
+* `/week` will filter the transactions to those in the current week.
+* `/month` will filter the transactions to those in the current month.
+
+**Usage Example:**
+
+`summary /type in` - Shows the summarised total for income.
+
+`summary /type out` - Shows the summarised total for expense.
+
+`summary /type in /day` - Shows the summarised total for income of the current day.
+
+`summary /type out /week` - Shows the summarised total for expense in the current week.
+
+`summary /type out /month` - Shows the summarised total for expense in the current month.
+
+
 ### End Program: `bye`
 Safely ends the program.
 
@@ -200,7 +228,5 @@ Safely ends the program.
 | Add/Remove a Goal       | `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`                                                      | `goal /add PS5 /amount 600`               |
 | Add/Remove a Category   | `category [/add CATEGORY] [/remove CATEGORY]`                                                         | `category /add Bills`                     |
 | Export Transactions     | `export [/type (in | out)]`                                                                           | `export /type in`                         |
+| Transaction Summary     | `summary /type (in | out) [/day] [/week] [/month]`                                                    | `summary /type in /day`                   |
 | End program             | `bye`                                                                                                 |                                           |
-
-
-
