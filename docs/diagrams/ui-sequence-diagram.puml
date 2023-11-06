@@ -15,8 +15,10 @@ create ":Parser"
 ":Main" -> ":Parser": new Parser()
 activate ":Parser" #FFBBBB
 ":Parser" --> ":Main": p: Parser
+deactivate ":Parser"
 
 ":Main" -> ":Parser": p.parse(userInput: String)
+activate ":Parser" #FFBBBB
 create ":Command"
 ":Parser" -> ":Command": new Command()
 activate ":Command" #FFBBBB

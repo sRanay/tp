@@ -58,9 +58,10 @@ Adds an income towards a goal.
 Format: `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
+* `AMOUNT` must be more than or equal to 0.
 * `DATE` must be in format `DDMMYYYY`
-  * If `RECURRENCE` is specified, date must be less than 1 period away.
-    * i.e. If `RECURRENCE` is weekly, date specified must be less than 7 days away from current date.
+  * If `RECURRENCE` is specified, date must not be earlier than or equal to 1 period in the past (can be in the future).
+    * i.e. If `RECURRENCE` is weekly, date specified must not be more than 6 days in the past.
 * `RECURRENCE` is a string that indicates whether of the income added is recurring.<br>
   Possible values are `none`, `daily`, `weekly` and `monthly`. If this option is not specified, recurrence defaults to `none`.
 * `GOAL` must already exist beforehand, if not the user would be prompted to create the goal first.
@@ -84,9 +85,10 @@ Adds an expense for a category.
 Format: `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
+* `AMOUNT` must be more than or equal to 0.
 * `DATE` must be in format `DDMMYYYY`
-  * If `RECURRENCE` is specified, date must be less than 1 period away.
-    * i.e. If `RECURRENCE` is weekly, date specified must be less than 7 days away from current date.
+  * If `RECURRENCE` is specified, date must not be earlier than or equal to 1 period in the past (can be in the future).
+    * i.e. If `RECURRENCE` is weekly, date specified must not be more than 6 days in the past.
 * `RECURRENCE` is a string that indicates whether of the expense added is recurring.<br>
   Possible values are `none`, `daily`, `weekly` and `monthly`. If this option is not specified, recurrence defaults to `none`.
 * If `CATEGORY` was not created previously, a category would automatically be created for it.
