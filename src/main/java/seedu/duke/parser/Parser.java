@@ -31,6 +31,8 @@ public class Parser {
     private static final Pattern DBL_POS_PATTERN = Pattern.compile("^(\\d*.?\\d+|\\d+.)$");
     private static final Double DBL_POS_ZERO = 0.0;
 
+    private static final String DUPLICATE_KEY_MSG = "Duplicate arguments detected. Refer to help for command usage.";
+
     public Parser() {
     }
 
@@ -88,7 +90,7 @@ public class Parser {
         return description;
     }
 
-    public HashMap<String, String> getArguments(String userInput) {
+    public HashMap<String, String> getArguments(String userInput) throws DukeException {
         String[] splitInput = userInput.split(SPACE_WITH_ARG_PREFIX, 2);
         HashMap<String, String> argsMap = new HashMap<>();
         if (splitInput.length <= 1) {
@@ -98,18 +100,23 @@ public class Parser {
 
         String argName = spitArgs[0];
         ArrayList<String> currentWords = new ArrayList<>();
+        boolean hasArgValue = false;
         for (int i = 1; i < spitArgs.length; i++) {
             String word = spitArgs[i];
             if (word.startsWith(ARG_PREFIX)) {
+                checkIfKeyExist(argName, argsMap);
                 String argValue = convertArgValueListToString(currentWords);
                 argsMap.put(argName, argValue);
                 argName = word.substring(1);
                 currentWords.clear();
+                hasArgValue = false;
             } else {
                 currentWords.add(word);
+                hasArgValue = true;
             }
         }
-        if (!currentWords.isEmpty() || !argsMap.containsKey(argName)) {
+        if (!currentWords.isEmpty() || !argsMap.containsKey(argName) || !hasArgValue) {
+            checkIfKeyExist(argName, argsMap);
             String argValue = convertArgValueListToString(currentWords);
             argsMap.put(argName, argValue);
         }
@@ -121,6 +128,12 @@ public class Parser {
             return EMPTY_STRING;
         }
         return String.join(DELIM, argValues).trim();
+    }
+
+    public static void checkIfKeyExist(String argName, HashMap<String, String> argsMap) throws DukeException {
+        if (argsMap.containsKey(argName)) {
+            throw new DukeException(DUPLICATE_KEY_MSG);
+        }
     }
 
     public static Double parseDouble(String value) {
