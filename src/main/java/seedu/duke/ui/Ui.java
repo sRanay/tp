@@ -5,7 +5,6 @@ import seedu.duke.classes.Classification;
 import seedu.duke.classes.Goal;
 import seedu.duke.classes.StateManager;
 
-import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -273,14 +272,14 @@ public class Ui {
     }
 
     private void progressBar(Double percentage) {
-        int max_bars = 20;
+        int maxBars = 20;
         int steps = 5;
         double barCalculation = percentage/steps;
         int barsToPrint = (int) Math.floor(barCalculation);
         String openingSeparator = "[";
         String closingSeparator = "]";
         String progressBar = new String(new char[barsToPrint]).replace('\0', '=');
-        String filler = new String(new char[max_bars-barsToPrint]).replace('\0', ' ');
+        String filler = new String(new char[maxBars-barsToPrint]).replace('\0', ' ');
         String progress = "Progress: " + openingSeparator + progressBar + filler
                 + closingSeparator + " " + formatAmount(percentage) + "%";
         print(progress);
