@@ -27,6 +27,7 @@ public class SummaryCommand extends Command {
     private static final String WEEK_ARG = "week";
     private static final String MONTH_ARG = "month";
 
+    private LocalDate currentDate;
     private boolean filterByDay = false;
     private boolean filterByWeek = false;
     private boolean filterByMonth = false;
@@ -34,6 +35,12 @@ public class SummaryCommand extends Command {
 
     public SummaryCommand(String description, HashMap<String, String> args) {
         super(description, args);
+        currentDate = LocalDate.now();
+    }
+
+    public SummaryCommand(String description, HashMap<String, String> args, LocalDate currentDate) {
+        super(description, args);
+        this.currentDate = currentDate;
     }
 
     @Override
@@ -130,12 +137,10 @@ public class SummaryCommand extends Command {
     }
 
     private boolean isSameDay(LocalDate transactionDate) {
-        LocalDate currentDate = LocalDate.now();
         return currentDate.isEqual(transactionDate);
     }
 
     private boolean isSameWeek(LocalDate transactionDate) {
-        LocalDate currentDate = LocalDate.now();
         LocalDate startOfWeek = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate endOfWeek = currentDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
         if (transactionDate.isBefore(startOfWeek) || transactionDate.isAfter(endOfWeek)) {
@@ -145,7 +150,6 @@ public class SummaryCommand extends Command {
     }
 
     private boolean isSameMonth(LocalDate transactionDate) {
-        LocalDate currentDate = LocalDate.now();
         LocalDate startOfMonth = currentDate.withDayOfMonth(1);
         LocalDate endOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
         if (transactionDate.isBefore(startOfMonth) || transactionDate.isAfter(endOfMonth)) {
