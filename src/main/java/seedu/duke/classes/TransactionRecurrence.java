@@ -78,6 +78,7 @@ public enum TransactionRecurrence {
     public static ArrayList<Income> generateRecurrentIncomes(ArrayList<Income> incomes) {
         ArrayList<Income> recurrentIncomes = new ArrayList<>();
         incomes.parallelStream().filter(income -> filterTransaction(income.getTransaction()))
+                .sequential()
                 .forEach(income -> recurrentIncomes.addAll(generateRecurrentIncomes(income)));
 
         recurrentIncomes.sort((Income a, Income b) -> {
@@ -119,6 +120,7 @@ public enum TransactionRecurrence {
     public static ArrayList<Expense> generateRecurrentExpenses(ArrayList<Expense> expenses) {
         ArrayList<Expense> recurrentExpenses = new ArrayList<>();
         expenses.parallelStream().filter(expense -> filterTransaction(expense.getTransaction()))
+                .sequential()
                 .forEach(expense -> recurrentExpenses.addAll(generateRecurrentExpenses(expense)));
 
         recurrentExpenses.sort((Expense a, Expense b) -> {
