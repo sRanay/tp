@@ -8,6 +8,8 @@ import seedu.duke.ui.Ui;
 import java.util.HashMap;
 
 public class CategoryCommand extends Command {
+    public String INVALID_DESCRIPTION = "Invalid usage! Please do not include anything in the description field" +
+            "for this command";
     private static final String ADD_COMMAND = "add";
     private static final String REMOVE_COMMAND = "remove";
 
@@ -29,6 +31,14 @@ public class CategoryCommand extends Command {
         }
     }
 
+    private void validateInput() throws DukeException {
+        if (!getDescription().isBlank()) {
+            throw new DukeException(INVALID_DESCRIPTION);
+        }
+        if (!getArgs().containsKey(ADD_COMMAND) || !getArgs().containsKey(REMOVE_COMMAND)) {
+
+        }
+    }
     // Returns True if it wants to add a category and returns false if it wants to remove a category.
     private boolean checkValidInputAndGetType() throws DukeException {
         assert getDescription() != null;
@@ -51,6 +61,11 @@ public class CategoryCommand extends Command {
             throw new DukeException(invalidCategoryInput);
         }
         return false;
+    }
+
+    private void errorMessage(String message) throws DukeException {
+        String commonMessage = "\n The only accepted usage is category /add NAME or category /remove NAME";
+        throw new DukeException(message + commonMessage);
     }
 
     private void addCategory(String category) throws DukeException {
