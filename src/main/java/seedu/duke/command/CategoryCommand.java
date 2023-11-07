@@ -1,6 +1,5 @@
 package seedu.duke.command;
 
-import seedu.duke.Duke;
 import seedu.duke.classes.Category;
 import seedu.duke.classes.StateManager;
 import seedu.duke.exception.DukeException;
