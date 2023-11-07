@@ -1,6 +1,8 @@
 package seedu.duke.command;
 
+import seedu.duke.classes.Category;
 import seedu.duke.classes.Expense;
+import seedu.duke.classes.Goal;
 import seedu.duke.classes.Income;
 import seedu.duke.classes.StateManager;
 import seedu.duke.classes.Transaction;
@@ -15,7 +17,7 @@ import java.util.HashMap;
 
 public class ListCommand extends Command {
     private static final String INVALID_TYPE_FORMAT = "I'm sorry, you need to specify a type in the format " +
-            "'/type in' or '/type out'";
+            "'list /type in' or 'list /type out' to view transactions, or 'list goal' and 'list category'";
     private static final String INVALID_GOAL_FORMAT = "You have entered /goal, but you have entered an invalid goal";
     private static final String INVALID_CATEGORY_FORMAT = "You have entered /category, but you have entered an " +
             "invalid category";
@@ -30,6 +32,7 @@ public class ListCommand extends Command {
     private static final String TYPE = "type";
     private static final String WEEK = "week";
     private static final String MONTH = "month";
+    private static final int INVALID_VALUE = -1;
     private Ui ui;
 
     public ListCommand(String description, HashMap<String, String> args) {
@@ -45,49 +48,113 @@ public class ListCommand extends Command {
 
     // Description gets ignored for list
     private void validateArgs() throws DukeException {
+        if (validDescriptionInput()) {
+            return;
+        }
+        checkArgs();
+    }
+
+    private void checkArgs() throws DukeException {
+        if (getArgs().isEmpty()) {
+            errorMessage(INVALID_TYPE_FORMAT);
+        }
+
         if (!getArgs().containsKey(TYPE)) {
-            throw new DukeException(INVALID_TYPE_FORMAT);
-        }
-        String type = getArg(TYPE);
-        if (!type.equals("in") && !type.equals("out")) {
-            throw new DukeException(INVALID_TYPE_FORMAT);
+            errorMessage(INVALID_TYPE_FORMAT);
         }
 
-        if (getArgs().containsKey((GOAL))) {
-            if (getArgs().containsKey(CATEGORY)) {
-                throw new DukeException("You can't use both /goal and /category");
+        if (getArgs().containsKey(TYPE)) {
+            String type = getArg(TYPE);
+            if (!type.equals("in") && !type.equals("out")) {
+                errorMessage(INVALID_TYPE_FORMAT);
             }
-            if (getArg(GOAL).isBlank()) {
-                throw new DukeException(INVALID_GOAL_FORMAT);
-            }
+        }
 
+        if (getArgs().containsKey(GOAL) && getArgs().containsKey(CATEGORY)) {
+            String multipleTypesError = "You can't use both /goal and /category";
+            errorMessage(multipleTypesError);
+        }
+
+        if (getArgs().containsKey(GOAL)) {
             String goal = getArg(GOAL);
+            if (goal.isBlank()) {
+                errorMessage(INVALID_GOAL_FORMAT);
+            }
             int result = StateManager.getStateManager().getGoalIndex(goal);
-            if (result == -1) {
-                throw new DukeException(INVALID_GOAL_FORMAT);
+            if (result == INVALID_VALUE) {
+                errorMessage(INVALID_GOAL_FORMAT);
             }
         }
 
         if (getArgs().containsKey(CATEGORY)) {
             if (getArg(CATEGORY).isBlank()) {
-                throw new DukeException(INVALID_CATEGORY_FORMAT);
+                errorMessage(INVALID_CATEGORY_FORMAT);
             }
-            String goal = getArg(CATEGORY);
-            int result = StateManager.getStateManager().getCategoryIndex(goal);
-            if (result == -1) {
-                throw new DukeException(INVALID_CATEGORY_FORMAT);
+            String category = getArg(CATEGORY);
+            int result = StateManager.getStateManager().getCategoryIndex(category);
+            if (result == INVALID_VALUE) {
+                errorMessage(INVALID_CATEGORY_FORMAT);
             }
         }
+    }
+    private boolean validDescriptionInput() throws DukeException {
+        if (getDescription() == null && getArgs().isEmpty()) {
+            String emptyListCommandError = "The list command must be accompanied with additional parameters";
+            errorMessage(emptyListCommandError);
+        }
+        String description = getDescription();
+        if (description.isBlank()) {
+            return false;
+        }
+        if (description.equalsIgnoreCase(GOAL) || description.equalsIgnoreCase(CATEGORY)) {
+            if (!getArgs().isEmpty()) {
+                String parametersPresentError = "There should not be any other options accompanied by " +
+                        "'list goal' and 'list category'";
+                errorMessage(parametersPresentError);
+            }
+        } else {
+            String invalidDescription = "The only valid description input is 'list goal' and 'list category'";
+            errorMessage(invalidDescription);
+        }
+        return true;
+    }
 
+    private void errorMessage(String message) throws DukeException {
+        String commonMessage = "\nFor correct usage, please refer to the UG or help /list";
+        throw new DukeException(message + commonMessage);
     }
 
     private void listTypeHandler() throws DukeException {
+        String description = getDescription();
+        if (description != null && !description.isBlank()) {
+            printTypeStatus(description);
+            return;
+        }
         String type = getArg(TYPE);
         assert type != null;
         if (type.equals("in")) {
             listIncome();
         } else if (type.equals("out")) {
             listExpenses();
+        }
+    }
+
+    private void printTypeStatus(String description) throws DukeException {
+        if (description.equalsIgnoreCase(GOAL)) {
+            ArrayList<Goal> goalList = StateManager.getStateManager().getAllGoals();
+            if (goalList.isEmpty()) {
+                throw new DukeException(EMPTY_LIST);
+            }
+            HashMap<Goal, Double> map = StateManager.getStateManager().getGoalsStatus();
+
+            ui.printGoalsStatus(map);
+        } else if (description.equalsIgnoreCase(CATEGORY)) {
+            ArrayList<Category> categoriesList = StateManager.getStateManager().getAllCategories();
+            if (categoriesList.isEmpty()) {
+                throw new DukeException(EMPTY_LIST);
+            }
+            HashMap<Category, Double> map = StateManager.getStateManager().getCategoriesStatus();
+            ui.printCategoryStatus(map);
         }
     }
 

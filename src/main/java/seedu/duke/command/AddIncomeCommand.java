@@ -23,7 +23,7 @@ public class AddIncomeCommand extends AddTransactionCommand {
 
     @Override
     public void execute(Ui ui) throws DukeException {
-        throwIfInvalidDescOrArgs(GOAL_ARG, MISSING_GOAL);
+        throwIfInvalidDescOrArgs();
         Transaction transaction = prepareTransaction();
         Income income = addNewIncome(transaction);
         printSuccess(ui, income);
@@ -51,6 +51,11 @@ public class AddIncomeCommand extends AddTransactionCommand {
     private Goal handleGoal() throws DukeException {
         StateManager state = StateManager.getStateManager();
         String goal = getArg(GOAL_ARG);
+        if (goal == null) {
+            return state.getUncategorisedGoal();
+        } else if (goal.isBlank()) {
+            throw new DukeException(MISSING_GOAL);
+        }
         int index = state.getGoalIndex(goal);
         if (index == -1) {
             String failedGoalMessage = "Please add '" + goal + "' as a goal first.";
