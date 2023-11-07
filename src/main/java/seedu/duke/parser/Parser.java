@@ -165,7 +165,4 @@ public class Parser {
         }
     }
 
-    public static void validateInput(String add, String remove) {
-
-    }
 }

@@ -1,5 +1,6 @@
 package seedu.duke.command;
 
+import seedu.duke.Duke;
 import seedu.duke.classes.Goal;
 import seedu.duke.classes.StateManager;
 import seedu.duke.exception.DukeException;
@@ -40,7 +41,9 @@ public class GoalCommand extends Command {
         if (!getDescription().isBlank()) {
             errorMessage(INVALID_DESCRIPTION);
         }
-        if (getArgs().containsKey(ADD_COMMAND) && getArgs().containsKey(REMOVE_COMMAND)) {
+        if(getArgs().isEmpty()) {
+            throw new DukeException(INVALID_INPUT);
+        } else if (getArgs().containsKey(ADD_COMMAND) && getArgs().containsKey(REMOVE_COMMAND)) {
             errorMessage(INVALID_INPUT);
         }
         if (getArgs().containsKey(ADD_COMMAND)) {
