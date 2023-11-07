@@ -200,14 +200,17 @@ class ListCommandTest {
         Command command = parser.parse("list /type in");
         command.execute(ui);
         assertEquals("Alright! Displaying 2 transactions.\n" +
-                        "====================================== IN TRANSACTIONS ===========================" +
-                        "===========\n" +
-                        "ID    Description                      Date         Amount       Goal         Recurrence\n" +
-                        "1     part-time job                    " + currentDate + "   500.00       car          none" +
-                        "\n" +
-                        "2     red packet money                 2023-09-18   50.00        PS5          none\n" +
-                        "====================================== IN TRANSACTIONS ================================" +
-                        "======\n"
+                        "=========================================== IN TRANSACTIONS ============================" +
+                        "===============\n" +
+                        "ID    Description                      Date         Amount       Goal                   " +
+                        "Recurrence\n" +
+                        "1     part-time job                    "+currentDate+"   500.00       car                   " +
+                        " " +
+                        "none\n" +
+                        "2     red packet money                 2023-09-18   50.00        PS5                    " +
+                        "none\n" +
+                        "=========================================== IN TRANSACTIONS =============================" +
+                        "==============\n"
                 , outputStream.toString());
 
     }
@@ -222,13 +225,15 @@ class ListCommandTest {
         Command command = parser.parse("list /type in /goal car");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
-                        "====================================== IN TRANSACTIONS ==================================" +
-                        "====\n" +
-                        "ID    Description                      Date         Amount       Goal         Recurrence\n" +
-                        "1     part-time job                    " + currentDate + "   500.00       car          none" +
-                        "\n" +
-                        "====================================== IN TRANSACTIONS ==================================" +
-                        "====\n"
+                        "=========================================== IN TRANSACTIONS ============================" +
+                        "===============\n" +
+                        "ID    Description                      Date         Amount       Goal                   " +
+                        "Recurrence\n" +
+                        "1     part-time job                    "+currentDate+"   500.00       car                   "+
+                        " " +
+                        "none\n" +
+                        "=========================================== IN TRANSACTIONS ============================" +
+                        "===============\n"
                 , outputStream.toString());
 
     }
@@ -243,14 +248,17 @@ class ListCommandTest {
         Command command = parser.parse("list /type out");
         command.execute(ui);
         assertEquals("Alright! Displaying 2 transactions.\n" +
-                        "===================================== OUT TRANSACTIONS ===================================" +
-                        "===\n" +
-                        "ID    Description                      Date         Amount       Category     Recurrence\n" +
-                        "1     dinner                           " + currentDate + "   10.50        food         none\n"
-                        +
-                        "2     pokemon card pack                2023-09-18   10.50        games        none\n" +
-                        "===================================== OUT TRANSACTIONS ===================================" +
-                        "===\n"
+                        "========================================== OUT TRANSACTIONS ===========================" +
+                        "================\n" +
+                        "ID    Description                      Date         Amount       Category               " +
+                        "Recurrence\n" +
+                        "1     dinner                           "+currentDate+"   10.50        food                  " +
+                        " " +
+                        "none\n" +
+                        "2     pokemon card pack                2023-09-18   10.50        games                  " +
+                        "none\n" +
+                        "========================================== OUT TRANSACTIONS ============================" +
+                        "===============\n"
                 , outputStream.toString());
 
     }
@@ -264,12 +272,14 @@ class ListCommandTest {
         Command command = parser.parse("list /type out /category games");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
-                        "===================================== OUT TRANSACTIONS =================================" +
-                        "=====\n" +
-                        "ID    Description                      Date         Amount       Category     Recurrence\n" +
-                        "1     pokemon card pack                2023-09-18   10.50        games        none\n" +
-                        "===================================== OUT TRANSACTIONS ================================" +
-                        "======\n"
+                        "========================================== OUT TRANSACTIONS ==========================" +
+                        "=================\n" +
+                        "ID    Description                      Date         Amount       Category               " +
+                        "Recurrence\n" +
+                        "1     pokemon card pack                2023-09-18   10.50        games                  " +
+                        "none\n" +
+                        "========================================== OUT TRANSACTIONS ============================" +
+                        "===============\n"
                 , outputStream.toString());
 
     }
@@ -284,13 +294,15 @@ class ListCommandTest {
         Command command = parser.parse("list /type in /week");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
-                        "====================================== IN TRANSACTIONS ================================" +
-                        "======\n" +
-                        "ID    Description                      Date         Amount       Goal         Recurrence\n" +
-                        "1     part-time job                    " + getCurrentDate() + "   500.00       car          " +
+                        "=========================================== IN TRANSACTIONS ==========================" +
+                        "=================\n" +
+                        "ID    Description                      Date         Amount       Goal                   " +
+                        "Recurrence\n" +
+                        "1     part-time job                    "+getCurrentDate()+"   500.00       car              " +
+                        "      " +
                         "none\n" +
-                        "====================================== IN TRANSACTIONS ================================" +
-                        "======\n"
+                        "=========================================== IN TRANSACTIONS ===========================" +
+                        "================\n"
                 , outputStream.toString());
     }
 
@@ -304,13 +316,15 @@ class ListCommandTest {
         Command command = parser.parse("list /type out /week");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
-                        "===================================== OUT TRANSACTIONS ==================================" +
-                        "====\n" +
-                        "ID    Description                      Date         Amount       Category     Recurrence\n" +
-                        "1     lunch                            " + getCurrentDate() + "   7.50         food         " +
+                        "========================================== OUT TRANSACTIONS ============================" +
+                        "===============\n" +
+                        "ID    Description                      Date         Amount       Category               " +
+                        "Recurrence\n" +
+                        "1     lunch                            "+getCurrentDate()+"   7.50         food             " +
+                        "      " +
                         "none\n" +
-                        "===================================== OUT TRANSACTIONS ==================================" +
-                        "====\n"
+                        "========================================== OUT TRANSACTIONS ============================" +
+                        "===============\n"
                 , outputStream.toString());
     }
 
@@ -324,28 +338,28 @@ class ListCommandTest {
         Command command = parser.parse("list /type in /month");
         command.execute(ui);
         if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
-            assertEquals("Alright! Displaying 2 transactions.\n" +
-                            "====================================== IN TRANSACTIONS =================================" +
-                            "=====\n" +
-                            "ID    Description                      Date         Amount       Goal         Recurrence\n"
-                            +
-                            "1     part-time job                    " + getCurrentDate() + "   500.00       car" +
+            assertEquals("Alright! Displaying 1 transaction.\n" +
+                            "=========================================== IN TRANSACTIONS ============================" +
+                            "===============\n" +
+                            "ID    Description                      Date         Amount       Goal                   " +
+                            "Recurrence\n" +
+                            "1     part-time job                    "+getCurrentDate()+"   500.00       car          " +
                             "          none\n" +
-                            "2     allowance job                    " + getPrevWeekDate() + "   300.00       car" +
-                            "          none\n" +
-                            "====================================== IN TRANSACTIONS ================================" +
-                            "======\n"
+                            "2     allowance job                    "+getPrevWeekDate()+"   500.00       car         " +
+                            "           none\n" +
+                            "=========================================== IN TRANSACTIONS ===========================" +
+                            "================\n"
                     , outputStream.toString());
         } else {
             assertEquals("Alright! Displaying 1 transaction.\n" +
-                            "====================================== IN TRANSACTIONS =================================" +
-                            "=====\n" +
-                            "ID    Description                      Date         Amount       Goal         Recurrence\n"
-                            +
-                            "1     part-time job                    " + getCurrentDate() + "   500.00       car" +
+                            "=========================================== IN TRANSACTIONS ============================" +
+                            "===============\n" +
+                            "ID    Description                      Date         Amount       Goal                   " +
+                            "Recurrence\n" +
+                            "1     part-time job                    "+getCurrentDate()+"   500.00       car          " +
                             "          none\n" +
-                            "====================================== IN TRANSACTIONS ================================" +
-                            "======\n"
+                            "=========================================== IN TRANSACTIONS ===========================" +
+                            "================\n"
                     , outputStream.toString());
         }
 
@@ -361,28 +375,29 @@ class ListCommandTest {
         Command command = parser.parse("list /type out /month");
         command.execute(ui);
         if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
-            assertEquals("Alright! Displaying 2 transactions.\n" +
-                            "===================================== OUT TRANSACTIONS =================================" +
-                            "=====\n" +
-                            "ID    Description                      Date         Amount       Category     Recurrence\n"
-                            +
-                            "1     lunch                            " + getCurrentDate() + "   7.50         food" +
-                            "         none\n" +
-                            "2     dinner                           " + getPrevWeekDate() + "   10.50        food" +
-                            "         none\n" +
-                            "===================================== OUT TRANSACTIONS ===============================" +
-                            "=======\n"
+            assertEquals("Alright! Displaying 1 transaction.\n" +
+                            "========================================== OUT TRANSACTIONS ============================" +
+                            "===============\n" +
+                            "ID    Description                      Date         Amount       Category               " +
+                            "Recurrence\n" +
+                            "1     lunch                            "+getCurrentDate()+"   7.50         food         " +
+                            "          " +
+                            "none\n" +
+                            "2     dinner                           "+getPrevWeekDate()+"   10.50        food        " +
+                            "           none\n" +
+                            "========================================== OUT TRANSACTIONS ============================" +
+                            "===============\n"
                     , outputStream.toString());
         } else {
             assertEquals("Alright! Displaying 1 transaction.\n" +
-                            "===================================== OUT TRANSACTIONS =================================" +
-                            "=====\n" +
-                            "ID    Description                      Date         Amount       Category     Recurrence\n"
-                            +
-                            "1     lunch                            " + getCurrentDate() + "   7.50         food" +
-                            "         none\n" +
-                            "===================================== OUT TRANSACTIONS ===============================" +
-                            "=======\n"
+                            "========================================== OUT TRANSACTIONS ===========================" +
+                            "================\n" +
+                            "ID    Description                      Date         Amount       Category               " +
+                            "Recurrence\n" +
+                            "1     lunch                            "+getCurrentDate()+"   7.50         food         " +
+                            "          none\n" +
+                            "========================================== OUT TRANSACTIONS ===========================" +
+                            "================\n"
                     , outputStream.toString());
         }
 
@@ -398,13 +413,14 @@ class ListCommandTest {
         Command command = parser.parse("list /type in /week /month");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
-                        "====================================== IN TRANSACTIONS =================================" +
-                        "=====\n" +
-                        "ID    Description                      Date         Amount       Goal         Recurrence\n" +
-                        "1     part-time job                    " + getCurrentDate() + "   500.00       car" +
+                        "=========================================== IN TRANSACTIONS ============================" +
+                        "===============\n" +
+                        "ID    Description                      Date         Amount       Goal                   " +
+                        "Recurrence\n" +
+                        "1     part-time job                    "+getCurrentDate()+"   500.00       car          " +
                         "          none\n" +
-                        "====================================== IN TRANSACTIONS ================================" +
-                        "======\n"
+                        "=========================================== IN TRANSACTIONS ===========================" +
+                        "================\n"
                 , outputStream.toString());
     }
 
@@ -418,13 +434,14 @@ class ListCommandTest {
         Command command = parser.parse("list /type out /week /month");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
-                        "===================================== OUT TRANSACTIONS =================================" +
-                        "=====\n" +
-                        "ID    Description                      Date         Amount       Category     Recurrence\n" +
-                        "1     lunch                            " + getCurrentDate() + "   7.50         food" +
-                        "         none\n" +
-                        "===================================== OUT TRANSACTIONS =================================" +
-                        "=====\n"
+                        "========================================== OUT TRANSACTIONS ===========================" +
+                        "================\n" +
+                        "ID    Description                      Date         Amount       Category               " +
+                        "Recurrence\n" +
+                        "1     lunch                            "+getCurrentDate()+"   7.50         food         " +
+                        "          none\n" +
+                        "========================================== OUT TRANSACTIONS ===========================" +
+                        "================\n"
                 , outputStream.toString());
     }
 
