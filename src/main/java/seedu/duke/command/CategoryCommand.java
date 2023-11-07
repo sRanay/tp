@@ -1,5 +1,6 @@
 package seedu.duke.command;
 
+import seedu.duke.Duke;
 import seedu.duke.classes.Category;
 import seedu.duke.classes.StateManager;
 import seedu.duke.exception.DukeException;
@@ -10,6 +11,9 @@ import java.util.HashMap;
 public class CategoryCommand extends Command {
     private static final String ADD_COMMAND = "add";
     private static final String REMOVE_COMMAND = "remove";
+    private static final String INVALID_INPUT = "Your category input is empty/invalid :(";
+    private static final String INVALID_DESCRIPTION = "Invalid usage! Please do not include anything in the " +
+            "description field for this command";
 
     public CategoryCommand(String description, HashMap<String, String> args) {
         super(description, args);
@@ -17,40 +21,52 @@ public class CategoryCommand extends Command {
 
     @Override
     public void execute(Ui ui) throws DukeException {
-        boolean isAdding = checkValidInputAndGetType();
-        if (isAdding) {
+        String inputType = validateInput();
+        if (inputType == null) {
+            errorMessage(INVALID_INPUT);
+        }
+        if (inputType.equals(ADD_COMMAND)) {
             String category = getArg(ADD_COMMAND);
             addCategory(category);
             ui.print("Successfully added " + category + "!");
-        } else {
+        } else if (inputType.equals(REMOVE_COMMAND)) {
             String category = getArg(REMOVE_COMMAND);
             removeCategory(category);
             ui.print("Successfully removed " + category + "!");
         }
     }
 
-    // Returns True if it wants to add a category and returns false if it wants to remove a category.
-    private boolean checkValidInputAndGetType() throws DukeException {
-        assert getDescription() != null;
-        assert getArgs() != null;
+    public String validateInput() throws DukeException {
         if (!getDescription().isBlank()) {
-            String invalidDescription = "As the category command does not use the description field, this " +
-                    "input would be ignored: ";
-            throw new DukeException(invalidDescription + getDescription());
+            errorMessage(INVALID_DESCRIPTION);
         }
-        String add = getArg(ADD_COMMAND);
-        String remove = getArg(REMOVE_COMMAND);
-        String invalidCategoryInput = "Your category input is empty/invalid :(";
-        if (add != null && remove != null) {
-            throw new DukeException(invalidCategoryInput);
-        } else if (add == null && remove == null) {
-            throw new DukeException(invalidCategoryInput);
-        } else if (add != null && !add.isBlank()) {
-            return true;
-        } else if (remove != null && remove.isBlank()) {
-            throw new DukeException(invalidCategoryInput);
+        if (getArgs().containsKey(ADD_COMMAND) && getArgs().containsKey(REMOVE_COMMAND)) {
+            errorMessage(INVALID_INPUT);
         }
-        return false;
+        if (getArgs().containsKey(ADD_COMMAND)) {
+            String add = getArg(ADD_COMMAND);
+            if (add == null) {
+                errorMessage(INVALID_INPUT);
+            } else if (add.isBlank()) {
+                errorMessage(INVALID_INPUT);
+            }
+            return ADD_COMMAND;
+        }
+        if (getArgs().containsKey(REMOVE_COMMAND)) {
+            String remove = getArg(REMOVE_COMMAND);
+            if (remove == null) {
+                errorMessage(INVALID_INPUT);
+            } else if (remove.isBlank()) {
+                errorMessage(INVALID_INPUT);
+            }
+            return REMOVE_COMMAND;
+        }
+        return null;
+    }
+
+    private void errorMessage(String message) throws DukeException {
+        String commonMessage = "\nThe correct usage is 'category /add NAME' or 'category /remove NAME'";
+        throw new DukeException(message + commonMessage);
     }
 
     private void addCategory(String category) throws DukeException {

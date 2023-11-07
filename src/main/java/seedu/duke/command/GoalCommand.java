@@ -9,9 +9,13 @@ import seedu.duke.ui.Ui;
 import java.util.HashMap;
 
 public class GoalCommand extends Command {
-    private static final String ADD_ARG = "add";
-    private static final String REMOVE_ARG = "remove";
+    private static final String ADD_COMMAND = "add";
+    private static final String REMOVE_COMMAND = "remove";
     private static final String AMOUNT = "amount";
+
+    private static final String INVALID_INPUT = "Your goal input is empty/invalid :(";
+    private static final String INVALID_DESCRIPTION = "Invalid usage! Please do not include anything in the " +
+            "description field for this command";
 
     public GoalCommand(String description, HashMap<String, String> args) {
         super(description, args);
@@ -19,52 +23,57 @@ public class GoalCommand extends Command {
 
     @Override
     public void execute(Ui ui) throws DukeException {
-        boolean isAdding = checkValidInputAndGetType();
-        if (isAdding) {
-            String goalName = getArg(ADD_ARG);
+        String input = validateInput();
+        if (input.equals(ADD_COMMAND)) {
+            String goalName = getArg(ADD_COMMAND);
             Double amount = Parser.parseNonNegativeDouble(getArg(AMOUNT));
             addGoal(goalName, amount);
             ui.print("Successfully added " + goalName + "!");
-        } else {
-            String goalName = getArg(REMOVE_ARG);
+        } else if (input.equals(REMOVE_COMMAND)){
+            String goalName = getArg(REMOVE_COMMAND);
             removeGoal(goalName);
             ui.print("Successfully removed " + goalName + "!");
         }
     }
 
-    // Returns True if it wants to add a category and returns false if it wants to remove a category.
-    private boolean checkValidInputAndGetType() throws DukeException {
-        assert getDescription() != null;
-        assert getArgs() != null;
+    public String validateInput() throws DukeException {
         if (!getDescription().isBlank()) {
-            String ignoreDescription = "As the goal command does not use the description field, this " +
-                    "input would be ignored: ";
-            throw new DukeException(ignoreDescription + getDescription());
+            errorMessage(INVALID_DESCRIPTION);
         }
-        String add = getArg(ADD_ARG);
-        String remove = getArg(REMOVE_ARG);
-        String invalidGoalInput = "Your goal input is empty/invalid :(";
-        if (add != null && remove != null) {
-            throw new DukeException(invalidGoalInput);
-        } else if (add == null && remove == null) {
-            throw new DukeException(invalidGoalInput);
-        } else if (add != null && add.isBlank()) {
-            throw new DukeException(invalidGoalInput);
-        } else if (remove != null && remove.isBlank()) {
-            throw new DukeException(invalidGoalInput);
-        } else if (remove != null) {
-            return false;
+        if (getArgs().containsKey(ADD_COMMAND) && getArgs().containsKey(REMOVE_COMMAND)) {
+            errorMessage(INVALID_INPUT);
         }
-        String amount = getArg(AMOUNT);
-        String invalidAmount = "You have entered an invalid or empty goal amount :(";
-        if (amount == null || amount.isBlank()) {
-            throw new DukeException(invalidAmount);
+        if (getArgs().containsKey(ADD_COMMAND)) {
+            String add = getArg(ADD_COMMAND);
+            if (add == null) {
+                errorMessage(INVALID_INPUT);
+            } else if (add.isBlank()) {
+                errorMessage(INVALID_INPUT);
+            }
+            String amount = getArg(AMOUNT);
+            if (amount == null || amount.isBlank()) {
+                errorMessage(INVALID_INPUT);
+            }
+            Double parsedAmt = Parser.parseNonNegativeDouble(amount);
+            if (parsedAmt == null) {
+                errorMessage(INVALID_INPUT);
+            }
+            return ADD_COMMAND;
         }
-        Double goalAmount = Parser.parseNonNegativeDouble(amount);
-        if (goalAmount == null) {
-            throw new DukeException(invalidAmount);
+        if (getArgs().containsKey(REMOVE_COMMAND)) {
+            String remove = getArg(REMOVE_COMMAND);
+            if (remove == null) {
+                errorMessage(INVALID_INPUT);
+            } else if (remove.isBlank()) {
+                errorMessage(INVALID_INPUT);
+            }
+            return REMOVE_COMMAND;
         }
-        return true;
+        return null;
+    }
+    private void errorMessage(String message) throws DukeException {
+        String commonMessage = "\nThe correct usage is 'goal /add NAME /amount AMOUNT' or 'goal /remove NAME'";
+        throw new DukeException(message + commonMessage);
     }
 
     private void addGoal(String goal, double amount) throws DukeException {
