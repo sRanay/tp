@@ -1,11 +1,20 @@
 package seedu.duke.ui;
 
+import seedu.duke.classes.Category;
+import seedu.duke.classes.TypePrint;
+import seedu.duke.classes.Goal;
+import seedu.duke.classes.StateManager;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -14,15 +23,18 @@ import java.util.stream.IntStream;
 public class Ui {
     public static final int COLUMN_WIDTH = 10;
     public static final int LIST_COLUMN_WIDTH = 30;
+    public static final int TYPE_WIDTH = 20;
     private static final String ELLIPSIS = "...";
     private static final String PROGRAM_NAME = "FinText";
     private static final char FILLER_CHAR = ' ';
     private static final char LIST_SEPARATOR = '=';
     private static final int ID_COLUMN_PADDING = 2;
+
     private static final int SPACE_BETWEEN_COLS = 3;
 
     private static final String AMOUNT_FORMAT = "%.2f";
     private static final char LINE_DELIMITER = '\n';
+    private static final Integer[] TYPE_COLUMN_WIDTHS = {TYPE_WIDTH, TYPE_WIDTH};
 
     private final Scanner scanner;
     private final OutputStream outputStream;
@@ -37,8 +49,8 @@ public class Ui {
         scanner = new Scanner(System.in);
     }
 
-    public void printTableRow(ArrayList<String> rowValues) {
-        printTableRow(rowValues, null, null);
+    public void printTableRow(ArrayList<String> rowValues, Integer[] customWidths) {
+        printTableRow(rowValues, null, customWidths);
     }
 
     public void printTableRow(ArrayList<String> rowValues, String[] headers) {
@@ -198,8 +210,16 @@ public class Ui {
             end = " transaction.";
         }
         print("Alright! Displaying " + list.size() + end);
-        Integer[] columnWidths = {Integer.toString(list.size()).length()+ID_COLUMN_PADDING, LIST_COLUMN_WIDTH,
-            COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH};
+        Integer[] columnWidths = {Integer.toString(list.size()).length() + ID_COLUMN_PADDING, LIST_COLUMN_WIDTH,
+            COLUMN_WIDTH, COLUMN_WIDTH, TYPE_WIDTH, COLUMN_WIDTH};
+        String wrapper = createWrapper(columnWidths, headerMessage);
+        print(wrapper);
+        printTableRows(list, headers, columnWidths);
+        print(wrapper);
+
+    }
+
+    private String createWrapper(Integer[] columnWidths, String headerMessage) {
         int totalSpace = Arrays.stream(columnWidths)
                 .mapToInt(Integer::intValue)
                 .sum();
@@ -212,9 +232,141 @@ public class Ui {
         wrapper.add(leftPad);
         wrapper.add(headerMessage);
         wrapper.add(rightPad);
-        print(wrapper.toString());
-        printTableRows(list, headers, columnWidths);
-        print(wrapper.toString());
+        return(wrapper.toString());
+    }
+    public void printGoalsStatus(HashMap<Goal, Double> goalsMap) {
+        ArrayList<TypePrint> goalsToPrint = new ArrayList<>();
+        TypePrint uncategorised = null;
+        Goal uncategorisedGoal = StateManager.getStateManager().getUncategorisedGoal();
+        if (goalsMap.containsKey(uncategorisedGoal)) {
+            String description = uncategorisedGoal.getDescription();
+            double currentAmount = goalsMap.get(uncategorisedGoal);
+            uncategorised = new TypePrint(description, currentAmount);
+            goalsMap.remove(uncategorisedGoal);
+        }
+        for (Map.Entry<Goal, Double> entry : goalsMap.entrySet()) {
+            String description = entry.getKey().getDescription();
+            double currentAmount = entry.getValue();
+            double targetAmount = entry.getKey().getAmount();
+            TypePrint goalEntry = new TypePrint(description, currentAmount, targetAmount);
+            goalsToPrint.add(goalEntry);
+        }
+        Comparator<TypePrint> typeComparator = Comparator.comparing(TypePrint::getDescription);
+        goalsToPrint.sort(typeComparator);
+        if (uncategorised != null) {
+            goalsToPrint.add(uncategorised);
+        }
+        String headerMessage = "Goals Status";
+        String wrapper = createWrapper(TYPE_COLUMN_WIDTHS, headerMessage);
+        print(wrapper);
+        printStatus(goalsToPrint);
+        printUnusedGoals(goalsMap);
+        print(wrapper);
+    }
+
+    private void printStatus(ArrayList<TypePrint> arrayToPrint) {
+        if (arrayToPrint.isEmpty()) {
+            String message = "No existing transactions";
+            print(message);
+            return;
+        }
+        String[] headers = {"Name", "Amount"};
+        printTableHeader(headers, TYPE_COLUMN_WIDTHS);
+        for (TypePrint c : arrayToPrint) {
+            ArrayList<String> entry = new ArrayList<>();
+            entry.add(c.getDescription());
+            entry.add(c.getAmount());
+            printTableRow(entry, TYPE_COLUMN_WIDTHS);
+            if (c.targetAmountExists()) {
+                progressBar(c.getPercentage());
+            }
+        }
+    }
+
+    public void progressBar(Double percentage) {
+        int maxBars = 20;
+        int steps = 5;
+        double barCalculation = percentage / steps;
+        int barsToPrint = (int) Math.floor(barCalculation);
+        String openingSeparator = "[";
+        String closingSeparator = "]";
+        String progressBar = new String(new char[barsToPrint]).replace('\0', '=');
+        String filler = new String(new char[maxBars - barsToPrint]).replace('\0', ' ');
+        String progress = "Progress: " + openingSeparator + progressBar + filler
+                + closingSeparator + " " + formatAmount(percentage) + "%";
+        print(progress);
+    }
+
+    private void printUnusedGoals(HashMap<Goal, Double> goals) {
+        HashSet<Goal> keySet = new HashSet<>(goals.keySet());
+        ArrayList<ArrayList<String>> unusedGoals = new ArrayList<>();
+        ArrayList<Goal> goalList = StateManager.getStateManager().getAllGoals();
+        for (Goal g : goalList) {
+            if (!keySet.contains(g)) {
+                ArrayList<String> unusedGoal = new ArrayList<>();
+                unusedGoal.add(g.getDescription());
+                unusedGoal.add(formatAmount(g.getAmount()));
+                unusedGoals.add(unusedGoal);
+            }
+        }
+        if (unusedGoals.isEmpty()) {
+            return;
+        }
+        String unusedHeader = LINE_DELIMITER + "Unused Goals:";
+        print(unusedHeader);
+        String[] header = {"Goal", "Target Amount"};
+        printTableRows(unusedGoals, header, TYPE_COLUMN_WIDTHS);
+    }
+
+    public void printCategoryStatus(HashMap<Category, Double> categoryMap) {
+        ArrayList<TypePrint> categoriesToPrint = new ArrayList<>();
+        Category uncategorisedCategory = StateManager.getStateManager().getUncategorisedCategory();
+        TypePrint uncategorised = null;
+        if (categoryMap.containsKey(uncategorisedCategory)) {
+            String description = uncategorisedCategory.getName();
+            double currentAmount = categoryMap.get(uncategorisedCategory);
+            uncategorised = new TypePrint(description, currentAmount);
+            categoryMap.remove(uncategorisedCategory);
+        }
+
+        for (Map.Entry<Category, Double> entry : categoryMap.entrySet()) {
+            String description = entry.getKey().getName();
+            double currentAmount = entry.getValue();
+            TypePrint categoryEntry = new TypePrint(description, currentAmount);
+            categoriesToPrint.add(categoryEntry);
+        }
+        Comparator<TypePrint> typeComparator = Comparator.comparing(TypePrint::getDescription);
+        categoriesToPrint.sort(typeComparator);
+        if (uncategorised != null) {
+            categoriesToPrint.add(uncategorised);
+        }
+        String headerMessage = "Categories Status";
+        String wrapper = createWrapper(TYPE_COLUMN_WIDTHS, headerMessage);
+        print(wrapper);
+        printStatus(categoriesToPrint);
+        printUnusedCategories(categoryMap);
+        print(wrapper);
 
     }
+
+    private void printUnusedCategories(HashMap<Category, Double> categories) {
+        HashSet<Category> keySet = new HashSet<>(categories.keySet());
+        List<String> unusedCategories = new ArrayList<>();
+        ArrayList<Category> categoryList = StateManager.getStateManager().getAllCategories();
+        for (Category c : categoryList) {
+            if (!keySet.contains(c)) {
+                unusedCategories.add(c.getName());
+            }
+        }
+        if (unusedCategories.isEmpty()) {
+            return;
+        }
+        unusedCategories.sort(String::compareToIgnoreCase);
+        String header = LINE_DELIMITER + "Unused Categories:";
+        print(header);
+        for (String s : unusedCategories) {
+            print(s);
+        }
+    }
+
 }

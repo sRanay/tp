@@ -2,12 +2,15 @@ package seedu.duke.classes;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.stream.IntStream;
 
 public class StateManager {
     private static StateManager stateManager = null;
     private final ArrayList<Goal> goals = new ArrayList<>();
+    private final Goal uncategorisedGoal = new Goal("Uncategorised", 0);
     private final ArrayList<Category> categories = new ArrayList<>();
+    private final Category uncategorisedCategory = new Category("Uncategorised");
     private final ArrayList<Income> incomes = new ArrayList<>();
     private final ArrayList<Expense> expenses = new ArrayList<>();
 
@@ -52,6 +55,10 @@ public class StateManager {
         return removeGoal(goal);
     }
 
+    public Goal getUncategorisedGoal() {
+        return uncategorisedGoal;
+    }
+
     public void addCategory(Category category) {
         assert category != null;
         categories.add(category);
@@ -62,6 +69,10 @@ public class StateManager {
             return null;
         }
         return categories.get(idx);
+    }
+
+    public Category getUncategorisedCategory() {
+        return uncategorisedCategory;
     }
 
     public boolean removeCategory(Category category) {
@@ -184,6 +195,24 @@ public class StateManager {
         ArrayList<Expense> sortExpenses = expenses;
         sortExpenses.sort(dateComparator.thenComparing(nameComparator));
         return sortExpenses;
+    }
+
+    public HashMap<Goal, Double> getGoalsStatus() {
+        HashMap<Goal, Double> map = new HashMap<>();
+        for (Income i : incomes) {
+            Goal key = i.getGoal();
+            map.put(key, map.getOrDefault(key, 0.0) + i.getTransaction().getAmount());
+        }
+        return map;
+    }
+
+    public HashMap<Category, Double> getCategoriesStatus() {
+        HashMap<Category, Double> map = new HashMap<>();
+        for (Expense e: expenses) {
+            Category key = e.getCategory();
+            map.put(key, map.getOrDefault(key, 0.0) + e.getTransaction().getAmount());
+        }
+        return map;
     }
 
 }
