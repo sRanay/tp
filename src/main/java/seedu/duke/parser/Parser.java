@@ -2,15 +2,16 @@ package seedu.duke.parser;
 
 import seedu.duke.command.AddExpenseCommand;
 import seedu.duke.command.AddIncomeCommand;
-import seedu.duke.command.CategoryCommand;
 import seedu.duke.command.Command;
 import seedu.duke.command.ExitCommand;
-import seedu.duke.command.GoalCommand;
-import seedu.duke.command.HelpCommand;
 import seedu.duke.command.ListCommand;
 import seedu.duke.command.RemoveTransactionCommand;
+import seedu.duke.command.HelpCommand;
 import seedu.duke.command.ExportCommand;
+import seedu.duke.command.CategoryCommand;
+import seedu.duke.command.GoalCommand;
 import seedu.duke.command.SummaryCommand;
+import seedu.duke.command.EditTransactionCommand;
 import seedu.duke.exception.DukeException;
 
 import java.time.LocalDate;
@@ -22,7 +23,6 @@ import java.util.regex.Pattern;
 
 public class Parser {
     public static final String DATE_INPUT_PATTERN = "ddMMyyyy";
-    public static final String DATE_EXAMPLE = "31122023";
     public static final DateTimeFormatter DATE_INPUT_FORMATTER = DateTimeFormatter.ofPattern(DATE_INPUT_PATTERN);
     private static final String SPACE_WITH_ARG_PREFIX = " /";
     private static final String ARG_PREFIX = "/";
@@ -69,6 +69,8 @@ public class Parser {
             return new GoalCommand(description, argsMap);
         case "summary":
             return new SummaryCommand(description, argsMap);
+        case "edit":
+            return new EditTransactionCommand(description, argsMap);
         default:
             throw new DukeException("Sorry I do not understand your command");
         }
