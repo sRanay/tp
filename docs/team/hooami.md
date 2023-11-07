@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Jun Hong's Project Portfolio Page
 ---
 
