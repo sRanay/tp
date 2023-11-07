@@ -2,17 +2,18 @@
 
 ## Acknowledgements
 
-{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+1. [OpenCSV](https://mvnrepository.com/artifact/com.opencsv/opencsv)
+2. [Apache Common IO](https://mvnrepository.com/artifact/commons-io/commons-io)
 
 ## Design
 
 ### Architecture
 
-The bulk of the app's work is done by the following three components:
+The bulk of the app's work is done by the following four components:
 - `UI`: The UI of the App.
-- `Parser`: Formats the user's input
-- `Command`: Command's logic and execution
-- `Storage`: Storage of data of the App
+- `Parser`: Formats the user's input.
+- `Command`: Command's logic and execution.
+- `Storage`: Storage of data of the App.
 
 ![Architecture Diagram](./images/ArchitectureDiagram.png "Architecture Diagram")
 
@@ -95,6 +96,22 @@ grouping of related spending such as Food, Transport, School Fees, etc.
 
 ## Implementation
 
+### Export feature
+
+The export feature is facilitated by `CsvWriter` class which uses a third party library called OpenCSV. It implements the following operation:
+- `exportTransactionData` - Converts each Transaction into an Array to be stored into the CSV File
+- `exportIncomeData` - Exports all income transactions only
+- `exportExpenseData` - Export all expense transactions only
+
+Given below is an example usage scenario and how the export features behaves at each step.
+
+Step 1. The user launches the application for the first time. There would be no transactions available to be exported.
+
+Step 2. The user executes `in part-time job /amount 500 /goal car` to create a transaction with the description of `part-time job`, with the `amount` set to `500` and `goal` set to `car` and stores it in the program
+
+Step 3. So when the user executes `export`, it will get all the transactions that the program stored and exports to a CSV file called `Transactions.csv`
+
+However if the user wishes to export only the income or expense transactions, the user could enter `export /type in` or `export /type out` respectively.
 ## Product scope
 
 ### Target user profile
