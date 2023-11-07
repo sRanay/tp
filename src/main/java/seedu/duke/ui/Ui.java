@@ -211,7 +211,7 @@ public class Ui {
         }
         print("Alright! Displaying " + list.size() + end);
         Integer[] columnWidths = {Integer.toString(list.size()).length() + ID_COLUMN_PADDING, LIST_COLUMN_WIDTH,
-            COLUMN_WIDTH, COLUMN_WIDTH, TYPE_WIDTH, COLUMN_WIDTH};
+                COLUMN_WIDTH, COLUMN_WIDTH, TYPE_WIDTH, COLUMN_WIDTH};
         String wrapper = createWrapper(columnWidths, headerMessage);
         print(wrapper);
         printTableRows(list, headers, columnWidths);
@@ -232,8 +232,9 @@ public class Ui {
         wrapper.add(leftPad);
         wrapper.add(headerMessage);
         wrapper.add(rightPad);
-        return(wrapper.toString());
+        return (wrapper.toString());
     }
+
     public void printGoalsStatus(HashMap<Goal, Double> goalsMap) {
         ArrayList<TypePrint> goalsToPrint = new ArrayList<>();
         TypePrint uncategorised = null;
@@ -299,7 +300,7 @@ public class Ui {
                 + closingSeparator + " " + formatAmount(percentage) + "%";
         print(progress);
     }
-  
+
     private void printUnusedGoals(HashMap<Goal, Double> goals) {
         HashSet<Goal> keySet = new HashSet<>(goals.keySet());
         ArrayList<ArrayList<String>> unusedGoals = new ArrayList<>();

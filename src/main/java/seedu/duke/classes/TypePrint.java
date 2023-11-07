@@ -8,6 +8,7 @@ public class TypePrint {
     public TypePrint(String description, double currentAmount) {
         this(description, currentAmount, 0.0);
     }
+
     public TypePrint(String description, double currentAmount, double targetAmount) {
         this.description = description;
         this.currentAmount = currentAmount;

@@ -27,7 +27,7 @@ public class GoalCommand extends ClassificationCommand {
             Double amount = Parser.parseNonNegativeDouble(getArg(AMOUNT));
             addGoal(goalName, amount);
             ui.print("Successfully added " + goalName + "!");
-        } else if (input.equals(REMOVE_COMMAND)){
+        } else if (input.equals(REMOVE_COMMAND)) {
             String goalName = getArg(REMOVE_COMMAND);
             removeGoal(goalName);
             ui.print("Successfully removed " + goalName + "!");

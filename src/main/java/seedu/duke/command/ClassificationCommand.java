@@ -46,7 +46,7 @@ public abstract class ClassificationCommand extends Command {
             errorMessage(invalidInput);
         } else if (arg.isBlank()) {
             errorMessage(invalidInput);
-        } else if(arg.equalsIgnoreCase(UNCATEGORISED)) {
+        } else if (arg.equalsIgnoreCase(UNCATEGORISED)) {
             throw new DukeException(UNCATEGORISED_ERROR);
         }
     }

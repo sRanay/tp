@@ -50,7 +50,7 @@ class GoalCommandTest {
     }
 
     @Test
-    void missingAmount() throws DukeException{
+    void missingAmount() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -62,6 +62,7 @@ class GoalCommandTest {
             command.execute(ui);
         });
     }
+
     @Test
     void invalidAmount() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -88,6 +89,7 @@ class GoalCommandTest {
         command.execute(ui);
         assertEquals("Successfully added test!\n", outputStream.toString());
     }
+
     @Test
     void invalidRemoveGoal() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -101,6 +103,7 @@ class GoalCommandTest {
             command.execute(ui);
         });
     }
+
     @Test
     void validRemoveGoal() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
