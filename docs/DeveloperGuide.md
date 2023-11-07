@@ -9,11 +9,11 @@
 
 ### Architecture
 
-The bulk of the app's work is done by the following three components:
+The bulk of the app's work is done by the following four components:
 - `UI`: The UI of the App.
-- `Parser`: Formats the user's input
-- `Command`: Command's logic and execution
-- `Storage`: Storage of data of the App
+- `Parser`: Formats the user's input.
+- `Command`: Command's logic and execution.
+- `Storage`: Storage of data of the App.
 
 ![Architecture Diagram](./images/ArchitectureDiagram.png "Architecture Diagram")
 
