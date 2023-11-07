@@ -105,12 +105,15 @@ class AddExpenseCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
-    @Disabled
+    @Test
     void missingClassification() {
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
                     "out dinner /amount 500",
-                    MISSING_CAT_EXCEPTION
+                    "Nice! The following expense has been tracked:\n" +
+                            "Description                      Date          Amount        Category               " +
+                            "Recurrence\n" +
+                            "dinner                           2023-11-07    500.00        Uncategorised          none\n"
             ),
             new CommandTestCase(
                     "out dinner /category   /amount 500",

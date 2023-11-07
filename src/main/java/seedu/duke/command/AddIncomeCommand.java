@@ -51,8 +51,10 @@ public class AddIncomeCommand extends AddTransactionCommand {
     private Goal handleGoal() throws DukeException {
         StateManager state = StateManager.getStateManager();
         String goal = getArg(GOAL_ARG);
-        if (goal == null || goal.isBlank()) {
+        if (goal == null) {
             return state.getUncategorisedGoal();
+        } else if (goal.isBlank()) {
+            throw new DukeException(MISSING_GOAL);
         }
         int index = state.getGoalIndex(goal);
         if (index == -1) {

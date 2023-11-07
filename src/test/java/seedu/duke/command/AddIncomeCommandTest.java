@@ -184,7 +184,7 @@ class AddIncomeCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
-    @Disabled
+    @Test
     void missingClassification() {
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
