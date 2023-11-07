@@ -3,7 +3,7 @@
 ## Introduction
 
 FinText is a **Command Line Interface (CLI)-based personal finance tracker to make it easy for users to track and manage
-their spending,** and generate daily/weekly/monthly reports to break down how they spend.
+their spending,** and generate daily/weekly/monthly reports to break down how they spend. Application Data will be stored into a folder called `data`.
 
 * [Quick Start](#quick-start)
 * [Features](#features)

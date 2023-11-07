@@ -362,7 +362,6 @@ class ListCommandTest {
                             "================\n"
                     , outputStream.toString());
         }
-
     }
 
     @Test
@@ -400,7 +399,6 @@ class ListCommandTest {
                             "================\n"
                     , outputStream.toString());
         }
-
     }
 
     @Test

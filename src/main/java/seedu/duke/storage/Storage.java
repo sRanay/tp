@@ -19,6 +19,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class Storage {
+
     public static String exportStorageFileName;
     private static final String DATE_PATTERN = "dd/MM/yyyy";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
@@ -130,6 +131,9 @@ public class Storage {
     public Goal convertToGoal(String name) {
         int index = StateManager.getStateManager().getGoalIndex(name);
         Goal goal = StateManager.getStateManager().getGoal(index);
+        if (goal == null) {
+            goal = StateManager.getStateManager().getUncategorisedGoal();
+        }
         return goal;
     }
 
@@ -142,6 +146,9 @@ public class Storage {
     public Category convertToCategory(String name) {
         int index = StateManager.getStateManager().getCategoryIndex(name);
         Category category = StateManager.getStateManager().getCategory(index);
+        if (category == null) {
+            category = StateManager.getStateManager().getUncategorisedCategory();
+        }
         return category;
     }
 

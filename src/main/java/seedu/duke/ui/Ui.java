@@ -296,7 +296,7 @@ public class Ui {
                 + closingSeparator + " " + formatAmount(percentage) + "%";
         print(progress);
     }
-
+  
     private void printUnusedGoals(HashMap<Goal, Double> goals) {
         HashSet<Goal> keySet = new HashSet<>(goals.keySet());
         ArrayList<ArrayList<String>> unusedGoals = new ArrayList<>();
@@ -368,5 +368,4 @@ public class Ui {
             print(s);
         }
     }
-
 }
