@@ -288,6 +288,9 @@ public class Ui {
         int steps = 5;
         double barCalculation = percentage / steps;
         int barsToPrint = (int) Math.floor(barCalculation);
+        if (barsToPrint > maxBars) {
+            barsToPrint = maxBars;
+        }
         String openingSeparator = "[";
         String closingSeparator = "]";
         String progressBar = new String(new char[barsToPrint]).replace('\0', '=');

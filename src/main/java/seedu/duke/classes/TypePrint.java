@@ -23,11 +23,11 @@ public class TypePrint {
     }
 
     public String getCurrentAmount() {
-        return String.valueOf(currentAmount);
+        return String.format("%.2f", currentAmount);
     }
 
     public String getTargetAmount() {
-        return String.valueOf(targetAmount);
+        return String.format("%.2f", targetAmount);
     }
 
     public String getAmount() {
