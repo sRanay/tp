@@ -66,6 +66,7 @@ formatting of the output.
 | ListCommand              | Lists all incoming/outgoing transactions   |
 | ExportCommand            | Exports transactions data into CSV FIle.   |
 | RemoveTransactionCommand | Deletes a transaction                      |
+| EditTransactionCommand   | Edits an income/expense transaction        |
 
 ### Storage component
 The `Storage` functionality is to load data from the storage files (`category-store.csv` , `expense-store.csv`, `goal-store.csv`, `income-store.csv`) into the application. It will also stores any data while the application is running.
