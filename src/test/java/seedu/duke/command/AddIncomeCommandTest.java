@@ -47,15 +47,15 @@ class AddIncomeCommandTest {
             new CommandTestCase(
                     "in part-time job /amount 500 /goal car",
                     "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal                   "  +
+                            "Description                      Date          Amount        Goal                   " +
                             "Recurrence\n" +
-                            "part-time job                    " + date + "    500.00        car                    " +
-                            "none\n"
+                            "part-time job                    " + date + "    500.00        car                   " +
+                            " none\n"
             ),
             new CommandTestCase(
                     "in red packet money /amount 50 /goal PS5",
                     "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal                   "  +
+                            "Description                      Date          Amount        Goal                   " +
                             "Recurrence\n" +
                             "red packet money                 " + date + "    50.00         PS5                    " +
                             "none\n"
@@ -183,28 +183,24 @@ class AddIncomeCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
-    //    @Test
-    //    void missingClassification() {
-    //        CommandTestCase[] testCases = new CommandTestCase[]{
-    //            new CommandTestCase(
-    //                    "in part-time job /amount 500",
-    //                    MISSING_GOAL_EXCEPTION
-    //            ),
-    //            new CommandTestCase(
-    //                    "in part-time job /goal   /amount 500",
-    //                    MISSING_GOAL_EXCEPTION
-    //            ),
-    //            new CommandTestCase(
-    //                    "in part-time job /amount 500 /goal",
-    //                    MISSING_GOAL_EXCEPTION
-    //            ),
-    //            new CommandTestCase(
-    //                    "in part-time job /amount 500 /goal    ",
-    //                    MISSING_GOAL_EXCEPTION
-    //            )
-    //        };
-    //        CommandTestCase.runTestCases(testCases);
-    //    }
+    @Test
+    void missingClassification() {
+        CommandTestCase[] testCases = new CommandTestCase[]{
+            new CommandTestCase(
+                    "in part-time job /goal   /amount 500",
+                    MISSING_GOAL_EXCEPTION
+            ),
+            new CommandTestCase(
+                    "in part-time job /amount 500 /goal",
+                    MISSING_GOAL_EXCEPTION
+            ),
+            new CommandTestCase(
+                    "in part-time job /amount 500 /goal    ",
+                    MISSING_GOAL_EXCEPTION
+            )
+        };
+        CommandTestCase.runTestCases(testCases);
+    }
 
     @Test
     void badRecurrence() {
@@ -231,11 +227,10 @@ class AddIncomeCommandTest {
             new CommandTestCase(
                     "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + goodDateStr,
                     "Nice! The following income has been tracked:\n" +
-                            "Description                      Date          Amount        Goal                   " +
-                            "Recurrence\n" +
-                            "pocket money                     " + goodDate + "    50.00         PS5           " +
-                            "         " +
-                            "weekly\n"
+                            "Description                      Date          Amount        Goal     " +
+                            "              Recurrence\n" +
+                            "pocket money                     " + goodDate + "    50.00         PS5" +
+                            "                    weekly\n"
             ),
             new CommandTestCase(
                     "in pocket money /amount 50 /goal PS5 /recurrence weekly /date " + badDate,

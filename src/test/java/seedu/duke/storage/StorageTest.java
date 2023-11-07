@@ -183,31 +183,31 @@ public class StorageTest {
             command = new ListCommand(commandWord, args);
             command.execute(ui);
             assertEquals("Alright! Displaying 3 transactions.\n" +
-                            "=========================================== IN TRANSACTIONS ==========================" +
-                            "=================\n" +
-                            "ID    Description                      Date         Amount       Goal                   " +
-                            "Recurrence\n" +
-                            "1     allowance                        2023-10-29   500.00       car                    " +
-                            "monthly\n" +
-                            "2     part-time job                    2023-10-29   1000.00      car                    " +
-                            "none\n" +
-                            "3     sell stuff                       2023-10-29   50.00        ps5                    " +
-                            "none\n" +
-                            "=========================================== IN TRANSACTIONS ==========================" +
-                            "=================\n" +
+                            "=========================================== IN TRANSACTIONS =========" +
+                            "==================================\n" +
+                            "ID    Description                      Date         Amount       Goal" +
+                            "                   Recurrence\n" +
+                            "1     allowance                        2023-10-29   500.00       car " +
+                            "                   monthly\n" +
+                            "2     part-time job                    2023-10-29   1000.00      car " +
+                            "                   none\n" +
+                            "3     sell stuff                       2023-10-29   50.00        ps5 " +
+                            "                   none\n" +
+                            "=========================================== IN TRANSACTIONS =========" +
+                            "==================================\n" +
                             "Alright! Displaying 3 transactions.\n" +
-                            "========================================== OUT TRANSACTIONS ==========================" +
-                            "=================\n" +
-                            "ID    Description                      Date         Amount       Category               " +
-                            "Recurrence\n" +
-                            "1     buy dinner                       2023-10-29   15.00        food                   " +
-                            "monthly\n" +
-                            "2     grab                             2023-10-29   20.00        transport              " +
-                            "none\n" +
-                            "3     popmart                          2023-10-29   12.00        toy                    " +
-                            "none\n" +
-                            "========================================== OUT TRANSACTIONS ==========================" +
-                            "=================\n"
+                            "========================================== OUT TRANSACTIONS ==========" +
+                            "=================================\n" +
+                            "ID    Description                      Date         Amount       Category " +
+                            "              Recurrence\n" +
+                            "1     buy dinner                       2023-10-29   15.00        food     " +
+                            "              monthly\n" +
+                            "2     grab                             2023-10-29   20.00        transport " +
+                            "             none\n" +
+                            "3     popmart                          2023-10-29   12.00        toy      " +
+                            "              none\n" +
+                            "========================================== OUT TRANSACTIONS ==============" +
+                            "=============================\n"
                     , outputStream.toString());
 
 
@@ -262,31 +262,31 @@ public class StorageTest {
             command = new ListCommand(commandWord, args);
             command.execute(ui);
             assertEquals("Alright! Displaying 3 transactions.\n" +
-                            "=========================================== IN TRANSACTIONS ==========================" +
-                            "=================\n" +
-                            "ID    Description                      Date         Amount       Goal                   " +
-                            "Recurrence\n" +
-                            "1     allowance                        2023-10-29   500.00       car                    " +
-                            "monthly\n" +
-                            "2     part-time job                    2023-10-29   1000.00      car                    " +
-                            "none\n" +
-                            "3     sell stuff                       2023-10-29   50.00        ps5                    " +
-                            "none\n" +
-                            "=========================================== IN TRANSACTIONS ==========================" +
-                            "=================\n" +
+                            "=========================================== IN TRANSACTIONS =========" +
+                            "==================================\n" +
+                            "ID    Description                      Date         Amount       Goal" +
+                            "                   Recurrence\n" +
+                            "1     allowance                        2023-10-29   500.00       car " +
+                            "                   monthly\n" +
+                            "2     part-time job                    2023-10-29   1000.00      car " +
+                            "                   none\n" +
+                            "3     sell stuff                       2023-10-29   50.00        ps5 " +
+                            "                   none\n" +
+                            "=========================================== IN TRANSACTIONS =========" +
+                            "==================================\n" +
                             "Alright! Displaying 3 transactions.\n" +
-                            "========================================== OUT TRANSACTIONS ==========================" +
-                            "=================\n" +
-                            "ID    Description                      Date         Amount       Category               " +
-                            "Recurrence\n" +
-                            "1     buy dinner                       2023-10-29   15.00        food                   " +
-                            "daily\n" +
-                            "2     grab                             2023-10-29   20.00        transport              " +
-                            "none\n" +
-                            "3     popmart                          2023-10-29   12.00        toy                    " +
-                            "none\n" +
-                            "========================================== OUT TRANSACTIONS ==========================" +
-                            "=================\n"
+                            "========================================== OUT TRANSACTIONS ==========" +
+                            "=================================\n" +
+                            "ID    Description                      Date         Amount       Category " +
+                            "              Recurrence\n" +
+                            "1     buy dinner                       2023-10-29   15.00        food     " +
+                            "              daily\n" +
+                            "2     grab                             2023-10-29   20.00        transport " +
+                            "             none\n" +
+                            "3     popmart                          2023-10-29   12.00        toy      " +
+                            "              none\n" +
+                            "========================================== OUT TRANSACTIONS ==============" +
+                            "=============================\n"
                     , outputStream.toString());
         }
     }
@@ -339,31 +339,31 @@ public class StorageTest {
             command = new ListCommand(commandWord, args);
             command.execute(ui);
             assertEquals("Alright! Displaying 3 transactions.\n" +
-                            "=========================================== IN TRANSACTIONS ==========================" +
-                            "=================\n" +
-                            "ID    Description                      Date         Amount       Goal                   " +
-                            "Recurrence\n" +
-                            "1     allowance                        2023-10-29   500.00       car                    " +
-                            "monthly\n" +
-                            "2     part-time job                    2023-10-29   1000.00      car                    " +
-                            "none\n" +
-                            "3     sell stuff                       2023-10-29   50.00        ps5                    " +
-                            "none\n" +
-                            "=========================================== IN TRANSACTIONS ==========================" +
-                            "=================\n" +
+                            "=========================================== IN TRANSACTIONS =========" +
+                            "==================================\n" +
+                            "ID    Description                      Date         Amount       Goal" +
+                            "                   Recurrence\n" +
+                            "1     allowance                        2023-10-29   500.00       car " +
+                            "                   monthly\n" +
+                            "2     part-time job                    2023-10-29   1000.00      car " +
+                            "                   none\n" +
+                            "3     sell stuff                       2023-10-29   50.00        ps5 " +
+                            "                   none\n" +
+                            "=========================================== IN TRANSACTIONS =========" +
+                            "==================================\n" +
                             "Alright! Displaying 3 transactions.\n" +
-                            "========================================== OUT TRANSACTIONS ==========================" +
-                            "=================\n" +
-                            "ID    Description                      Date         Amount       Category               " +
-                            "Recurrence\n" +
-                            "1     buy dinner                       2023-10-29   15.00        food                   " +
-                            "daily\n" +
-                            "2     grab                             2023-10-29   20.00        transport              " +
-                            "none\n" +
-                            "3     popmart                          2023-10-29   12.00        toy                    " +
-                            "none\n" +
-                            "========================================== OUT TRANSACTIONS ==========================" +
-                            "=================\n"
+                            "========================================== OUT TRANSACTIONS ==========" +
+                            "=================================\n" +
+                            "ID    Description                      Date         Amount       Category " +
+                            "              Recurrence\n" +
+                            "1     buy dinner                       2023-10-29   15.00        food     " +
+                            "              daily\n" +
+                            "2     grab                             2023-10-29   20.00        transport " +
+                            "             none\n" +
+                            "3     popmart                          2023-10-29   12.00        toy      " +
+                            "              none\n" +
+                            "========================================== OUT TRANSACTIONS ==============" +
+                            "=============================\n"
                     , outputStream.toString());
         }
     }

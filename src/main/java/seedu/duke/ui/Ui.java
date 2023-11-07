@@ -1,7 +1,7 @@
 package seedu.duke.ui;
 
 import seedu.duke.classes.Category;
-import seedu.duke.classes.Classification;
+import seedu.duke.classes.TypePrint;
 import seedu.duke.classes.Goal;
 import seedu.duke.classes.StateManager;
 
@@ -34,6 +34,7 @@ public class Ui {
 
     private static final String AMOUNT_FORMAT = "%.2f";
     private static final char LINE_DELIMITER = '\n';
+    private static final Integer[] TYPE_COLUMN_WIDTHS = {TYPE_WIDTH, TYPE_WIDTH};
 
     private final Scanner scanner;
     private final OutputStream outputStream;
@@ -209,8 +210,16 @@ public class Ui {
             end = " transaction.";
         }
         print("Alright! Displaying " + list.size() + end);
-        Integer[] columnWidths = {Integer.toString(list.size()).length()+ID_COLUMN_PADDING, LIST_COLUMN_WIDTH,
+        Integer[] columnWidths = {Integer.toString(list.size()).length() + ID_COLUMN_PADDING, LIST_COLUMN_WIDTH,
             COLUMN_WIDTH, COLUMN_WIDTH, TYPE_WIDTH, COLUMN_WIDTH};
+        String wrapper = createWrapper(columnWidths, headerMessage);
+        print(wrapper);
+        printTableRows(list, headers, columnWidths);
+        print(wrapper);
+
+    }
+
+    private String createWrapper(Integer[] columnWidths, String headerMessage) {
         int totalSpace = Arrays.stream(columnWidths)
                 .mapToInt(Integer::intValue)
                 .sum();
@@ -223,113 +232,120 @@ public class Ui {
         wrapper.add(leftPad);
         wrapper.add(headerMessage);
         wrapper.add(rightPad);
-        print(wrapper.toString());
-        printTableRows(list, headers, columnWidths);
-        print(wrapper.toString());
-
+        return(wrapper.toString());
     }
-
-    public void printGoalsStatus(HashMap<Goal,Double> goalsMap) {
-        ArrayList<Classification> goalsToPrint = new ArrayList<>();
-        Classification uncategorised = null;
+    public void printGoalsStatus(HashMap<Goal, Double> goalsMap) {
+        ArrayList<TypePrint> goalsToPrint = new ArrayList<>();
+        TypePrint uncategorised = null;
         Goal uncategorisedGoal = StateManager.getStateManager().getUncategorisedGoal();
         if (goalsMap.containsKey(uncategorisedGoal)) {
             String description = uncategorisedGoal.getDescription();
             double currentAmount = goalsMap.get(uncategorisedGoal);
-            uncategorised = new Classification(description, currentAmount);
+            uncategorised = new TypePrint(description, currentAmount);
             goalsMap.remove(uncategorisedGoal);
         }
         for (Map.Entry<Goal, Double> entry : goalsMap.entrySet()) {
             String description = entry.getKey().getDescription();
             double currentAmount = entry.getValue();
             double targetAmount = entry.getKey().getAmount();
-            Classification goalEntry = new Classification(description, currentAmount, targetAmount);
+            TypePrint goalEntry = new TypePrint(description, currentAmount, targetAmount);
             goalsToPrint.add(goalEntry);
         }
-        Comparator<Classification> typeComparator = Comparator.comparing(Classification::getDescription);
+        Comparator<TypePrint> typeComparator = Comparator.comparing(TypePrint::getDescription);
         goalsToPrint.sort(typeComparator);
         if (uncategorised != null) {
             goalsToPrint.add(uncategorised);
         }
-        print("GOALS STATUS: ");
+        String headerMessage = "Goals Status";
+        String wrapper = createWrapper(TYPE_COLUMN_WIDTHS, headerMessage);
+        print(wrapper);
         printStatus(goalsToPrint);
         printUnusedGoals(goalsMap);
-
+        print(wrapper);
     }
 
-    private void printStatus(ArrayList<Classification> arrayToPrint) {
-        Integer[] columnWidths = {TYPE_WIDTH, TYPE_WIDTH};
+    private void printStatus(ArrayList<TypePrint> arrayToPrint) {
+        if (arrayToPrint.isEmpty()) {
+            String message = "No existing transactions";
+            print(message);
+            return;
+        }
         String[] headers = {"Name", "Amount"};
-        for (Classification c : arrayToPrint) {
+        printTableHeader(headers, TYPE_COLUMN_WIDTHS);
+        for (TypePrint c : arrayToPrint) {
             ArrayList<String> entry = new ArrayList<>();
             entry.add(c.getDescription());
             entry.add(c.getAmount());
-            printTableRow(entry, columnWidths);
+            printTableRow(entry, TYPE_COLUMN_WIDTHS);
             if (c.targetAmountExists()) {
                 progressBar(c.getPercentage());
             }
         }
     }
 
-    private void progressBar(Double percentage) {
+    public void progressBar(Double percentage) {
         int maxBars = 20;
         int steps = 5;
-        double barCalculation = percentage/steps;
+        double barCalculation = percentage / steps;
         int barsToPrint = (int) Math.floor(barCalculation);
         String openingSeparator = "[";
         String closingSeparator = "]";
         String progressBar = new String(new char[barsToPrint]).replace('\0', '=');
-        String filler = new String(new char[maxBars-barsToPrint]).replace('\0', ' ');
+        String filler = new String(new char[maxBars - barsToPrint]).replace('\0', ' ');
         String progress = "Progress: " + openingSeparator + progressBar + filler
                 + closingSeparator + " " + formatAmount(percentage) + "%";
         print(progress);
     }
-
+  
     private void printUnusedGoals(HashMap<Goal, Double> goals) {
         HashSet<Goal> keySet = new HashSet<>(goals.keySet());
-        List<String> unusedGoals = new ArrayList<>();
+        ArrayList<ArrayList<String>> unusedGoals = new ArrayList<>();
         ArrayList<Goal> goalList = StateManager.getStateManager().getAllGoals();
         for (Goal g : goalList) {
-            if(!keySet.contains(g)) {
-                unusedGoals.add(g.getDescription());
+            if (!keySet.contains(g)) {
+                ArrayList<String> unusedGoal = new ArrayList<>();
+                unusedGoal.add(g.getDescription());
+                unusedGoal.add(formatAmount(g.getAmount()));
+                unusedGoals.add(unusedGoal);
             }
         }
         if (unusedGoals.isEmpty()) {
             return;
         }
-        unusedGoals.sort(String::compareToIgnoreCase);
-        String header = LINE_DELIMITER + "Unused Goals:";
-        print(header);
-        for (String s : unusedGoals) {
-            print(s);
-        }
+        String unusedHeader = LINE_DELIMITER + "Unused Goals:";
+        print(unusedHeader);
+        String[] header = {"Goal", "Target Amount"};
+        printTableRows(unusedGoals, header, TYPE_COLUMN_WIDTHS);
     }
 
     public void printCategoryStatus(HashMap<Category, Double> categoryMap) {
-        ArrayList<Classification> categoriesToPrint = new ArrayList<>();
+        ArrayList<TypePrint> categoriesToPrint = new ArrayList<>();
         Category uncategorisedCategory = StateManager.getStateManager().getUncategorisedCategory();
-        Classification uncategorised = null;
+        TypePrint uncategorised = null;
         if (categoryMap.containsKey(uncategorisedCategory)) {
             String description = uncategorisedCategory.getName();
             double currentAmount = categoryMap.get(uncategorisedCategory);
-            uncategorised = new Classification(description, currentAmount);
+            uncategorised = new TypePrint(description, currentAmount);
             categoryMap.remove(uncategorisedCategory);
         }
 
         for (Map.Entry<Category, Double> entry : categoryMap.entrySet()) {
             String description = entry.getKey().getName();
             double currentAmount = entry.getValue();
-            Classification categoryEntry = new Classification(description, currentAmount);
+            TypePrint categoryEntry = new TypePrint(description, currentAmount);
             categoriesToPrint.add(categoryEntry);
         }
-        Comparator<Classification> typeComparator = Comparator.comparing(Classification::getDescription);
+        Comparator<TypePrint> typeComparator = Comparator.comparing(TypePrint::getDescription);
         categoriesToPrint.sort(typeComparator);
         if (uncategorised != null) {
             categoriesToPrint.add(uncategorised);
         }
-        print("Categories Status: ");
+        String headerMessage = "Categories Status";
+        String wrapper = createWrapper(TYPE_COLUMN_WIDTHS, headerMessage);
+        print(wrapper);
         printStatus(categoriesToPrint);
         printUnusedCategories(categoryMap);
+        print(wrapper);
 
     }
 

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CategoryCommandTest {
     @Test
-    void invalidCategory() {
+    void invalidCategory() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -29,7 +29,7 @@ class CategoryCommandTest {
     }
 
     @Test
-    void emptyCategoryAdd() {
+    void emptyCategoryAdd() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
@@ -56,7 +56,7 @@ class CategoryCommandTest {
     }
 
     @Test
-    void invalidRemoveCategory() {
+    void invalidRemoveCategory() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);
