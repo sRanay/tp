@@ -96,9 +96,9 @@ grouping of related spending such as Food, Transport, School Fees, etc.
 
 ## Implementation
 
-### [Implemented] Export feature
+### Export feature
 
-The proposed export feature is facilitated by `CsvWriter` class which uses a third party library called OpenCSV. It implements the following operation:
+The export feature is facilitated by `CsvWriter` class which uses a third party library called OpenCSV. It implements the following operation:
 - `exportTransactionData` - Converts each Transaction into an Array to be stored into the CSV File
 - `exportIncomeData` - Exports all income transactions only
 - `exportExpenseData` - Export all expense transactions only
