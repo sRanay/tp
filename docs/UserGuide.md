@@ -185,7 +185,25 @@ Format: `export [/type (in | out)]`
 `export /type out` - Export all out transactions
 
 ### Edit Transactions `[Coming Soon]`
-Details coming soon...
+Edits an existing transaction.
+
+Format: `edit INDEX /type (in | out) (/description DESCRIPTION | /amount AMOUNT | /goal GOAL | /category CATEGORY)`
+
+- User must specify /type option to edit either a transaction under income or expense.
+- User must specify a valid income/expense transaction index.
+- User must only specify either /description or /amount or /goal (if editing an income transaction) or /category (if editing an expense transaction). If more than 1 option or no options are specificed, an error will be trigerred.
+- User must enter a value that is different than the previous value of the corresponding field to edit.
+- User can not edit the date field.
+- In case of editing a goal/category, it must exist beforehand.
+
+**Usage Example:**
+
+`edit 1 /type in /description allowance` - Edits the description of the first income transaction to be "allowance".
+
+`edit 2 /type in /goal ps5` - Edits the goal of the second income transaction to be ps5.
+
+`edit 2 /type out /amount 10` - Edits the amount of the second expense transaction to be 10.
+
 
 ### Transaction Summary: `summary`
 Shows the summarised total of transactions.
