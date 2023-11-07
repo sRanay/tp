@@ -211,7 +211,7 @@ public class Ui {
         }
         print("Alright! Displaying " + list.size() + end);
         Integer[] columnWidths = {Integer.toString(list.size()).length() + ID_COLUMN_PADDING, LIST_COLUMN_WIDTH,
-                COLUMN_WIDTH, COLUMN_WIDTH, TYPE_WIDTH, COLUMN_WIDTH};
+            COLUMN_WIDTH, COLUMN_WIDTH, TYPE_WIDTH, COLUMN_WIDTH};
         String wrapper = createWrapper(columnWidths, headerMessage);
         print(wrapper);
         printTableRows(list, headers, columnWidths);
