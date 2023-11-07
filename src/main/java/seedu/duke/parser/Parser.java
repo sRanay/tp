@@ -10,6 +10,7 @@ import seedu.duke.command.HelpCommand;
 import seedu.duke.command.ListCommand;
 import seedu.duke.command.RemoveTransactionCommand;
 import seedu.duke.command.ExportCommand;
+import seedu.duke.command.SummaryCommand;
 import seedu.duke.exception.DukeException;
 
 import java.time.LocalDate;
@@ -66,6 +67,8 @@ public class Parser {
             return new CategoryCommand(description, argsMap);
         case "goal":
             return new GoalCommand(description, argsMap);
+        case "summary":
+            return new SummaryCommand(description, argsMap);
         default:
             throw new DukeException("Sorry I do not understand your command");
         }
