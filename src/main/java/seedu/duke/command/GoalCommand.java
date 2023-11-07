@@ -14,8 +14,6 @@ public class GoalCommand extends Command {
     private static final String AMOUNT = "amount";
 
     private static final String INVALID_INPUT = "Your goal input is empty/invalid :(";
-    private static final String INVALID_DESCRIPTION = "Invalid usage! Please do not include anything in the " +
-            "description field for this command";
 
     public GoalCommand(String description, HashMap<String, String> args) {
         super(description, args);
@@ -37,9 +35,6 @@ public class GoalCommand extends Command {
     }
 
     public String validateInput() throws DukeException {
-        if (!getDescription().isBlank()) {
-            errorMessage(INVALID_DESCRIPTION);
-        }
         if(getArgs().isEmpty()) {
             throw new DukeException(INVALID_INPUT);
         } else if (getArgs().containsKey(ADD_COMMAND) && getArgs().containsKey(REMOVE_COMMAND)) {

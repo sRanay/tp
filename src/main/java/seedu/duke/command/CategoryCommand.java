@@ -11,8 +11,6 @@ public class CategoryCommand extends Command {
     private static final String ADD_COMMAND = "add";
     private static final String REMOVE_COMMAND = "remove";
     private static final String INVALID_INPUT = "Your category input is empty/invalid :(";
-    private static final String INVALID_DESCRIPTION = "Invalid usage! Please do not include anything in the " +
-            "description field for this command";
 
     public CategoryCommand(String description, HashMap<String, String> args) {
         super(description, args);
@@ -36,9 +34,6 @@ public class CategoryCommand extends Command {
     }
 
     public String validateInput() throws DukeException {
-        if (!getDescription().isBlank()) {
-            errorMessage(INVALID_DESCRIPTION);
-        }
         if (getArgs().isEmpty()) {
             throw new DukeException(INVALID_INPUT);
         } else if (getArgs().containsKey(ADD_COMMAND) && getArgs().containsKey(REMOVE_COMMAND)) {
