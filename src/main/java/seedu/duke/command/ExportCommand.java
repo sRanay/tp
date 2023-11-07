@@ -42,10 +42,20 @@ public class ExportCommand extends Command {
         this.csvFile = new CsvWriter(exportStorageFileName);
     }
 
+    /**
+     * Writes the header of the export CSV File.
+     */
     public void writeHeader() {
         csvFile.write(HEADERS);
     }
 
+    /**
+     * Converts the transaction object into an Array to be able to store into the CSV File.
+     *
+     * @param transaction Transaction object to be converted.
+     * @param row Array where the data is stored in.
+     * @return Array containing the data from the Transaction object.
+     */
     public String[] extractTransactionData(Transaction transaction, String[] row) {
         String description = transaction.getDescription();
         String date = transaction.getDate().toString();
@@ -53,31 +63,41 @@ public class ExportCommand extends Command {
         row[DESCRIPTION] = description;
         row[DATE] = date;
         row[AMOUNT] = amount;
+        row[RECURRENCE] = transaction.getRecurrence().toString();
         return row;
     }
 
+    /**
+     * Exports all Income Transactions and writes to the CSV File.
+     */
     public void exportIncomeData() {
         for (Income i : this.incomeArray) {
             Transaction currentTransaction = i.getTransaction();
             String[] row = new String[6];
             row[GOAL] = i.getGoal().getDescription();
             row[CATEGORY] = EMPTY_DATA;
-            row[RECURRENCE] = currentTransaction.getRecurrence().toString();
             this.csvFile.write(extractTransactionData(currentTransaction, row));
         }
     }
 
+    /**
+     * Exports all Expense Transactions and writes to the CSV File.
+     */
     public void exportExpenseData() {
         for (Expense e : this.expenseArray) {
             Transaction currentTransaction = e.getTransaction();
             String[] row = new String[6];
             row[GOAL] = EMPTY_DATA;
             row[CATEGORY] = e.getCategory().getName();
-            row[RECURRENCE] = currentTransaction.getRecurrence().toString();
             this.csvFile.write(extractTransactionData(currentTransaction, row));
         }
     }
 
+    /**
+     * Check which transaction to be exported.
+     *
+     * @return returns the correct transaction type to be exported.
+     */
     public TransactionType checkType() {
         String type = getArg(TYPE_ARG);
         if (type == null) {
@@ -92,6 +112,11 @@ public class ExportCommand extends Command {
         return TransactionType.ERROR;
     }
 
+    /**
+     * Export the right data to the CSV File
+     *
+     * @param type The type of transaction to be export.
+     */
     void exportData(TransactionType type) {
         switch (type) {
         case IN:
@@ -106,6 +131,12 @@ public class ExportCommand extends Command {
         }
     }
 
+    /**
+     * Executes the command.
+     *
+     * @param ui Ui class that is used to print in table format.
+     * @throws DukeException If the file cannot be created during the exporting process.
+     */
     @Override
     public void execute(Ui ui) throws DukeException {
         this.ui = ui;
