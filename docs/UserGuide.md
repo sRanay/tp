@@ -15,7 +15,7 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
     * [Add/Remove Goal: `goal`](#addremove-a-goal-goal)
     * [Add/Remove Category: `category`](#addremove-a-category-category)
     * [Export Transactions: `export`](#export-transactions-export)
-    * [Edit Transactions: `[Coming Soon]`](#edit-transactions-coming-soon)
+    * [Edit Transactions: `edit`](#edit-transactions-edit)
     * [Transaction Summary: `summary`](#transaction-summary-summary)
     * [End Program: `bye`](#end-program-bye)
 * [Command Summary](#command-summary)
@@ -186,7 +186,7 @@ Format: `export [/type (in | out)]`
 
 `export /type out` - Export all out transactions
 
-### Edit Transactions `edit`
+### Edit Transactions: `edit`
 Edits an existing transaction.
 
 Format: `edit INDEX /type (in | out) (/description DESCRIPTION | /amount AMOUNT | /goal GOAL | /category CATEGORY)`
