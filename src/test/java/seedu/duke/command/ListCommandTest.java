@@ -338,14 +338,14 @@ class ListCommandTest {
         Command command = parser.parse("list /type in /month");
         command.execute(ui);
         if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
-            assertEquals("Alright! Displaying 1 transaction.\n" +
+            assertEquals("Alright! Displaying 2 transactions.\n" +
                             "=========================================== IN TRANSACTIONS ============================" +
                             "===============\n" +
                             "ID    Description                      Date         Amount       Goal                   " +
                             "Recurrence\n" +
                             "1     part-time job                    "+getCurrentDate()+"   500.00       car          " +
                             "          none\n" +
-                            "2     allowance job                    "+getPrevWeekDate()+"   500.00       car         " +
+                            "2     allowance job                    "+getPrevWeekDate()+"   300.00       car         " +
                             "           none\n" +
                             "=========================================== IN TRANSACTIONS ===========================" +
                             "================\n"
@@ -374,7 +374,7 @@ class ListCommandTest {
         Command command = parser.parse("list /type out /month");
         command.execute(ui);
         if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
-            assertEquals("Alright! Displaying 1 transaction.\n" +
+            assertEquals("Alright! Displaying 2 transactions.\n" +
                             "========================================== OUT TRANSACTIONS ============================" +
                             "===============\n" +
                             "ID    Description                      Date         Amount       Category               " +
