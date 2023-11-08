@@ -171,49 +171,36 @@ public class EditTransactionCommand extends Command {
     }
 
     private boolean handleGoalEdit(Income income, int idx) throws DukeException {
-        boolean isSuccess = false;
-        boolean foundNewGoal = false;
         Goal originalGoal = income.getGoal();
         String newGoalDescription = getArg(GOAL_ARG);
-        if (originalGoal.getDescription().equals(newGoalDescription)) {
+        if (originalGoal.getDescription().equalsIgnoreCase(newGoalDescription)) {
             throw new DukeException(SAME_GOAL);
         }
 
-        for (Goal goal : StateManager.getStateManager().getAllGoals()) {
-            if (goal.getDescription().equals(newGoalDescription)) {
-                StateManager.getStateManager().getIncome(idx)
-                        .setGoal(goal);
-                isSuccess = !originalGoal.equals(income.getGoal());
-                foundNewGoal = true;
-                break;
-            }
-        }
-        if (!foundNewGoal) {
+        int newGoalIdx = StateManager.getStateManager().getGoalIndex(newGoalDescription);
+        if (newGoalIdx == -1) {
             throw new DukeException("Please add " + newGoalDescription + " as a goal first.");
         }
-        return isSuccess;
+
+        Goal newGoal = StateManager.getStateManager().getGoal(newGoalIdx);
+        StateManager.getStateManager().getIncome(idx).setGoal(newGoal);
+        return !originalGoal.equals(income.getGoal());
     }
 
     private boolean handleCategoryEdit(Expense expense, int idx) throws DukeException {
-        boolean isSuccess = false;
-        boolean foundNewCategory = false;
         Category originalCategory = expense.getCategory();
         String newCategoryDescription = getArg(CATEGORY_ARG);
-        if (originalCategory.getName().equals(newCategoryDescription)) {
+        if (originalCategory.getName().equalsIgnoreCase(newCategoryDescription)) {
             throw new DukeException(SAME_CATEGORY);
         }
 
-        for (Category category : StateManager.getStateManager().getAllCategories()) {
-            if (category.getName().equals(newCategoryDescription)) {
-                StateManager.getStateManager().getExpense(idx).setCategory(category);
-                isSuccess = !originalCategory.equals(expense.getCategory());
-                foundNewCategory = true;
-                break;
-            }
-        }
-        if (!foundNewCategory) {
+        int newCategoryIdx = StateManager.getStateManager().getCategoryIndex(newCategoryDescription);
+        if (newCategoryIdx == -1) {
             throw new DukeException("Please add " + newCategoryDescription + " as a category first.");
         }
-        return isSuccess;
+
+        Category newCategory = StateManager.getStateManager().getCategory(newCategoryIdx);
+        StateManager.getStateManager().getExpense(idx).setCategory(newCategory);
+        return !originalCategory.equals(expense.getCategory());
     }
 }
