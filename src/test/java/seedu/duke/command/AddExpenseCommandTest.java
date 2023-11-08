@@ -106,13 +106,15 @@ class AddExpenseCommandTest {
 
     @Test
     void missingClassification() {
+        LocalDate date = LocalDate.now();
         CommandTestCase[] testCases = new CommandTestCase[]{
             new CommandTestCase(
                     "out dinner /amount 500",
                     "Nice! The following expense has been tracked:\n" +
                             "Description                      Date          Amount        Category               " +
                             "Recurrence\n" +
-                            "dinner                           2023-11-07    500.00        Uncategorised          none\n"
+                            "dinner                           " + date + "    500.00        Uncategorised          " +
+                            "none\n"
             ),
             new CommandTestCase(
                     "out dinner /category   /amount 500",
