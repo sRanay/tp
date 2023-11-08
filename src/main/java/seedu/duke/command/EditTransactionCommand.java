@@ -23,8 +23,8 @@ public class EditTransactionCommand extends Command {
     private static final String INVALID_IDX = "Please enter a valid index.";
     private static final String MISSING_TYPE = "Please indicate the transaction type.";
     private static final String INVALID_TYPE = "Please indicate either /type in or /type out.";
-    private static final String MISSING_EDIT = "Please enter the category to edit";
-    private static final String TOO_MANY_ARGUMENTS = "Please enter only one category to edit";
+    private static final String MISSING_EDIT = "Please enter the attribute to edit";
+    private static final String TOO_MANY_ARGUMENTS = "Please enter only one attribute to edit";
     private static final String BAD_AMOUNT = "Invalid amount value specified...";
     private static final String DATE_EDIT = "Can not edit Date...";
     private static final String SAME_GOAL = "Please enter a different goal description";
