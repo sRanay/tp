@@ -38,6 +38,13 @@ class AddExpenseCommandTest {
                             "       Recurrence\n" +
                             "pokemon card pack                " + date + "    10.50         games         " +
                             "         none\n"
+            ), new CommandTestCase(
+                    "out dinner /amount 500",
+                    "Nice! The following expense has been tracked:\n" +
+                                "Description                      Date          Amount        Category               " +
+                                "Recurrence\n" +
+                                "dinner                           " + date + "    500.00        Uncategorised " +
+                                "         none\n"
             ),
         };
         CommandTestCase.runTestCases(testCases);
@@ -108,14 +115,7 @@ class AddExpenseCommandTest {
     void missingClassification() {
         LocalDate date = LocalDate.now();
         CommandTestCase[] testCases = new CommandTestCase[]{
-            new CommandTestCase(
-                    "out dinner /amount 500",
-                    "Nice! The following expense has been tracked:\n" +
-                            "Description                      Date          Amount        Category               " +
-                            "Recurrence\n" +
-                            "dinner                           " + date + "    500.00        Uncategorised          " +
-                            "none\n"
-            ),
+
             new CommandTestCase(
                     "out dinner /category   /amount 500",
                     MISSING_CAT_EXCEPTION
