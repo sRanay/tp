@@ -184,15 +184,15 @@ Format: `export [/type (in | out)]`
 
 `export /type out` - Export all out transactions
 
-### Edit Transactions `[Coming Soon]`
+### Edit Transactions `edit`
 Edits an existing transaction.
 
 Format: `edit INDEX /type (in | out) (/description DESCRIPTION | /amount AMOUNT | /goal GOAL | /category CATEGORY)`
 
 - User must specify /type option to edit either a transaction under income or expense.
 - User must specify a valid income/expense transaction index.
-- User must only specify either /description or /amount or /goal (if editing an income transaction) or /category (if editing an expense transaction). If more than 1 option or no options are specificed, an error will be trigerred.
-- User must enter a value that is different than the previous value of the corresponding field to edit.
+- User must only specify either /description or /amount or /goal (if editing an income transaction) or /category (if editing an expense transaction). If more than 1 option or no options are specified, an error will be triggered.
+- User must enter a value that is different from the previous value of the corresponding field to edit.
 - User can not edit the date field.
 - In case of editing a goal/category, it must exist beforehand.
 
@@ -237,15 +237,16 @@ Safely ends the program.
 
 ## Command Summary
 
-| Action                  | Format                                                                                                | Example                                   |
-|-------------------------|-------------------------------------------------------------------------------------------------------|-------------------------------------------|
-| Help                    | `help`                                                                                                |                                           |
-| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`          | `in part-time job /amount 500 /goal car`  |
-| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]` | `out dinner /amount 10.50 /category food` |
-| Delete Transaction      | `delete INDEX /type (in | out)`                                                                       | `delete 1 /type in`                       |
-| List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`                            | `list /type in`                           |
-| Add/Remove a Goal       | `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`                                                      | `goal /add PS5 /amount 600`               |
-| Add/Remove a Category   | `category [/add CATEGORY] [/remove CATEGORY]`                                                         | `category /add Bills`                     |
+| Action                  | Format                                                                                        | Example                                                                          |
+|-------------------------|-----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| Help                    | `help`                                                                                        |                                                                                  |
+| Adding an income entry  | `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`  | `in part-time job /amount 500 /goal car`                                         |
+| Adding an expense entry | `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]` | `out dinner /amount 10.50 /category food`                                        |
+| Delete Transaction      | `delete INDEX /type (in | out)`                                                                            | `delete 1 /type in`                       |
+| List Transactions       | `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`                         | `list /type in`                           |
+| Add/Remove a Goal       | `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`                                              | `goal /add PS5 /amount 600`                                                      |
+| Add/Remove a Category   | `category [/add CATEGORY] [/remove CATEGORY]`                                                 | `category /add Bills`                                                            |
 | Export Transactions     | `export [/type (in | out)]`                                                                           | `export /type in`                         |
+| Edit Transaction        | `edit INDEX /type (in | out) (/description DESCRIPTION | /amount AMOUNT | /goal GOAL | /category CATEGORY)` | `edit 2 /type in /goal ps5`         |
 | Transaction Summary     | `summary /type (in | out) [/day] [/week] [/month]`                                                    | `summary /type in /day`                   |
-| End program             | `bye`                                                                                                 |                                           |
+| End program             | `bye`                                                                                         |                                                                                  |
