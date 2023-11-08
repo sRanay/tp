@@ -36,9 +36,11 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
     command.
 > * Arguments can be in any order. <br>
     e.g. if a command has the arguments `/amount AMOUNT /goal GOAL`, `/goal GOAL /amount AMOUNT` is acceptable as well.
-> * Additional supplied arguments will be simply ignored.
+> * Additional supplied arguments or unnecessary description will be simply ignored.
 > * User is intentionally not restricted to input future or past date to the `/date DATE` argument to allow for flexibility in managing their transactions.
 > * Duplicate arguments are not accepted by the program. A message will be shown in such cases.
+> * On MacOS, `Ctrl-c` and `Ctrl-d` will end the program safely and print the bye message.
+> * On Windows, `Ctrl-c` will end the program safely and print the bye message.
 
 ### Viewing Help: `help`
 Shows a list of all the commands available to the user.
