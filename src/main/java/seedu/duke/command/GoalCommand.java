@@ -20,14 +20,17 @@ public class GoalCommand extends ClassificationCommand {
 
     @Override
     public void execute(Ui ui) throws DukeException {
-        String input = validateInput();
-        if (input.equals(ADD_COMMAND)) {
+        String inputType = validateInput();
+        if (inputType == null) {
+            errorMessage(INVALID_INPUT);
+        }
+        if (inputType.equals(ADD_COMMAND)) {
             validateAmount();
             String goalName = getArg(ADD_COMMAND);
             Double amount = Parser.parseNonNegativeDouble(getArg(AMOUNT));
             addGoal(goalName, amount);
             ui.print("Successfully added " + goalName + "!");
-        } else if (input.equals(REMOVE_COMMAND)) {
+        } else if (inputType.equals(REMOVE_COMMAND)) {
             String goalName = getArg(REMOVE_COMMAND);
             removeGoal(goalName);
             ui.print("Successfully removed " + goalName + "!");
