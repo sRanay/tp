@@ -92,7 +92,7 @@ public class HelpCommandTest {
                 "/amount           Amount to be added\n" +
                 "/goal             The goal to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the income added is recurring\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class HelpCommandTest {
                 "/amount           Amount to be added\n" +
                 "/goal             The goal to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the income added is recurring\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
     @Test
@@ -130,7 +130,7 @@ public class HelpCommandTest {
                 "/amount           Amount to be added\n" +
                 "/goal             The goal to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the income added is recurring\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
     @Test
@@ -149,7 +149,7 @@ public class HelpCommandTest {
                 "/amount           Amount to be deducted\n" +
                 "/category         The spending category to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the expense added is recurring\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the expense added is recurring\n\n", outputStream.toString());
     }
 
     @Test

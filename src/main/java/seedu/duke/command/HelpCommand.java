@@ -20,7 +20,7 @@ public class HelpCommand extends Command {
     private static final String[] IN_COMMAND_FLAGS_DESCRIPTION = {"Amount to be added", 
                                                                   "The goal to classify it under", 
                                                                   "Date of the transaction",
-                                                                  "Indicates whether of the income" +
+                                                                  "Indicates whether the income" +
                                                                   " added is recurring"};
     private static final String OUT_COMMAND = "out";
     private static final String OUT_DESCRIPTION = "Adds an expense for a category";
@@ -31,7 +31,7 @@ public class HelpCommand extends Command {
     private static final String[] OUT_COMMAND_FLAGS_DESCRIPTION = {"Amount to be deducted", 
                                                                    "The spending category to classify it under", 
                                                                    "Date of the transaction",
-                                                                   "Indicates whether of the expense" +
+                                                                   "Indicates whether the expense" +
                                                                    " added is recurring"};
     private static final String DELETE_COMMAND = "delete";
     private static final String DELETE_DESCRIPTION = "Delete a specific transaction based on the index in the list";
