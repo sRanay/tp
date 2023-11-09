@@ -77,7 +77,7 @@ class AddIncomeCommandTest {
                             "weekly\n",
                     () -> {
                         ArrayList<Income> incomes = StateManager.getStateManager().getAllIncomes();
-                        Income lastAddedIncome = incomes.get(incomes.size() - 1);
+                        Income lastAddedIncome = incomes.get(1);
                         assertEquals(lastAddedIncome.getTransaction().getRecurrence(), TransactionRecurrence.WEEKLY);
                     }
             )

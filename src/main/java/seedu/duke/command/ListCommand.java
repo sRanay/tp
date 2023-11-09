@@ -46,9 +46,8 @@ public class ListCommand extends Command {
         listTypeHandler();
     }
 
-    // Description gets ignored for list
     private void validateArgs() throws DukeException {
-        if (validDescriptionInput()) {
+        if (validateDescriptionInput()) {
             return;
         }
         checkArgs();
@@ -97,7 +96,8 @@ public class ListCommand extends Command {
             }
         }
     }
-    private boolean validDescriptionInput() throws DukeException {
+
+    private boolean validateDescriptionInput() throws DukeException {
         if (getDescription() == null && getArgs().isEmpty()) {
             String emptyListCommandError = "The list command must be accompanied with additional parameters";
             errorMessage(emptyListCommandError);
@@ -146,7 +146,6 @@ public class ListCommand extends Command {
                 throw new DukeException(EMPTY_LIST);
             }
             HashMap<Goal, Double> map = StateManager.getStateManager().getGoalsStatus();
-
             ui.printGoalsStatus(map);
         } else if (description.equalsIgnoreCase(CATEGORY)) {
             ArrayList<Category> categoriesList = StateManager.getStateManager().getAllCategories();
@@ -172,7 +171,7 @@ public class ListCommand extends Command {
         if (getArgs().containsKey(GOAL)) {
             filterGoal = getArg(GOAL).toLowerCase();
         }
-        ArrayList<Income> incomeArray = StateManager.getStateManager().sortedIncomes();
+        ArrayList<Income> incomeArray = StateManager.getStateManager().getAllIncomes();
         ArrayList<ArrayList<String>> printIncomes = new ArrayList<>();
         if (incomeArray == null || incomeArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
@@ -202,7 +201,7 @@ public class ListCommand extends Command {
         if (getArgs().containsKey(CATEGORY)) {
             filterCategory = getArg(CATEGORY).toLowerCase();
         }
-        ArrayList<Expense> expenseArray = StateManager.getStateManager().sortedExpenses();
+        ArrayList<Expense> expenseArray = StateManager.getStateManager().getAllExpenses();
         ArrayList<ArrayList<String>> printExpenses = new ArrayList<>();
         if (expenseArray == null || expenseArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);

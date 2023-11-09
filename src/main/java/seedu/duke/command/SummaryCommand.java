@@ -75,7 +75,7 @@ public class SummaryCommand extends Command {
     }
 
     private double getIncomeSummary() throws DukeException {
-        ArrayList<Income> incomeArray = StateManager.getStateManager().sortedIncomes();
+        ArrayList<Income> incomeArray = StateManager.getStateManager().getAllIncomes();
         if (incomeArray == null || incomeArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
         }
@@ -106,7 +106,7 @@ public class SummaryCommand extends Command {
     }
 
     private double getExpenseSummary() throws DukeException {
-        ArrayList<Expense> expenseArray = StateManager.getStateManager().sortedExpenses();
+        ArrayList<Expense> expenseArray = StateManager.getStateManager().getAllExpenses();
         if (expenseArray == null || expenseArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
         }
