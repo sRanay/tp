@@ -190,7 +190,11 @@ whether they spend above their income, etc).
 
 ## Non-Functional Requirements
 
-{Give non-functional requirements}
+- The program supports Java 11
+- The program should be OS-agnostic
+- The program should provide a consistent experience across the different platforms as far as possible
+- The program should be able to work locally without internet connectivity
+- The program should be intuitive to use
 
 ## Glossary
 
