@@ -35,6 +35,7 @@ public class Ui {
     private static final String AMOUNT_FORMAT = "%.2f";
     private static final char LINE_DELIMITER = '\n';
     private static final Integer[] TYPE_COLUMN_WIDTHS = {TYPE_WIDTH, TYPE_WIDTH};
+    private static final String EMPTY_STRING = "";
 
     private final Scanner scanner;
     private final OutputStream outputStream;
@@ -128,8 +129,18 @@ public class Ui {
         print("Bye Bye!");
     }
 
-    public String readUserInput() {
-        return scanner.nextLine();
+    public String readUserInput() throws Exception {
+        String userInput = EMPTY_STRING;
+        try {
+            userInput = scanner.nextLine();
+        } catch (Exception e) {
+            if (e instanceof java.util.NoSuchElementException) {
+                System.exit(0);
+            } else {
+                throw new Exception(e.getMessage());
+            }
+        }
+        return userInput;
     }
 
     public void close() {

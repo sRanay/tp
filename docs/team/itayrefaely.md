@@ -19,3 +19,5 @@ Given below are my contributions to the project.
 
 - Contributions to team-based tasks:  played a major role in shaping the project idea, defining its goals, \
   identifying the problem to solve, and outlining the initial structure.
+
+- Community: Reported bugs and suggestions for other teams in the class (examples [#1](https://github.com/itayrefaely/ped/issues/1) [#2](https://github.com/itayrefaely/ped/issues/2) [#3](https://github.com/itayrefaely/ped/issues/3) [#4](https://github.com/itayrefaely/ped/issues/4))

@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Jonathan's Project Portfolio Page
 ---
 
