@@ -1,19 +1,16 @@
 @startuml
-!include Style.puml
-
 skinparam componentStyle rectangle
 actor user
 file file
 component {
-    [Storage] -> file
     user -d-> [UI]
     [Main] -up-> [UI]
     [Main] -d-> [Storage]
     [UI] -> [Parser]
     [Parser] -> [Command]
     [Command] -> [Main]
-
-
+    [Command] <-> [StateManager]
+    [Storage] <-> [StateManager]
+    [Storage] -l-> file
 }
-
 @enduml
