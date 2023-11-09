@@ -27,6 +27,7 @@ public class AddIncomeCommand extends AddTransactionCommand {
         Transaction transaction = prepareTransaction();
         Income income = addNewIncome(transaction);
         printSuccess(ui, income);
+        StateManager.getStateManager().sortIncomes();
     }
 
     private Income addNewIncome(Transaction transaction) throws DukeException {

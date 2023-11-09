@@ -179,22 +179,18 @@ public class StateManager {
                 .orElse(-1);
     }
 
-    public ArrayList<Income> sortedIncomes() {
+    public void sortIncomes() {
         Comparator<Income> dateComparator = Comparator.comparing((Income i) -> i.getTransaction().getDate(),
                 Comparator.reverseOrder());
         Comparator<Income> nameComparator = Comparator.comparing((Income i) -> i.getTransaction().getDescription());
-        ArrayList<Income> sortIncomes = incomes;
-        sortIncomes.sort(dateComparator.thenComparing(nameComparator));
-        return sortIncomes;
+        incomes.sort(dateComparator.thenComparing(nameComparator));
     }
 
-    public ArrayList<Expense> sortedExpenses() {
+    public void sortExpenses() {
         Comparator<Expense> dateComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDate(),
                 Comparator.reverseOrder());
         Comparator<Expense> nameComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDescription());
-        ArrayList<Expense> sortExpenses = expenses;
-        sortExpenses.sort(dateComparator.thenComparing(nameComparator));
-        return sortExpenses;
+        expenses.sort(dateComparator.thenComparing(nameComparator));
     }
 
     public HashMap<Goal, Double> getGoalsStatus() {

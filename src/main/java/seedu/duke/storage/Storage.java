@@ -252,6 +252,7 @@ public class Storage {
                 StateManager.getStateManager().addIncome(income);
             }
         }
+        StateManager.getStateManager().sortIncomes();
         incomeCsvFile.close();
     }
 
@@ -292,6 +293,7 @@ public class Storage {
                 StateManager.getStateManager().addExpense(expense);
             }
         }
+        StateManager.getStateManager().sortExpenses();
         expenseCsvFile.close();
     }
 
