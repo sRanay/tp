@@ -21,7 +21,7 @@ public class ListCommand extends Command {
     private static final String INVALID_GOAL_FORMAT = "You have entered /goal, but you have entered an invalid goal";
     private static final String INVALID_CATEGORY_FORMAT = "You have entered /category, but you have entered an " +
             "invalid category";
-    private static final String EMPTY_LIST = "It appears that we have came up empty. Why not try adding some" +
+    private static final String EMPTY_LIST = "It appears that we have come up empty. Why not try adding some" +
             " transactions first?";
     private static final String[] IN_HEADERS = {"ID", "Description", "Date", "Amount", "Goal", "Recurrence"};
     private static final String[] OUT_HEADERS = {"ID", "Description", "Date", "Amount", "Category", "Recurrence"};
