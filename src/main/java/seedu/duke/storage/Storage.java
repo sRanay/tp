@@ -37,7 +37,7 @@ public class Storage {
     private static final String[] INCOME_HEADER = {"Description", "Amount", "Date", "Goal",
                                                    "Recurrence", "Has Next Recurrence"};
     private static final String[] EXPENSE_HEADER = {"Description", "Amount", "Date", "Category",
-                                                    "Recurrence", "Has Next Reccurence"};
+                                                    "Recurrence", "Has Next Recurrence"};
     private static final int DESCRIPTION = 0;
     private static final int AMOUNT = 1;
     private static final int DATE = 2;
