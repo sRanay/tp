@@ -8,8 +8,6 @@ public abstract class ClassificationCommand extends Command {
     private static final String ADD_COMMAND = "add";
     private static final String REMOVE_COMMAND = "remove";
     private static final String UNCATEGORISED = "uncategorised";
-    private static final String UNCATEGORISED_ERROR = "As 'Uncategorised' is a default classification, you are unable" +
-            "to delete it.";
 
     public ClassificationCommand(String description, HashMap<String, String> args) {
         super(description, args);
@@ -31,23 +29,25 @@ public abstract class ClassificationCommand extends Command {
         String arg;
         if (getArgs().containsKey(ADD_COMMAND)) {
             arg = getArg(ADD_COMMAND);
-            checkArg(arg, invalidInput);
+            checkArg(arg, invalidInput, ADD_COMMAND);
             return ADD_COMMAND;
         } else if (getArgs().containsKey(REMOVE_COMMAND)) {
             arg = getArg(REMOVE_COMMAND);
-            checkArg(arg, invalidInput);
+            checkArg(arg, invalidInput, REMOVE_COMMAND);
             return REMOVE_COMMAND;
         }
         return null;
     }
 
-    private void checkArg(String arg, String invalidInput) throws DukeException {
+    private void checkArg(String arg, String invalidInput, String type) throws DukeException {
         if (arg == null) {
             errorMessage(invalidInput);
         } else if (arg.isBlank()) {
             errorMessage(invalidInput);
         } else if (arg.equalsIgnoreCase(UNCATEGORISED)) {
-            throw new DukeException(UNCATEGORISED_ERROR);
+            String uncategorisedError = "As 'Uncategorised' is a default classification, you are unable " +
+                    "to " + type + " it.";
+            throw new DukeException(uncategorisedError);
         }
     }
 

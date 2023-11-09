@@ -139,20 +139,12 @@ public class ListCommand extends Command {
         }
     }
 
-    private void printTypeStatus(String description) throws DukeException {
+    private void printTypeStatus(String description){
         if (description.equalsIgnoreCase(GOAL)) {
-            ArrayList<Goal> goalList = StateManager.getStateManager().getAllGoals();
-            if (goalList.isEmpty()) {
-                throw new DukeException(EMPTY_LIST);
-            }
             HashMap<Goal, Double> map = StateManager.getStateManager().getGoalsStatus();
 
             ui.printGoalsStatus(map);
         } else if (description.equalsIgnoreCase(CATEGORY)) {
-            ArrayList<Category> categoriesList = StateManager.getStateManager().getAllCategories();
-            if (categoriesList.isEmpty()) {
-                throw new DukeException(EMPTY_LIST);
-            }
             HashMap<Category, Double> map = StateManager.getStateManager().getCategoriesStatus();
             ui.printCategoryStatus(map);
         }

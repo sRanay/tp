@@ -16,6 +16,7 @@ public class AddIncomeCommand extends AddTransactionCommand {
 
     private static final String SUCCESS_PRINT = "Nice! The following income has been tracked:";
     private static final String MISSING_GOAL = "Goal cannot be empty...";
+    private static final String UNCATEGORISED = "Uncategorised";
 
     public AddIncomeCommand(String description, HashMap<String, String> args) {
         super(description, args);
@@ -52,6 +53,8 @@ public class AddIncomeCommand extends AddTransactionCommand {
         StateManager state = StateManager.getStateManager();
         String goal = getArg(GOAL_ARG);
         if (goal == null) {
+            return state.getUncategorisedGoal();
+        } else if (goal.equalsIgnoreCase(UNCATEGORISED)) {
             return state.getUncategorisedGoal();
         } else if (goal.isBlank()) {
             throw new DukeException(MISSING_GOAL);
