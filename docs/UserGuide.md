@@ -59,7 +59,7 @@ Format: `help COMMAND`
 ### Adding an income entry: `in`
 Adds an income towards a goal.
 
-Format: `in DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
+Format: `in DESCRIPTION /amount AMOUNT [/goal GOAL] [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
 * `AMOUNT` must be more than or equal to 0.
@@ -86,7 +86,7 @@ a goal called 'savings' which recurs weekly.
 ### Adding an expense entry: `out`
 Adds an expense for a category.
 
-Format: `out DESCRIPTION /amount AMOUNT /category CATEGORY [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
+Format: `out DESCRIPTION /amount AMOUNT [/category CATEGORY] [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
 * `AMOUNT` must be more than or equal to 0.

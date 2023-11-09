@@ -37,6 +37,8 @@ Given below are my contributions to the project.
         * Updated documentation for the features `in` and `out` to include information about `recurrence` option ([\#70](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/70), [\#131](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/131/files))
     * Developer Guide:
         * Added information about `UI` class of program ([\#46](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/46), [\#79](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/79), [\#92](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/92)).
+        * Added section for `StateManager` and `in` and `out` commands ([\#154](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/154))
+        * Added non-functional requirements ([\#154](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/154))
 
 * **Contribution to team-based tasks**:
     * Participate in tutorial activities, working with teammates to complete tutorial tasks.

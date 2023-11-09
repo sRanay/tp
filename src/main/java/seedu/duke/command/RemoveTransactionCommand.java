@@ -68,11 +68,11 @@ public class RemoveTransactionCommand extends Command {
         boolean isSuccess = false;
         String transactionDescription = "";
         if (type.equals("in")) {
-            Income incomeEntry = StateManager.getStateManager().sortedIncomes().get(idx);
+            Income incomeEntry = StateManager.getStateManager().getIncome(idx);
             transactionDescription = incomeEntry.getTransaction().getDescription();
             isSuccess = StateManager.getStateManager().removeIncome(incomeEntry);
         } else if (type.equals("out")) {
-            Expense expenseEntry = StateManager.getStateManager().sortedExpenses().get(idx);
+            Expense expenseEntry = StateManager.getStateManager().getExpense(idx);
             transactionDescription = expenseEntry.getTransaction().getDescription();
             isSuccess = StateManager.getStateManager().removeExpense(idx);
         }
@@ -103,7 +103,7 @@ public class RemoveTransactionCommand extends Command {
     private void printSuccess(Ui ui, String description, int idx) {
         String type = getArg("type").toLowerCase();
         String transactionType = type.equals("in") ? "income" : "expense";
-        String msg = "Successfully remove " + transactionType + " no." + idx + ": " + description;
+        String msg = "Successfully removed " + transactionType + " no." + idx + ": " + description;
         ui.print(msg);
     }
 

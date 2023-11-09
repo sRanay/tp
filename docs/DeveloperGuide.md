@@ -14,6 +14,7 @@ The bulk of the app's work is done by the following four components:
 - `Parser`: Formats the user's input.
 - `Command`: Command's logic and execution.
 - `Storage`: Storage of data of the App.
+- `StateManager`: Common source of truth for program.
 
 ![Architecture Diagram](./images/ArchitectureDiagram.png "Architecture Diagram")
 
@@ -69,7 +70,7 @@ formatting of the output.
 | EditTransactionCommand   | Edits an income/expense transaction        |
 
 ### Storage component
-The `Storage` functionality is to load data from the storage files (`category-store.csv` , `expense-store.csv`, `goal-store.csv`, `income-store.csv`) into the application. It will also stores any data while the application is running.
+The `Storage` functionality is to load data from the storage files (`category-store.csv` , `expense-store.csv`, `goal-store.csv`, `income-store.csv`) into the application. It will also store any data while the application is running.
 
 ![Storage Class Diagram](./images/cs2113-storage-class.png "Storage Class Diagram")
 
@@ -77,8 +78,27 @@ The `Storage` component:
 - Ensures that all the data that is loaded is able to be parsed properly and stored in the application when booting up
 - Skips any rows that have issue during the validation phase
 - Saves to storage file after each command completed
-- uses `CsvWriter` and `CsvReader` class to read and write to the storage files.
+- Uses `CsvWriter` and `CsvReader` class to read and write to the storage files.
 - `CsvWriter` and `CsvReader` will use `CSVWriter` and `CSVReader` respectively from OpenCSV library to write and read from CSV Files 
+
+### StateManager component
+The `StateManager` component provides the program with a single source of truth. `StateManager`'s design follows the singleton design pattern, allowing
+only a single instance to be declared throughout the program. Thus, the constructor is explicitly set to private - this is by design.
+
+In order to get the instance of `StateManager` in the program, `StateManager#getStateManager()` should be used.
+
+The `StateManager` component keeps tracking of the income, expenses, goals and categories added to the program. Each entity
+is tracked with a corresponding `ArrayList`. `StateManager` also provides the following general utility methods for easy retrieval of data:
+- `Storage#addEntity(Entity)` - Add an instance of entity to be tracked
+- `Storage#getEntity(int): Entity` - Gets an instance of the entity by index (0-based).
+- `Storage#removeEntity>(Entity)` - Removes the provided entity from the corresponding `ArrayList`
+- `Storage#removeEntity(int)` - Removes the entity by index (0-based)
+- `Storage#getAllEntity(): ArrayList<Entity>`
+
+**Note:** Entity is a placeholder for `Income`, `Expense`, `Goal` and `Category`.
+
+The `StateManager` also contains other methods for managing objects in the state. However, we will not delve into these
+more application-specific methods in this section.
 
 ## Common Classes
 ### Income Class
@@ -97,6 +117,36 @@ grouping of related spending such as Food, Transport, School Fees, etc.
 
 ## Implementation
 
+### Transaction tracking feature
+
+Transaction tracking is a core functionality in the program. This feature includes two commands `in` and `out` which gives users
+the ability to add/remove income or expenses respectively. Also, the user is able to associate an income entry with a goal or have an expense
+entry be associated to a category of expenditure.
+
+**Addition Process Flow**
+
+The following functionalities are implemented in `AddIncomeCommand` and `AddExpenseCommand` and its' parent class `AddTransactionCommand`.
+
+An example of the usage of the `in` and `out` command can be found in the [User Guide](https://ay2324s1-cs2113-w12-3.github.io/tp/UserGuide.html).
+
+When a user attempts to add an income or expense entry, the user's input will be validated first to ensure that:
+- Description, used to denote information about the transaction entry, is not blank
+- Amount is a decimal value that is non-negative.
+  - 0 is allowed - Possible use case would be to add a placeholder entry that can be later edited to reflect actual amount.
+- Date, if provided, will be verified to ensure validity (`ddMMyyyy` format).
+- Recurrence, if provided, is of a valid value (case-insensitive)
+  - Valid values are `daily`, `weekly`, `monthly` and `none`.
+  - Date, if provided, is additionally verified to ensure that it is not more than or equal to 1 period in the past, relative to current system time.
+
+If any of the above validation fails, an error message relevant to the failure will be printed to inform the user and hint the corrections required.
+
+For attempts to add an income entry, the command will additionally verify that the goal (if specified) already exists in the program. Otherwise,
+an error will be returned.
+
+Once a user's inputs are verified and deemed valid, a `Transaction` object is prepared along with a corresponding `Goal` or `Category` object (if required).
+
+These prepared objects are then encapsulated in a corresponding `Income` or `Expense` object and added to the program using `StateManager#addIncome(Income)` or `StateManager#addExpense(Expense)`.
+
 ### Export feature
 
 The export feature is facilitated by `CsvWriter` class which uses a third party library called OpenCSV. It implements the following operation:
@@ -112,7 +162,8 @@ Step 2. The user executes `in part-time job /amount 500 /goal car` to create a t
 
 Step 3. So when the user executes `export`, it will get all the transactions that the program stored and exports to a CSV file called `Transactions.csv`
 
-However if the user wishes to export only the income or expense transactions, the user could enter `export /type in` or `export /type out` respectively.
+However, if the user wishes to export only the income or expense transactions, the user could enter `export /type in` or `export /type out` respectively.
+
 ## Product scope
 
 ### Target user profile
@@ -139,7 +190,11 @@ whether they spend above their income, etc).
 
 ## Non-Functional Requirements
 
-{Give non-functional requirements}
+- The program supports Java 11
+- The program should be OS-agnostic
+- The program should provide a consistent experience across the different platforms as far as possible
+- The program should be able to work locally without internet connectivity
+- The program should be intuitive to use
 
 ## Glossary
 

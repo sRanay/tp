@@ -27,6 +27,7 @@ public class AddExpenseCommand extends AddTransactionCommand {
         Transaction transaction = prepareTransaction();
         Expense expense = addNewExpense(transaction);
         printSuccess(ui, expense);
+        StateManager.getStateManager().sortExpenses();
     }
 
     private Expense addNewExpense(Transaction transaction) throws DukeException {

@@ -16,7 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ListCommandTest {
-
+    private static Parser parser = new Parser();
+    private static ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    private static Ui ui = new Ui(outputStream);
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("ddMMyyyy");
 
     @AfterEach
@@ -26,9 +28,6 @@ class ListCommandTest {
 
     @Test
     void invalidList() throws DukeException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         String userInput = "list";
         HashMap<String, String> args = parser.getArguments(userInput);
         String commandWord = parser.getDescription(userInput);
@@ -39,70 +38,86 @@ class ListCommandTest {
     }
 
     @Test
-    void invalidListType() throws DukeException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
-        String userInput = "list /type abc";
-        HashMap<String, String> args = parser.getArguments(userInput);
-        String commandWord = parser.getDescription(userInput);
-        ListCommand command = new ListCommand(commandWord, args);
-        assertThrows(DukeException.class, () -> {
-            command.execute(ui);
-        });
+    void emptyListDescription() throws DukeException {
+        String userInput = "list ";
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
     @Test
+    void invalidListDescription_argumentExists() throws DukeException {
+        String userInput = "list goal /type in";
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
+    }
+    @Test
+    void invalidArgument() throws DukeException{
+        String userInput = "list /goal ABC";
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
+    }
+    @Test
+    void invalidListType() throws DukeException {
+        String userInput = "list /type ABC";
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
+    }
+
+    @Test
+    void blankGoal() throws DukeException {
+        String userInput = "list /type in /goal ";
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
+    }
+    @Test
     void invalidGoal() throws DukeException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         String userInput = "list /type in /goal ABC";
-        HashMap<String, String> args = parser.getArguments(userInput);
-        String commandWord = parser.getDescription(userInput);
-        ListCommand command = new ListCommand(commandWord, args);
-        assertThrows(DukeException.class, () -> {
-            command.execute(ui);
-        });
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
+    }
+
+    @Test
+    void blankCategory() throws DukeException {
+        String userInput = "list /type out /category ";
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
     @Test
     void invalidCategory() throws DukeException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         String userInput = "list /type out /category DEF";
-        HashMap<String, String> args = parser.getArguments(userInput);
-        String commandWord = parser.getDescription(userInput);
-        ListCommand command = new ListCommand(commandWord, args);
-        assertThrows(DukeException.class, () -> {
-            command.execute(ui);
-        });
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
     @Test
     void invalidCategoryGoal() throws DukeException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         String userInput = "list /type in /goal ABC /category DEF";
-        HashMap<String, String> args = parser.getArguments(userInput);
-        String commandWord = parser.getDescription(userInput);
-        ListCommand command = new ListCommand(commandWord, args);
-        assertThrows(DukeException.class, () -> {
-            command.execute(ui);
-        });
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
+    }
+
+    @Test
+    void emptyListGoal() throws DukeException {
+        String userInput = "list goal";
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
+    }
+
+    @Test
+    void emptyListCategory() throws DukeException {
+        String userInput = "list category";
+        Command command = parser.parse(userInput);
+        assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
     private static void addInEntries() {
-        Parser parser = new Parser();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Ui ui = new Ui(outputStream);
         try {
             parser.parse("goal /add car /amount 5000").execute(ui);
             parser.parse("goal /add PS5 /amount 300").execute(ui);
             parser.parse("in part-time job /amount 500 /goal car").execute(ui);
             parser.parse("in red packet money /amount 50 /goal PS5 /date 18092023").execute(ui);
+            outputStream.reset();
         } catch (DukeException e) {
             System.out.println(e.getMessage());
         }
@@ -110,12 +125,10 @@ class ListCommandTest {
     }
 
     private static void addOutEntries() {
-        Parser parser = new Parser();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Ui ui = new Ui(outputStream);
         try {
             parser.parse("out dinner /amount 10.50 /category food").execute(ui);
             parser.parse("out pokemon card pack /amount 10.50 /category games /date 18092023").execute(ui);
+            outputStream.reset();
         } catch (DukeException e) {
             System.out.println(e.getMessage());
         }
@@ -123,9 +136,6 @@ class ListCommandTest {
     }
 
     private static void addInEntriesWithDates() {
-        Parser parser = new Parser();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Ui ui = new Ui(outputStream);
         try {
             parser.parse("goal /add car /amount 5000").execute(ui);
             parser.parse("in part-time job /amount 500 /goal car /date " +
@@ -134,6 +144,7 @@ class ListCommandTest {
                     getFormattedPrevWeekDate()).execute(ui);
             parser.parse("in red packet money /amount 150 /goal car /date " +
                     getFormattedPrevMonthDate()).execute(ui);
+            outputStream.reset();
         } catch (DukeException e) {
             System.out.println(e.getMessage());
         }
@@ -141,9 +152,6 @@ class ListCommandTest {
 
 
     private static void addOutEntriesWithDates() {
-        Parser parser = new Parser();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Ui ui = new Ui(outputStream);
         try {
             parser.parse("out lunch /amount 7.50 /category food /date " +
                     getFormattedCurrentDate()).execute(ui);
@@ -151,6 +159,7 @@ class ListCommandTest {
                     getFormattedPrevWeekDate()).execute(ui);
             parser.parse("out pokemon card pack /amount 10.50 /category games /date " +
                     getFormattedPrevMonthDate()).execute(ui);
+            outputStream.reset();
         } catch (DukeException e) {
             System.out.println(e.getMessage());
         }
@@ -193,9 +202,6 @@ class ListCommandTest {
     @Test
     void validInList() throws DukeException {
         addInEntries();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         LocalDate currentDate = LocalDate.now();
         Command command = parser.parse("list /type in");
         command.execute(ui);
@@ -219,9 +225,6 @@ class ListCommandTest {
     void validFilteredInList() throws DukeException {
         addInEntries();
         LocalDate currentDate = LocalDate.now();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type in /goal car");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
@@ -242,9 +245,6 @@ class ListCommandTest {
     void validOutList() throws DukeException {
         addOutEntries();
         LocalDate currentDate = LocalDate.now();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type out");
         command.execute(ui);
         assertEquals("Alright! Displaying 2 transactions.\n" +
@@ -266,9 +266,6 @@ class ListCommandTest {
     @Test
     void validFilteredOutList() throws DukeException {
         addOutEntries();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type out /category games");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
@@ -286,11 +283,7 @@ class ListCommandTest {
 
     @Test
     void execute_listIncomeByWeek_printCurrentWeekTransactions() throws DukeException {
-        clearStateManager();
         addInEntriesWithDates();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type in /week");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
@@ -308,11 +301,7 @@ class ListCommandTest {
 
     @Test
     void execute_listExpenseByWeek_printCurrentWeekTransactions() throws DukeException {
-        clearStateManager();
         addOutEntriesWithDates();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type out /week");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
@@ -330,11 +319,7 @@ class ListCommandTest {
 
     @Test
     void execute_listIncomeByMonth_printCurrentMonthTransactions() throws DukeException {
-        clearStateManager();
         addInEntriesWithDates();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type in /month");
         command.execute(ui);
         if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
@@ -366,11 +351,7 @@ class ListCommandTest {
 
     @Test
     void execute_listExpenseByMonth_printCurrentMonthTransactions() throws DukeException {
-        clearStateManager();
         addOutEntriesWithDates();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type out /month");
         command.execute(ui);
         if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
@@ -403,11 +384,7 @@ class ListCommandTest {
 
     @Test
     void execute_listIncomeByWeekAndMonth_printCurrentWeekTransactions() throws DukeException {
-        clearStateManager();
         addInEntriesWithDates();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type in /week /month");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
@@ -424,11 +401,7 @@ class ListCommandTest {
 
     @Test
     void execute_listExpenseByWeekAndMonth_printCurrentWeekTransactions() throws DukeException {
-        clearStateManager();
         addOutEntriesWithDates();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Parser parser = new Parser();
-        Ui ui = new Ui(outputStream);
         Command command = parser.parse("list /type out /week /month");
         command.execute(ui);
         assertEquals("Alright! Displaying 1 transaction.\n" +
@@ -441,6 +414,32 @@ class ListCommandTest {
                         "========================================== OUT TRANSACTIONS ===========================" +
                         "================\n"
                 , outputStream.toString());
+    }
+
+    @Test
+    void execute_listGoalStatus() throws DukeException {
+        addInEntries();
+        Command command = parser.parse("list goal");
+        command.execute(ui);
+        assertEquals("================= Goals Status =================\n" +
+                "Name                   Amount\n" +
+                "PS5                    50.0/300.0\n" +
+                "Progress: [===                 ] 16.67%\n" +
+                "car                    500.0/5000.0\n" +
+                "Progress: [==                  ] 10.00%\n" +
+                "================= Goals Status =================\n", outputStream.toString());
+    }
+
+    @Test
+    void execute_listCategoryStatus() throws DukeException {
+        addOutEntries();
+        Command command = parser.parse("list category");
+        command.execute(ui);
+        assertEquals("============== Categories Status ===============\n" +
+                "Name                   Amount\n" +
+                "food                   10.5\n" +
+                "games                  10.5\n" +
+                "============== Categories Status ===============\n", outputStream.toString());
     }
 
 }
