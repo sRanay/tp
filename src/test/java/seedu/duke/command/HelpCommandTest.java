@@ -33,6 +33,8 @@ public class HelpCommandTest {
                 "goal              Add or remove goals\n" +
                 "export            Exports the transactions stored into a CSV File. " +
                 "By Default, it will export ALL transactions\n" +
+                "edit              Edits an existing transaction\n" +
+                "summary           Shows the summarised total of transactions\n" +
                 "bye               Exits the program\n\n", outputStream.toString());
     }
 
@@ -56,6 +58,8 @@ public class HelpCommandTest {
                 "goal              Add or remove goals\n" +
                 "export            Exports the transactions stored into a CSV File. " +
                 "By Default, it will export ALL transactions\n" +
+                "edit              Edits an existing transaction\n" +
+                "summary           Shows the summarised total of transactions\n" +
                 "bye               Exits the program\n\n", outputStream.toString());
     }
 
@@ -82,13 +86,13 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT /goal GOAL" +
+        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT [/goal GOAL]" +
                 " [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]\n" +
                 "Option            Description\n" +
                 "/amount           Amount to be added\n" +
                 "/goal             The goal to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the income added is recurring.\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
     @Test
@@ -101,13 +105,13 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT /goal GOAL" +
+        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT [/goal GOAL]" +
                 " [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]\n" +
                 "Option            Description\n" +
                 "/amount           Amount to be added\n" +
                 "/goal             The goal to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the income added is recurring.\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
     @Test
@@ -120,13 +124,13 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT /goal GOAL" +
+        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT [/goal GOAL]" +
                 " [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]\n" +
                 "Option            Description\n" +
                 "/amount           Amount to be added\n" +
                 "/goal             The goal to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the income added is recurring.\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
     @Test
@@ -139,13 +143,13 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: out DESCRIPTION /amount AMOUNT /category CATEGORY" +
+        assertEquals("\nUsage: out DESCRIPTION /amount AMOUNT [/category CATEGORY]" +
                 " [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]\n" +
                 "Option            Description\n" +
                 "/amount           Amount to be deducted\n" +
                 "/category         The spending category to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the expense added is recurring\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the expense added is recurring\n\n", outputStream.toString());
     }
 
     @Test
@@ -173,11 +177,14 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: list /type (in | out) [/goal GOAL] [/category CATEGORY]\n" +
+        assertEquals("\nUsage: list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]\n" +
                 "Option            Description\n" +
                 "/type             To set whether to display \"in\" or \"out\" transactions\n" +
                 "/goal             The goal which it is classified under\n" +
-                "/category         The spending category which it is classified under\n\n", outputStream.toString());
+                "/category         The spending category which it is classified under\n" +
+                "/week             To filter the transactions to those in the current week\n" +
+                "/month            To filter the transactions to those in the current month\n\n"
+                , outputStream.toString());
     }
     
     @Test
@@ -238,6 +245,45 @@ public class HelpCommandTest {
                 "Usage: category /remove NAME\n" +
                 "Option            Description\n" +
                 "/add              Name of spending category to be created\n" +
-                "/remove           Name of spending cateogry to be deleted\n\n", outputStream.toString());
+                "/remove           Name of spending category to be deleted\n\n", outputStream.toString());
+    }
+
+    @Test
+    void helpCommand_withValidEditCommand() throws DukeException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "help edit";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        HelpCommand command = new HelpCommand(commandWord, args);
+        command.execute(ui);
+        assertEquals("\nUsage: edit INDEX /type (in | out) (/description DESCRIPTION" +
+                " | /amount AMOUNT | /goal GOAL | /category CATEGORY)\n" +
+                "Option            Description\n" +
+                "/type             To specify either in or out transaction to be edited\n"+
+                "/description      New description to be specified\n" +
+                "/amount           New amount to be specified\n" +
+                "/goal             New goal to be specified\n" +
+                "/category         New category to be specified\n\n", outputStream.toString());
+    }
+
+    @Test
+    void helpCommand_withValidSummaryCommand() throws DukeException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "help summary";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        HelpCommand command = new HelpCommand(commandWord, args);
+        command.execute(ui);
+        assertEquals("\nUsage: summary /type (in | out) [/day] [/week] [/month]\n" +
+                "Option            Description\n" +
+                "/type             To specific either in or out transaction to be listed\n"+
+                "/day              To filter transactions to those of current day\n" +
+                "/week             To filter the transactions to those in the current week\n" +
+                "/month            To filter the transactions to " +
+                "those in the current month\n\n", outputStream.toString());
     }
 }
