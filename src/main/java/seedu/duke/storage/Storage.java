@@ -157,7 +157,8 @@ public class Storage {
     public Transaction prepareTransaction(String[] row) {
         String description = row[DESCRIPTION];
         String recurrence = row[RECURRENCE];
-        String hasRecurrence = row[HAS_NEXT_RECURRENCE];
+        String hasRecurrence = row[HAS_NEXT_RECURRENCE].strip();
+        boolean parsedHasRecurrence = Boolean.parseBoolean(hasRecurrence);
         if (isTransactionInvalid(description, recurrence, hasRecurrence)) {
             return null;
         }
@@ -177,8 +178,8 @@ public class Storage {
             return null;
         }
 
-        Transaction transaction = new Transaction(description, parsedAmount, parsedDate);
-        transaction.setHasGeneratedNextRecurrence(Boolean.parseBoolean(hasRecurrence));
+        Transaction transaction = new Transaction(description.strip(), parsedAmount, parsedDate);
+        transaction.setHasGeneratedNextRecurrence(parsedHasRecurrence);
         if (recurrence != null) {
             TransactionRecurrence transactionRecurrence = TransactionRecurrence.getRecurrence(recurrence);
             transaction.setRecurrence(transactionRecurrence);
@@ -199,7 +200,7 @@ public class Storage {
         while ((row = goalCsvFile.readLine()) != null) {
             if (validRow(row)) {
                 String description = row[DESCRIPTION];
-                if (description.isBlank() || description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
+                if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
                     continue;
                 }
                 amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
@@ -225,7 +226,7 @@ public class Storage {
         while ((row = categoryCsvFile.readLine()) != null) {
             if (validRow(row)) {
                 String description = row[DESCRIPTION];
-                if (description.isBlank() || description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
+                if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
                     continue;
                 }
                 Category category = new Category(description.strip());
