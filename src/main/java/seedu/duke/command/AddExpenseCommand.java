@@ -16,7 +16,6 @@ public class AddExpenseCommand extends AddTransactionCommand {
 
     private static final String SUCCESS_PRINT = "Nice! The following expense has been tracked:";
     private static final String MISSING_CATEGORY = "Category cannot be empty...";
-    private static final String UNCATEGORISED = "Uncategorised";
 
     public AddExpenseCommand(String description, HashMap<String, String> args) {
         super(description, args);
@@ -55,7 +54,7 @@ public class AddExpenseCommand extends AddTransactionCommand {
         String category = getArg(CATEGORY_ARG);
         if (category == null) {
             return state.getUncategorisedCategory();
-        } else if (category.equalsIgnoreCase(UNCATEGORISED)) {
+        } else if (category.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
             return state.getUncategorisedCategory();
         } else if (category.isBlank()) {
             throw new DukeException(MISSING_CATEGORY);

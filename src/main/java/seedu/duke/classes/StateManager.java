@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.stream.IntStream;
 
 public class StateManager {
+    public static final String UNCATEGORISED_CLASS = "Uncategorised";
     private static StateManager stateManager = null;
     private final ArrayList<Goal> goals = new ArrayList<>();
-    private final Goal uncategorisedGoal = new Goal("Uncategorised", 0);
+    private final Goal uncategorisedGoal = new Goal(UNCATEGORISED_CLASS, 0);
     private final ArrayList<Category> categories = new ArrayList<>();
-    private final Category uncategorisedCategory = new Category("Uncategorised");
+    private final Category uncategorisedCategory = new Category(UNCATEGORISED_CLASS);
     private final ArrayList<Income> incomes = new ArrayList<>();
     private final ArrayList<Expense> expenses = new ArrayList<>();
 
