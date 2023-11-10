@@ -42,11 +42,11 @@ public class ListCommand extends Command {
     @Override
     public void execute(Ui ui) throws DukeException {
         this.ui = ui;
-        validateArgs();
+        validateInput();
         listTypeHandler();
     }
 
-    private void validateArgs() throws DukeException {
+    private void validateInput() throws DukeException {
         if (validateDescriptionInput()) {
             return;
         }
@@ -74,27 +74,6 @@ public class ListCommand extends Command {
             errorMessage(multipleTypesError);
         }
 
-        if (getArgs().containsKey(GOAL)) {
-            String goal = getArg(GOAL);
-            if (goal.isBlank()) {
-                errorMessage(INVALID_GOAL_FORMAT);
-            }
-            int result = StateManager.getStateManager().getGoalIndex(goal);
-            if (result == INVALID_VALUE) {
-                errorMessage(INVALID_GOAL_FORMAT);
-            }
-        }
-
-        if (getArgs().containsKey(CATEGORY)) {
-            if (getArg(CATEGORY).isBlank()) {
-                errorMessage(INVALID_CATEGORY_FORMAT);
-            }
-            String category = getArg(CATEGORY);
-            int result = StateManager.getStateManager().getCategoryIndex(category);
-            if (result == INVALID_VALUE) {
-                errorMessage(INVALID_CATEGORY_FORMAT);
-            }
-        }
     }
 
     private boolean validateDescriptionInput() throws DukeException {
@@ -120,7 +99,7 @@ public class ListCommand extends Command {
     }
 
     private void errorMessage(String message) throws DukeException {
-        String commonMessage = "\nFor correct usage, please refer to the UG or help /list";
+        String commonMessage = "\nFor correct usage, please refer to the UG or 'help list'";
         throw new DukeException(message + commonMessage);
     }
 
@@ -133,13 +112,47 @@ public class ListCommand extends Command {
         String type = getArg(TYPE);
         assert type != null;
         if (type.equals("in")) {
+            checkInArgs();
             listIncome();
         } else if (type.equals("out")) {
+            checkOutArgs();
             listExpenses();
         }
     }
 
-    private void printTypeStatus(String description){
+    private void checkInArgs() throws DukeException {
+        if (getArgs().containsKey(CATEGORY)) {
+            errorMessage("'list /type in' should be used with /goal, not /category");
+        }
+
+        if (getArgs().containsKey(GOAL)) {
+            String goal = getArg(GOAL);
+            if (goal.isBlank()) {
+                errorMessage(INVALID_GOAL_FORMAT);
+            }
+            int result = StateManager.getStateManager().getGoalIndex(goal);
+            if (result == INVALID_VALUE) {
+                errorMessage(INVALID_GOAL_FORMAT);
+            }
+        }
+    }
+
+    private void checkOutArgs() throws DukeException {
+        if (getArgs().containsKey(GOAL)) {
+            errorMessage("'list /type out' should be used with /category, not /goal");
+        }
+        if (getArgs().containsKey(CATEGORY)) {
+            if (getArg(CATEGORY).isBlank()) {
+                errorMessage(INVALID_CATEGORY_FORMAT);
+            }
+            String category = getArg(CATEGORY);
+            int result = StateManager.getStateManager().getCategoryIndex(category);
+            if (result == INVALID_VALUE) {
+                errorMessage(INVALID_CATEGORY_FORMAT);
+            }
+        }
+    }
+    private void printTypeStatus(String description) {
         if (description.equalsIgnoreCase(GOAL)) {
             HashMap<Goal, Double> map = StateManager.getStateManager().getGoalsStatus();
             ui.printGoalsStatus(map);

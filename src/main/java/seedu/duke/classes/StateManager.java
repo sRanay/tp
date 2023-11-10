@@ -182,15 +182,13 @@ public class StateManager {
     public void sortIncomes() {
         Comparator<Income> dateComparator = Comparator.comparing((Income i) -> i.getTransaction().getDate(),
                 Comparator.reverseOrder());
-        Comparator<Income> nameComparator = Comparator.comparing((Income i) -> i.getTransaction().getDescription());
-        incomes.sort(dateComparator.thenComparing(nameComparator));
+        incomes.sort(dateComparator);
     }
 
     public void sortExpenses() {
         Comparator<Expense> dateComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDate(),
                 Comparator.reverseOrder());
-        Comparator<Expense> nameComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDescription());
-        expenses.sort(dateComparator.thenComparing(nameComparator));
+        expenses.sort(dateComparator);
     }
 
     public HashMap<Goal, Double> getGoalsStatus() {
