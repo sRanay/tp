@@ -102,8 +102,7 @@ public class Storage {
      */
     public LocalDate validDate(String dateStr, String fileName) throws DukeException {
         try {
-            LocalDate date = LocalDate.parse(dateStr, FORMATTER);
-            return date;
+            return LocalDate.parse(dateStr, FORMATTER);
         } catch (DateTimeParseException e) {
             throw new DukeException(FAILED_CONVERT_TO_LOCALDATE + fileName);
         }
@@ -116,10 +115,7 @@ public class Storage {
      * @return true if can be converted, else return false.
      */
     public boolean validBoolean(String booleanStr) {
-        if (booleanStr.toLowerCase().equals("true") || booleanStr.toLowerCase().equals("false")) {
-            return true;
-        }
-        return false;
+        return booleanStr.equalsIgnoreCase("true") || booleanStr.equalsIgnoreCase("false");
     }
 
     /**
@@ -181,15 +177,15 @@ public class Storage {
     public void loadGoal() throws DukeException {
         CsvReader goalCsvFile = new CsvReader(goalStorageFileName);
         String[] row;
-        double amount;
+        Double amount;
         while ((row = goalCsvFile.readLine()) != null) {
             if (validRow(row)) {
                 String description = row[DESCRIPTION];
-                if (Parser.parseNonNegativeDouble(row[AMOUNT]) == null) {
+                amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
+                if (amount == null) {
                     System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + goalStorageFileName);
                     continue;
                 }
-                amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
                 Goal goal = new Goal(description, amount);
                 StateManager.getStateManager().addGoal(goal);
             }
@@ -223,7 +219,7 @@ public class Storage {
     public void loadIncome() throws DukeException {
         CsvReader incomeCsvFile = new CsvReader(incomeStorageFileName);
         String[] row;
-        double amount;
+        Double amount;
         LocalDate date;
         Transaction transaction;
         while ((row = incomeCsvFile.readLine()) != null) {
@@ -236,11 +232,11 @@ public class Storage {
                     System.out.println(FAILED_CONVERT_BOOLEAN + incomeStorageFileName);
                     continue;
                 }
-                if (Parser.parseNonNegativeDouble(row[AMOUNT]) == null) {
+                amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
+                if (amount == null) {
                     System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + incomeStorageFileName);
                     continue;
                 }
-                amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
                 try {
                     date = validDate(row[DATE], incomeStorageFileName);
                     transaction = prepareTransaction(description, amount, date, recurrence, hasRecurrence);
