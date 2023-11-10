@@ -8,6 +8,7 @@ public class TypePrint {
     public TypePrint(String description, double currentAmount) {
         this(description, currentAmount, 0.0);
     }
+
     public TypePrint(String description, double currentAmount, double targetAmount) {
         this.description = description;
         this.currentAmount = currentAmount;
@@ -23,11 +24,11 @@ public class TypePrint {
     }
 
     public String getCurrentAmount() {
-        return String.valueOf(currentAmount);
+        return String.format("%.2f", currentAmount);
     }
 
     public String getTargetAmount() {
-        return String.valueOf(targetAmount);
+        return String.format("%.2f", targetAmount);
     }
 
     public String getAmount() {

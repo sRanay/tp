@@ -1,4 +1,4 @@
 "Type","Description","Date","Amount","Goal","Category","Recurrence"
 "Expense","buy dinner","2023-10-29","15.00",,"food","monthly"
-"Expense","grab","2023-10-29","20.00",,"transport","none"
 "Expense","popmart","2023-10-29","12.00",,"toy","none"
+"Expense","grab","2023-10-29","20.00",,"transport","none"

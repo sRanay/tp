@@ -8,11 +8,10 @@ import seedu.duke.ui.Ui;
 
 import java.util.HashMap;
 
-public class GoalCommand extends Command {
+public class GoalCommand extends ClassificationCommand {
     private static final String ADD_COMMAND = "add";
     private static final String REMOVE_COMMAND = "remove";
     private static final String AMOUNT = "amount";
-
     private static final String INVALID_INPUT = "Your goal input is empty/invalid :(";
 
     public GoalCommand(String description, HashMap<String, String> args) {
@@ -21,56 +20,32 @@ public class GoalCommand extends Command {
 
     @Override
     public void execute(Ui ui) throws DukeException {
-        String input = validateInput();
-        if (input.equals(ADD_COMMAND)) {
+        String inputType = validateInput();
+        if (inputType == null) {
+            errorMessage(INVALID_INPUT);
+        }
+        if (inputType.equals(ADD_COMMAND)) {
+            validateAmount();
             String goalName = getArg(ADD_COMMAND);
             Double amount = Parser.parseNonNegativeDouble(getArg(AMOUNT));
             addGoal(goalName, amount);
             ui.print("Successfully added " + goalName + "!");
-        } else if (input.equals(REMOVE_COMMAND)){
+        } else if (inputType.equals(REMOVE_COMMAND)) {
             String goalName = getArg(REMOVE_COMMAND);
             removeGoal(goalName);
             ui.print("Successfully removed " + goalName + "!");
         }
     }
 
-    public String validateInput() throws DukeException {
-        if(getArgs().isEmpty()) {
-            throw new DukeException(INVALID_INPUT);
-        } else if (getArgs().containsKey(ADD_COMMAND) && getArgs().containsKey(REMOVE_COMMAND)) {
+    private void validateAmount() throws DukeException {
+        String amount = getArg(AMOUNT);
+        if (amount == null || amount.isBlank()) {
             errorMessage(INVALID_INPUT);
         }
-        if (getArgs().containsKey(ADD_COMMAND)) {
-            String add = getArg(ADD_COMMAND);
-            if (add == null) {
-                errorMessage(INVALID_INPUT);
-            } else if (add.isBlank()) {
-                errorMessage(INVALID_INPUT);
-            }
-            String amount = getArg(AMOUNT);
-            if (amount == null || amount.isBlank()) {
-                errorMessage(INVALID_INPUT);
-            }
-            Double parsedAmt = Parser.parseNonNegativeDouble(amount);
-            if (parsedAmt == null) {
-                errorMessage(INVALID_INPUT);
-            }
-            return ADD_COMMAND;
+        Double parsedAmt = Parser.parseNonNegativeDouble(amount);
+        if (parsedAmt == null) {
+            errorMessage(INVALID_INPUT);
         }
-        if (getArgs().containsKey(REMOVE_COMMAND)) {
-            String remove = getArg(REMOVE_COMMAND);
-            if (remove == null) {
-                errorMessage(INVALID_INPUT);
-            } else if (remove.isBlank()) {
-                errorMessage(INVALID_INPUT);
-            }
-            return REMOVE_COMMAND;
-        }
-        return null;
-    }
-    private void errorMessage(String message) throws DukeException {
-        String commonMessage = "\nThe correct usage is 'goal /add NAME /amount AMOUNT' or 'goal /remove NAME'";
-        throw new DukeException(message + commonMessage);
     }
 
     private void addGoal(String goal, double amount) throws DukeException {
@@ -88,9 +63,11 @@ public class GoalCommand extends Command {
     private void removeGoal(String goal) throws DukeException {
         StateManager state = StateManager.getStateManager();
         int index = state.getGoalIndex(goal);
+        Goal goalToRemove = state.getGoal(index);
         boolean removedGoal = false;
         if (index != -1) {
-            removedGoal = state.removeGoal(index);
+            state.unassignGoalTransactions(goalToRemove);
+            removedGoal = state.removeGoal(goalToRemove);
         }
         if (!removedGoal) {
             String failedRemoval = "Failed to remove '" + goal + "' as it does not exist!";
