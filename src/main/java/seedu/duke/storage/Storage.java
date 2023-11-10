@@ -46,6 +46,10 @@ public class Storage {
     private static final int RECURRENCE = 4;
     private static final int HAS_NEXT_RECURRENCE = 5;
 
+    private static final int CATEGORY_ROW_LENGTH = 1;
+    private static final int GOAL_ROW_LENGTH = 2;
+    private static final int TRANSACTIONS_ROW_LENGTH = 6;
+
     private static String goalStorageFileName;
     private static String categoryStorageFileName;
     private static String incomeStorageFileName;
@@ -198,7 +202,7 @@ public class Storage {
         String[] row;
         Double amount;
         while ((row = goalCsvFile.readLine()) != null) {
-            if (validRow(row)) {
+            if (validRow(row) && row.length >= GOAL_ROW_LENGTH) {
                 String description = row[DESCRIPTION];
                 if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
                     continue;
@@ -224,7 +228,7 @@ public class Storage {
         CsvReader categoryCsvFile = new CsvReader(categoryStorageFileName);
         String[] row;
         while ((row = categoryCsvFile.readLine()) != null) {
-            if (validRow(row)) {
+            if (validRow(row) && row.length >= CATEGORY_ROW_LENGTH) {
                 String description = row[DESCRIPTION];
                 if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
                     continue;
@@ -245,7 +249,7 @@ public class Storage {
         CsvReader incomeCsvFile = new CsvReader(incomeStorageFileName);
         String[] row;
         while ((row = incomeCsvFile.readLine()) != null) {
-            if (validRow(row)) {
+            if (validRow(row) && row.length >= TRANSACTIONS_ROW_LENGTH) {
                 Transaction transaction = prepareTransaction(row);
                 if (transaction == null) {
                     continue;
