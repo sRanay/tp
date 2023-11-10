@@ -43,6 +43,12 @@ public class SummaryCommand extends Command {
         this.currentDate = currentDate;
     }
 
+    /**
+     * Executes the command.
+     *
+     * @param ui Ui class that is used to print in standardised format.
+     * @throws DukeException if the file cannot be created during the exporting process.
+     */
     @Override
     public void execute(Ui ui) throws DukeException {
         this.ui = ui;
@@ -74,6 +80,12 @@ public class SummaryCommand extends Command {
         }
     }
 
+    /**
+     * Returns the total sum of the income transaction.
+     *
+     * @return double total income.
+     * @throws DukeException if there is no income transaction available.
+     */
     private double getIncomeSummary() throws DukeException {
         ArrayList<Income> incomeArray = StateManager.getStateManager().getAllIncomes();
         if (incomeArray == null || incomeArray.isEmpty()) {
@@ -90,6 +102,13 @@ public class SummaryCommand extends Command {
         return totalSum;
     }
 
+    /**
+     * Returns filtered arraylist of income transactions.
+     * Filters the income transactions based on the filter indicated.
+     *
+     * @param transactionsArrayList arraylist of income transaction.
+     * @return ArrayList of income transaction.
+     */
     private ArrayList<Income> filterIncome(ArrayList<Income> transactionsArrayList) {
         ArrayList<Income> filteredArrayList = new ArrayList<>();
         for (Income transaction : transactionsArrayList) {
@@ -105,6 +124,12 @@ public class SummaryCommand extends Command {
         return filteredArrayList;
     }
 
+    /**
+     * Returns the total sum of the expense transaction.
+     *
+     * @return double total expense.
+     * @throws DukeException if there is no expense transaction available.
+     */
     private double getExpenseSummary() throws DukeException {
         ArrayList<Expense> expenseArray = StateManager.getStateManager().getAllExpenses();
         if (expenseArray == null || expenseArray.isEmpty()) {
@@ -121,6 +146,13 @@ public class SummaryCommand extends Command {
         return totalSum;
     }
 
+    /**
+     * Returns filtered arraylist of expense transactions.
+     * Filters the expense transactions based on the filter indicated.
+     *
+     * @param transactionsArrayList arraylist of expense transaction.
+     * @return ArrayList of expense transaction.
+     */
     private ArrayList<Expense> filterExpense(ArrayList<Expense> transactionsArrayList) {
         ArrayList<Expense> filteredArrayList = new ArrayList<>();
         for (Expense transaction : transactionsArrayList) {
