@@ -273,7 +273,7 @@ public class Storage {
         CsvReader expenseCsvFile = new CsvReader(expenseStorageFileName);
         String[] row;
         while ((row = expenseCsvFile.readLine()) != null) {
-            if (validRow(row)) {
+            if (validRow(row) && row.length >= TRANSACTIONS_ROW_LENGTH) {
                 Transaction transaction = prepareTransaction(row);
                 if (transaction == null) {
                     continue;
