@@ -243,8 +243,9 @@ public class Ui {
         wrapper.add(leftPad);
         wrapper.add(headerMessage);
         wrapper.add(rightPad);
-        return(wrapper.toString());
+        return (wrapper.toString());
     }
+
     public void printGoalsStatus(HashMap<Goal, Double> goalsMap) {
         ArrayList<TypePrint> goalsToPrint = new ArrayList<>();
         TypePrint uncategorised = null;
@@ -299,6 +300,9 @@ public class Ui {
         int steps = 5;
         double barCalculation = percentage / steps;
         int barsToPrint = (int) Math.floor(barCalculation);
+        if (barsToPrint > maxBars) {
+            barsToPrint = maxBars;
+        }
         String openingSeparator = "[";
         String closingSeparator = "]";
         String progressBar = new String(new char[barsToPrint]).replace('\0', '=');
@@ -307,7 +311,7 @@ public class Ui {
                 + closingSeparator + " " + formatAmount(percentage) + "%";
         print(progress);
     }
-  
+
     private void printUnusedGoals(HashMap<Goal, Double> goals) {
         HashSet<Goal> keySet = new HashSet<>(goals.keySet());
         ArrayList<ArrayList<String>> unusedGoals = new ArrayList<>();

@@ -89,7 +89,7 @@ class RemoveTransactionCommandTest {
         command.execute(ui);
         String transactionDescription = StateManager.getStateManager().getIncome(0) // 0-based indexing
                 .getTransaction().getDescription();
-        assertNotEquals("allowance", transactionDescription);
+        assertNotEquals("part-time-job", transactionDescription);
     }
 
     @Test
@@ -98,7 +98,7 @@ class RemoveTransactionCommandTest {
         command.execute(ui);
         String transactionDescription = StateManager.getStateManager().getExpense(1) // 0-based indexing
                 .getTransaction().getDescription();
-        assertNotEquals("grab", transactionDescription);
+        assertNotEquals("popmart", transactionDescription);
     }
 
 }

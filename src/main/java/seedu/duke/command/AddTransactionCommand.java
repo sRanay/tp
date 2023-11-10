@@ -82,14 +82,6 @@ public abstract class AddTransactionCommand extends Command {
         }
     }
 
-    private void throwIfInvalidClassification(String classificationKey, String missingClassificationPrompt)
-            throws DukeException {
-        String assignedClassification = getArg(classificationKey);
-        if (assignedClassification == null || assignedClassification.isBlank()) {
-            throw new DukeException(missingClassificationPrompt);
-        }
-    }
-
     private void throwIfInvalidRecurrence() throws DukeException {
         String recurrence = getArg(RECURRENCE_ARG);
         if (recurrence == null) {

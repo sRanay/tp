@@ -182,15 +182,13 @@ public class StateManager {
     public void sortIncomes() {
         Comparator<Income> dateComparator = Comparator.comparing((Income i) -> i.getTransaction().getDate(),
                 Comparator.reverseOrder());
-        Comparator<Income> nameComparator = Comparator.comparing((Income i) -> i.getTransaction().getDescription());
-        incomes.sort(dateComparator.thenComparing(nameComparator));
+        incomes.sort(dateComparator);
     }
 
     public void sortExpenses() {
         Comparator<Expense> dateComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDate(),
                 Comparator.reverseOrder());
-        Comparator<Expense> nameComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDescription());
-        expenses.sort(dateComparator.thenComparing(nameComparator));
+        expenses.sort(dateComparator);
     }
 
     public HashMap<Goal, Double> getGoalsStatus() {
@@ -204,11 +202,23 @@ public class StateManager {
 
     public HashMap<Category, Double> getCategoriesStatus() {
         HashMap<Category, Double> map = new HashMap<>();
-        for (Expense e: expenses) {
+        for (Expense e : expenses) {
             Category key = e.getCategory();
             map.put(key, map.getOrDefault(key, 0.0) + e.getTransaction().getAmount());
         }
         return map;
+    }
+
+    public void unassignCategoryTransactions(Category category) {
+        expenses.stream()
+                .filter(e -> e.getCategory() == category)
+                .forEach(e -> e.setCategory(uncategorisedCategory));
+    }
+
+    public void unassignGoalTransactions(Goal goal) {
+        incomes.stream()
+                .filter(g -> g.getGoal() == goal)
+                .forEach(g -> g.setGoal(uncategorisedGoal));
     }
 
 }

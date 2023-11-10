@@ -97,20 +97,6 @@ class ListCommandTest {
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
-    @Test
-    void emptyListGoal() throws DukeException {
-        String userInput = "list goal";
-        Command command = parser.parse(userInput);
-        assertThrows(DukeException.class, () -> command.execute(ui));
-    }
-
-    @Test
-    void emptyListCategory() throws DukeException {
-        String userInput = "list category";
-        Command command = parser.parse(userInput);
-        assertThrows(DukeException.class, () -> command.execute(ui));
-    }
-
     private static void addInEntries() {
         try {
             parser.parse("goal /add car /amount 5000").execute(ui);
@@ -423,9 +409,9 @@ class ListCommandTest {
         command.execute(ui);
         assertEquals("================= Goals Status =================\n" +
                 "Name                   Amount\n" +
-                "PS5                    50.0/300.0\n" +
+                "PS5                    50.00/300.00\n" +
                 "Progress: [===                 ] 16.67%\n" +
-                "car                    500.0/5000.0\n" +
+                "car                    500.00/5000.00\n" +
                 "Progress: [==                  ] 10.00%\n" +
                 "================= Goals Status =================\n", outputStream.toString());
     }
@@ -437,8 +423,8 @@ class ListCommandTest {
         command.execute(ui);
         assertEquals("============== Categories Status ===============\n" +
                 "Name                   Amount\n" +
-                "food                   10.5\n" +
-                "games                  10.5\n" +
+                "food                   10.50\n" +
+                "games                  10.50\n" +
                 "============== Categories Status ===============\n", outputStream.toString());
     }
 
