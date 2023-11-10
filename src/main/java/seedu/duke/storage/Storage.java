@@ -203,7 +203,7 @@ public class Storage {
         Double amount;
         while ((row = goalCsvFile.readLine()) != null) {
             if (validRow(row) && row.length >= GOAL_ROW_LENGTH) {
-                String description = row[DESCRIPTION];
+                String description = row[DESCRIPTION].strip();
                 if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
                     continue;
                 }
@@ -212,7 +212,7 @@ public class Storage {
                     System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + goalStorageFileName);
                     continue;
                 }
-                Goal goal = new Goal(description.strip(), amount);
+                Goal goal = new Goal(description, amount);
                 StateManager.getStateManager().addGoal(goal);
             }
         }
@@ -229,11 +229,11 @@ public class Storage {
         String[] row;
         while ((row = categoryCsvFile.readLine()) != null) {
             if (validRow(row) && row.length >= CATEGORY_ROW_LENGTH) {
-                String description = row[DESCRIPTION];
+                String description = row[DESCRIPTION].strip();
                 if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
                     continue;
                 }
-                Category category = new Category(description.strip());
+                Category category = new Category(description);
                 StateManager.getStateManager().addCategory(category);
             }
         }
