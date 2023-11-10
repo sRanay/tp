@@ -181,6 +181,9 @@ public class Storage {
         while ((row = goalCsvFile.readLine()) != null) {
             if (validRow(row)) {
                 String description = row[DESCRIPTION];
+                if (description.isBlank() || description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
+                    continue;
+                }
                 amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
                 if (amount == null) {
                     System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + goalStorageFileName);
@@ -204,6 +207,9 @@ public class Storage {
         while ((row = categoryCsvFile.readLine()) != null) {
             if (validRow(row)) {
                 String description = row[DESCRIPTION];
+                if (description.isBlank() || description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
+                    continue;
+                }
                 Category category = new Category(description);
                 StateManager.getStateManager().addCategory(category);
             }
