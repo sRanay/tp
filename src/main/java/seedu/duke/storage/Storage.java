@@ -189,7 +189,7 @@ public class Storage {
                     System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + goalStorageFileName);
                     continue;
                 }
-                Goal goal = new Goal(description, amount);
+                Goal goal = new Goal(description.strip(), amount);
                 StateManager.getStateManager().addGoal(goal);
             }
         }
@@ -210,7 +210,7 @@ public class Storage {
                 if (description.isBlank() || description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
                     continue;
                 }
-                Category category = new Category(description);
+                Category category = new Category(description.strip());
                 StateManager.getStateManager().addCategory(category);
             }
         }
