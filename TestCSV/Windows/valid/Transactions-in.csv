@@ -1,4 +1,4 @@
-"Description","Date","Amount","Goal","Category","Recurrence"
-"allowance","500.00","2023-10-29","car",,"none"
-"part-time job","1000.00","2023-10-29","car",,"none"
-"sell stuff","50.00","2023-10-29","ps5",,"none"
+"Type","Description","Date","Amount","Goal","Category","Recurrence"
+"Income","allowance","2023-10-29","500.00","car",,"none"
+"Income","part-time job","2023-10-29","1000.00","car",,"none"
+"Income","sell stuff","2023-10-29","50.00","ps5",,"none"

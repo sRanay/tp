@@ -21,15 +21,18 @@ public class ExportCommand extends Command {
     private static final String SUCESSFUL_MSG = "Transaction Data extracted";
     private static final String TYPE_ARG = "type";
     private static final String WRONG_TYPE_MSG = "Wrong type entered. Please enter /type in, /type out or blank";
-    private static final String[] HEADERS = {"Description", "Date", "Amount", "Goal", "Category", "Recurrence"};
-
-    private static final int DESCRIPTION = 0;
-    private static final int AMOUNT = 1;
+    private static final String[] HEADERS = {"Type", "Description", "Date", "Amount", "Goal", "Category", "Recurrence"};
+    private static final int TYPE = 0;
+    private static final int DESCRIPTION = 1;
     private static final int DATE = 2;
-    private static final int GOAL = 3;
-    private static final int CATEGORY = 4;
-    private static final int RECURRENCE = 5;
+    private static final int AMOUNT = 3;
+    private static final int GOAL = 4;
+    private static final int CATEGORY = 5;
+    private static final int RECURRENCE = 6;
     private static final String EMPTY_DATA = null;
+    private static final int DATA_LENGTH = 7;
+    private static final String INCOME_STRING = "Income";
+    private static final String EXPENSE_STRING = "Expense";
     private ArrayList<Income> incomeArray;
     private ArrayList<Expense> expenseArray;
     private CsvWriter csvFile;
@@ -73,7 +76,8 @@ public class ExportCommand extends Command {
     public void exportIncomeData() {
         for (Income i : this.incomeArray) {
             Transaction currentTransaction = i.getTransaction();
-            String[] row = new String[6];
+            String[] row = new String[DATA_LENGTH];
+            row[TYPE] = INCOME_STRING;
             row[GOAL] = i.getGoal().getDescription();
             row[CATEGORY] = EMPTY_DATA;
             this.csvFile.write(extractTransactionData(currentTransaction, row));
@@ -86,7 +90,8 @@ public class ExportCommand extends Command {
     public void exportExpenseData() {
         for (Expense e : this.expenseArray) {
             Transaction currentTransaction = e.getTransaction();
-            String[] row = new String[6];
+            String[] row = new String[DATA_LENGTH];
+            row[TYPE] = EXPENSE_STRING;
             row[GOAL] = EMPTY_DATA;
             row[CATEGORY] = e.getCategory().getName();
             this.csvFile.write(extractTransactionData(currentTransaction, row));
