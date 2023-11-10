@@ -151,21 +151,39 @@ public class Storage {
     /**
      * Convert all the data required into a Transaction Object.
      *
-     * @param description   Description of the Transaction.
-     * @param amount        Amount that is stated in the Transaction.
-     * @param date          Date of the Transaction that it occurred.
-     * @param recurrence    Recurrence type.
-     * @param hasRecurrence String of boolean if it has recurring transaction.
+     * @param row Current transaction row being processed
      * @return Transaction object created.
      */
-    public Transaction prepareTransaction(String description, Double amount, LocalDate date,
-                                          String recurrence, String hasRecurrence) {
-        Transaction transaction = new Transaction(description, amount, date);
+    public Transaction prepareTransaction(String[] row) {
+        String description = row[DESCRIPTION];
+        String recurrence = row[RECURRENCE];
+        String hasRecurrence = row[HAS_NEXT_RECURRENCE];
+        if (isTransactionInvalid(description, recurrence, hasRecurrence)) {
+            return null;
+        }
+
+        String amount = row[AMOUNT];
+        Double parsedAmount = Parser.parseNonNegativeDouble(amount);
+        if (parsedAmount == null) {
+            return null;
+        }
+
+        String date = row[DATE];
+        LocalDate parsedDate;
+        try {
+            parsedDate = validDate(date, expenseStorageFileName);
+        } catch (DukeException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+        Transaction transaction = new Transaction(description, parsedAmount, parsedDate);
         transaction.setHasGeneratedNextRecurrence(Boolean.parseBoolean(hasRecurrence));
         if (recurrence != null) {
             TransactionRecurrence transactionRecurrence = TransactionRecurrence.getRecurrence(recurrence);
             transaction.setRecurrence(transactionRecurrence);
         }
+
         return transaction;
     }
 
@@ -225,31 +243,14 @@ public class Storage {
     public void loadIncome() throws DukeException {
         CsvReader incomeCsvFile = new CsvReader(incomeStorageFileName);
         String[] row;
-        Double amount;
-        LocalDate date;
-        Transaction transaction;
         while ((row = incomeCsvFile.readLine()) != null) {
             if (validRow(row)) {
-                String description = row[DESCRIPTION];
+                Transaction transaction = prepareTransaction(row);
+                if (transaction == null) {
+                    continue;
+                }
+
                 Goal goal = convertToGoal(row[GOAL]);
-                String recurrence = row[RECURRENCE];
-                String hasRecurrence = row[HAS_NEXT_RECURRENCE];
-                if (!(validBoolean(hasRecurrence))) {
-                    System.out.println(FAILED_CONVERT_BOOLEAN + incomeStorageFileName);
-                    continue;
-                }
-                amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
-                if (amount == null) {
-                    System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + incomeStorageFileName);
-                    continue;
-                }
-                try {
-                    date = validDate(row[DATE], incomeStorageFileName);
-                    transaction = prepareTransaction(description, amount, date, recurrence, hasRecurrence);
-                } catch (DukeException e) {
-                    System.out.println(e.getMessage());
-                    continue;
-                }
                 Income income = new Income(transaction, goal);
                 StateManager.getStateManager().addIncome(income);
             }
@@ -266,31 +267,14 @@ public class Storage {
     public void loadExpense() throws DukeException {
         CsvReader expenseCsvFile = new CsvReader(expenseStorageFileName);
         String[] row;
-        double amount;
-        LocalDate date;
-        Transaction transaction;
         while ((row = expenseCsvFile.readLine()) != null) {
             if (validRow(row)) {
-                String description = row[DESCRIPTION];
+                Transaction transaction = prepareTransaction(row);
+                if (transaction == null) {
+                    continue;
+                }
+
                 Category category = convertToCategory(row[CATEGORY]);
-                String recurrence = row[RECURRENCE];
-                String hasRecurrence = row[HAS_NEXT_RECURRENCE];
-                if (!(validBoolean(hasRecurrence))) {
-                    System.out.println(FAILED_CONVERT_BOOLEAN + expenseStorageFileName);
-                    continue;
-                }
-                if (Parser.parseNonNegativeDouble(row[AMOUNT]) == null) {
-                    System.out.println(FAILED_CONVERT_TO_NON_NEG_DOUBLE + expenseStorageFileName);
-                    continue;
-                }
-                amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
-                try {
-                    date = validDate(row[DATE], expenseStorageFileName);
-                    transaction = prepareTransaction(description, amount, date, recurrence, hasRecurrence);
-                } catch (DukeException e) {
-                    System.out.println(e.getMessage());
-                    continue;
-                }
                 Expense expense = new Expense(transaction, category);
                 StateManager.getStateManager().addExpense(expense);
             }
@@ -397,4 +381,19 @@ public class Storage {
         saveExpense();
     }
 
+    private boolean isTransactionInvalid(String description, String recurrence, String hasRecurrence) {
+        if (description.isBlank()) {
+            return true;
+        }
+
+        if (TransactionRecurrence.getRecurrence(recurrence) == null) {
+            return true;
+        }
+
+        if (!(validBoolean(hasRecurrence))) {
+            return true;
+        }
+
+        return false;
+    }
 }
