@@ -123,8 +123,6 @@ Transaction tracking is a core functionality in the program. This feature includ
 the ability to add/remove income or expenses respectively. Also, the user is able to associate an income entry with a goal or have an expense
 entry be associated to a category of expenditure.
 
-**Addition Process Flow**
-
 The following functionalities are implemented in `AddIncomeCommand` and `AddExpenseCommand` and its' parent class `AddTransactionCommand`.
 
 An example of the usage of the `in` and `out` command can be found in the [User Guide](https://ay2324s1-cs2113-w12-3.github.io/tp/UserGuide.html).
