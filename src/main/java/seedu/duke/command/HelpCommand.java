@@ -40,8 +40,9 @@ public class HelpCommand extends Command {
     private static final String[] DELETE_COMMAND_FLAGS_DESCRIPTION = {"To set whether it is a in or out transaction"};
     private static final String LIST_COMMAND = "list";
     private static final String LIST_DESCRIPTION = "Shows a list of all added transactions based on type";
-    private static final String LIST_COMMAND_USAGE = " /type (in | out) [/goal GOAL] [/category CATEGORY]" +
-                                                     " [/week] [/month]";
+    private static final String LIST_COMMAND_USAGE_TRANSACTION = " /type (in | out) [/goal GOAL] [/category CATEGORY]" +
+                                                                 " [/week] [/month]";
+    private static final String LIST_COMMAND_USAGE_GOALCAT = " (goal | category)";
     private static final String[] LIST_COMMAND_FLAGS = {"/type", "/goal", "/category", "/week", "/month"};
     private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether to display \"in\" or" +
                                                                     " \"out\" transactions",
@@ -198,12 +199,20 @@ public class HelpCommand extends Command {
     }
 
     /**
-     * Crafts the list usage string.
+     * Crafts the list usage string for Transactions.
      *
-     * @return list usage string.
+     * @return list usage string for Transaction.
      */
-    public String listUsage() {
-        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE;
+    public String listTransactionUsage() {
+        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE_TRANSACTION;
+    }
+    /**
+     * Crafts the list usage string for Goal and Category.
+     *
+     * @return list usage string for Goal and Category.
+     */
+    public String listGoalCategoryUsage() {
+        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE_GOALCAT;
     }
 
     /**
@@ -313,7 +322,8 @@ public class HelpCommand extends Command {
             convertIntoList(DELETE_COMMAND_FLAGS, DELETE_COMMAND_FLAGS_DESCRIPTION);
             break;
         case "list":
-            ui.print(listUsage());
+            ui.print(listGoalCategoryUsage());
+            ui.print(listTransactionUsage());
             convertIntoList(LIST_COMMAND_FLAGS, LIST_COMMAND_FLAGS_DESCRIPTION);
             break;
         case "export":

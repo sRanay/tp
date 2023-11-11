@@ -177,7 +177,8 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]\n" +
+        assertEquals("\nUsage: list (goal | category)\n" +
+                "Usage: list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]\n" +
                 "Option            Description\n" +
                 "/type             To set whether to display \"in\" or \"out\" transactions\n" +
                 "/goal             The goal which it is classified under\n" +
