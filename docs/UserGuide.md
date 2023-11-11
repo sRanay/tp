@@ -130,7 +130,7 @@ Shows a sorted list of all added transactions based on type, with filters for go
 
 Formats: 
 
-`list [goal | category]`
+`list (goal | category)`
 
 `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`
 
@@ -183,7 +183,7 @@ Tuition                300.00
 Creates or deletes a user's goal (used for income)
 
 Format: `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`
-* Only either `/add` or `/remove` can be provided. They should not be provided together
+* Only either `/add` or `/remove` can be provided. They should not be provided together.
 * `GOAL` is case-insensitive
 * `/add GOAL` has to be accompanied with `/amount AMOUNT`
 * `AMOUNT` has to be a positive number
