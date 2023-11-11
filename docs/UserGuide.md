@@ -169,11 +169,15 @@ ID    Description                      Date         Amount       Goal         Re
 ====================================== IN TRANSACTIONS ======================================
 ```
 ```
-================= Goals Status =================
-Name                   Amount
-Savings                300.00/500.00
-Progress: [============        ] 60.00%
-================= Goals Status =================
+==================================== Goals Status ====================================
+Name                   Amount                 Progress
+Savings                300.00/500.00          [============        ] 60.00%
+Uncategorised          300.00
+
+Unused Goals:
+Goal                   Target Amount
+Tuition                300.00
+==================================== Goals Status ====================================
 ```
 ### Add/Remove a goal: `goal`
 Creates or deletes a user's goal (used for income)
