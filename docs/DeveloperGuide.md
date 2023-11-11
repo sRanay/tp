@@ -143,9 +143,17 @@ If any of the above validation fails, an error message relevant to the failure w
 For attempts to add an income entry, the command will additionally verify that the goal (if specified) already exists in the program. Otherwise,
 an error will be returned.
 
-Once a user's inputs are verified and deemed valid, a `Transaction` object is prepared along with a corresponding `Goal` or `Category` object (if required).
+Once a user's inputs are verified and deemed valid, a `Transaction` object is prepared through a call to `AddTransactionCommand#prepareTransaction()`. The returned `Transaction` object is encapsulated together with a corresponding `Goal` or `Category` object in an `Income` or `Expense` object as required.
 
 These prepared objects are then encapsulated in a corresponding `Income` or `Expense` object and added to the program using `StateManager#addIncome(Income)` or `StateManager#addExpense(Expense)`.
+
+Given below is an example usage scenario and how the transaction tracking feature behaves at each step.
+
+Step 1. The user launches the application for the first time. There will be no transactions in the program.
+
+Step 2. The user executes `in pocket money /amount 100` to add an income transaction with description set to `pocket money` and amount set to `100`. Since no date, goal or recurrence are explicitly stated, they are set to `Uncategorised`, the system's current date and `none` respectively.
+
+Step 3. An income entry is creating corresponding to the above parameters and a success message containing the added transaction is printed.
 
 ### Export feature
 
