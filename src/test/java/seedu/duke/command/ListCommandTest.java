@@ -407,13 +407,13 @@ class ListCommandTest {
         addInEntries();
         Command command = parser.parse("list goal");
         command.execute(ui);
-        assertEquals("================= Goals Status =================\n" +
-                "Name                   Amount\n" +
-                "PS5                    50.00/300.00\n" +
-                "Progress: [===                 ] 16.67%\n" +
-                "car                    500.00/5000.00\n" +
-                "Progress: [==                  ] 10.00%\n" +
-                "================= Goals Status =================\n", outputStream.toString());
+        assertEquals("==================================== Goals Status ======================" +
+                        "==============\n" +
+                "Name                   Amount                 Progress\n" +
+                "PS5                    50.00/300.00           [===                 ] 16.67%\n" +
+                "car                    500.00/5000.00         [==                  ] 10.00%\n" +
+                "==================================== Goals Status ====================================\n"
+                , outputStream.toString());
     }
 
     @Test
