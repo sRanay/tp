@@ -249,8 +249,6 @@ Step 3. The program will filter all the income transaction by the current date, 
 
 Step 4. The total amount will be output.
 
-### Help feature
-
 ## Product scope
 
 ### Target user profile
