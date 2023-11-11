@@ -164,6 +164,93 @@ Step 3. So when the user executes `export`, it will get all the transactions tha
 
 However, if the user wishes to export only the income or expense transactions, the user could enter `export /type in` or `export /type out` respectively.
 
+### Goal Feature
+
+The goal feature is facilitated by `GoalCommand`, which extends `Command`. Based on the argument, either `/add` or `/remove`, 
+the user can add a new goal or remove an existing goal. The main purpose of the goal feature is to tag each income transaction with 
+a goal, such that the user can have a clear idea of how to plan his savings toward his personal goals.
+
+If `/add` is provided, the command will validate the amount via 
+`GoalCommand#validateAmount()` to ensure that the amount argument is present and valid. Then, `GoalCommand#addGoal` will be 
+called to add the goal if the goal does not exist yet, else it will output an error message to inform the user that the goal already exist.
+
+Else if `/remove` is provided, the command will call `GoalCommand#removeGoal` to check if the goal exists and remove it. Else, it will output 
+an error message to inform the user that the goal does not exist.
+
+Given below is an example usage scenario and how the goal feature behaves.
+
+Step 1. The user launches the application for the first time. There will be no goal available.
+
+Step 2. The user executes `goal /add car /amount 100000`, which will add a `car` goal, with the amount set to `100000`.
+
+Step 3. The user executes `goal /remove car`, which will remove the newly added `car` goal.
+
+### Category Feature
+
+The category feature is facilitated by `CategoryCommand`, which extends `Command`. Based on the argument, either `/add` or `/remove`,
+the user can add a new category or remove an existing category. The main purpose of the category feature is to tag each expense transaction with
+a category, such that the user can categorise his spending.
+
+If `/add` is provided, `CategoryCommand#addCategory` will be
+called to add the category if the category does not exist yet, else it will output an error message to inform the user that the category already exist.
+
+Else if `/remove` is provided, the command will call `CategoryCommand#removeCategory` to check if the category exists and remove it. Else, it will output
+an error message to inform the user that the category does not exist.
+
+Given below is an example usage scenario and how the category feature behaves.
+
+Step 1. The user launches the application for the first time. There will be no category available.
+
+Step 2. The user executes `category /add food`, which will add a `food` category.
+
+Step 3. The user executes `category /remove food`, which will remove the newly added `food` category.
+
+### Delete transaction feature
+
+The delete transaction feature is facilitated by `RemoveTransactionCommand`, which extends `Command`. Based on the `/type` argument value, 
+either the income or expense transaction will be removed. The transaction to be removed is based on the index supplied by the user, as shown 
+when listing the income/expense transaction.
+
+The command will call `RemoveTransactionCommand#removeTransaction()` which will get the maximum number of transaction from `RemoveTransactionCommand#getTransactionMaxSize()`, 
+then parse the index supplied by the user and ensure is a valid integer using `RemoveTransactionCommand#parseIdx()`. This parsed index will then be used to remove the 
+transaction from the `StateManager`. Afterward, `RemoveTransactionCommand#printSuccess()` will be called to print a success message
+ to inform the user that the transaction has been removed.
+
+Given below is an example usage scenario and how the delete transaction feature behaves.
+
+Step 1. The user launches the application for the first time. There will be no transaction available.
+
+Step 2. The user input `out dinner /amount 10` to add expense transaction.
+
+Step 3. The user input `delete 1 /type out`. This will remove the first expense transaction, which is 
+the transaction just added by the user.
+
+### Edit transaction feature
+
+### List feature
+
+### Summary feature
+
+The summary feature is facilitated by `SummaryCommand`, which extends `Command`. Based on the arguments, `/day`, `/week` or `/month`, 
+the user can choose to filter and summarise the total sum of the income or expense transactions by the current day, week, or month. 
+
+The command will first call `SummaryCommand#getFilter()` to get the filter type indicated by the user if any. Then, based on the `/type` argument value supplied by the user, `SummaryCommand#printSummary` will 
+call either `SummaryCommand#getIncomeSummary()` or `SummaryCommand#getExpenseSummary()`, which will get the filtered income or expense arraylist from `SummaryCommand#filterIncome()` or `SummaryCommand#filterExpense()`. 
+
+The filtered arraylist will then be looped to sum up the total amount. This total amount will be passed to `SummaryCommand#getSummaryMsg()` to format the message to be printed by `ui`.
+
+Given below is an example usage scenario and how the summary feature behaves.
+
+Step 1. Assume that the user has been using the program for some time. There will be a few income and expense transactions available.
+
+Step 2. The user input `summary /type in /day`.
+
+Step 3. The program will filter all the income transaction by the current date, and sum up the total amount.
+
+Step 4. The total amount will be output.
+
+### Help feature
+
 ## Product scope
 
 ### Target user profile
