@@ -229,6 +229,38 @@ the transaction just added by the user.
 ### Edit transaction feature
 
 ### List feature
+The summary feature is facilitated by `ListCommand`, which extends `Command`. Depending on user input, the user would
+be able to either view a summary of all current goals/categories and the progress towards a goal, or a list of all 
+income or expense transactions, with options to filter the list to obtain a more specific view.
+
+The command would first call `ListCommand#validateInput()`, which would validate if the user input is correct. If it is,
+the program would then call `ListCommand#listTypeHandler()` to determine which path to take. This feature has 2 sub-features.
+
+#### Sub-Feature 1: Listing of goals and categories
+
+After the program reaches `ListCommand#listTypeHandler()`, it would call `ListCommand#printTypeStatus()` to prepare a list
+of either goals or categories depending on the user input. The program would then call either `UI#printGoalsStatus()`
+or `UI#printCategoryStatus()`.
+
+#### Sub-Feature 2: Listing of transactions
+
+After the program reaches `ListCommand#listTypeHandler()`, depending on the user input to print either income or expenses, the program would first call `ListCommand#checkInArgs()` to validate the arguments and then `ListCommand#listIncome()`.
+Alternatively, it would call `ListCommand#checkOutArgs()` followed by `ListCommand#listExpenses`.
+If filters are specified, the program may either call `ListCommand#filterGoal()`, `ListCommand#filterIncome()` to filter the income transaction list, or
+`ListCommand#filterCategory()` and `ListCommand#filterExpense()` for filtering of the expense transaction list. Finally, it would call `ListCommand#printList()`, which would 
+call `UI#listTransactions()` to print the transactions list.
+
+
+Given below is an example usage scenario:
+
+Step 1. This is made with the assumption that the user has added a few transactions to the program.
+
+Step 2. The user inputs `list /goal` to list all goals in the program
+
+Step 3. The program would calculate how much does each goal current have.
+
+Step 4. The program would then return a list of all goals that has some progress towards it, followed by uncategorised goals,
+where transactions were added without a goal listed, and a list of unused goals.
 
 ### Summary feature
 
