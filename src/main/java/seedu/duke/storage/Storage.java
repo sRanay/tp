@@ -25,7 +25,6 @@ public class Storage {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
     private static final String FAILED_CONVERT_TO_NON_NEG_DOUBLE = "Cannot convert amount into Double type in ";
     private static final String FAILED_CONVERT_TO_LOCALDATE = "Cannot convert date into LocalDate type in ";
-    private static final String FAILED_CONVERT_BOOLEAN = "Cannot convert string into boolean type in ";
     private static final String STORAGE_DIR = "./data";
     private static final String GOAL_STORAGE_FILE_NAME = STORAGE_DIR + "/goal-store.csv";
     private static final String CATEGORY_STORAGE_FILE_NAME = STORAGE_DIR + "/category-store.csv";
@@ -49,6 +48,7 @@ public class Storage {
     private static final int CATEGORY_ROW_LENGTH = 1;
     private static final int GOAL_ROW_LENGTH = 2;
     private static final int TRANSACTIONS_ROW_LENGTH = 6;
+    private static final int NOT_FOUND = -1;
 
     private static String goalStorageFileName;
     private static String categoryStorageFileName;
@@ -71,9 +71,12 @@ public class Storage {
         expenseStorageFileName = expenseFileName;
         exportStorageFileName = exportFileName;
     }
-
     public boolean checkDirExist() {
-        File directory = new File(STORAGE_DIR);
+        return checkDirExist(STORAGE_DIR);
+    }
+
+    public boolean checkDirExist(String folderDirectory) {
+        File directory = new File(folderDirectory);
         if (!directory.exists()) {
             directory.mkdir();
             return false;
@@ -153,6 +156,30 @@ public class Storage {
     }
 
     /**
+     * Check if the Transaction data is valid or Invalid.
+     *
+     * @param description Description of the Transaction.
+     * @param recurrence Recurrence of the Transaction.
+     * @param hasRecurrence Has Recurrence for the Transaction.
+     * @return False if all is valid, else return true.
+     */
+    private boolean isTransactionInvalid(String description, String recurrence, String hasRecurrence) {
+        if (description.isBlank()) {
+            return true;
+        }
+
+        if (TransactionRecurrence.getRecurrence(recurrence) == null) {
+            return true;
+        }
+
+        if (!(validBoolean(hasRecurrence))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Convert all the data required into a Transaction Object.
      *
      * @param row Current transaction row being processed
@@ -201,10 +228,12 @@ public class Storage {
         CsvReader goalCsvFile = new CsvReader(goalStorageFileName);
         String[] row;
         Double amount;
+        StateManager stateManager = StateManager.getStateManager();
         while ((row = goalCsvFile.readLine()) != null) {
             if (validRow(row) && row.length >= GOAL_ROW_LENGTH) {
                 String description = row[DESCRIPTION].strip();
-                if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
+                int goalIndex = stateManager.getGoalIndex(description);
+                if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS) || (goalIndex != NOT_FOUND)) {
                     continue;
                 }
                 amount = Parser.parseNonNegativeDouble(row[AMOUNT]);
@@ -213,7 +242,7 @@ public class Storage {
                     continue;
                 }
                 Goal goal = new Goal(description, amount);
-                StateManager.getStateManager().addGoal(goal);
+                stateManager.addGoal(goal);
             }
         }
         goalCsvFile.close();
@@ -227,14 +256,16 @@ public class Storage {
     public void loadCategory() throws DukeException {
         CsvReader categoryCsvFile = new CsvReader(categoryStorageFileName);
         String[] row;
+        StateManager stateManager = StateManager.getStateManager();
         while ((row = categoryCsvFile.readLine()) != null) {
             if (validRow(row) && row.length >= CATEGORY_ROW_LENGTH) {
                 String description = row[DESCRIPTION].strip();
-                if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
+                int categoryIndex = stateManager.getCategoryIndex(description);
+                if (description.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS) || categoryIndex != NOT_FOUND) {
                     continue;
                 }
                 Category category = new Category(description);
-                StateManager.getStateManager().addCategory(category);
+                stateManager.addCategory(category);
             }
         }
         categoryCsvFile.close();
@@ -248,6 +279,7 @@ public class Storage {
     public void loadIncome() throws DukeException {
         CsvReader incomeCsvFile = new CsvReader(incomeStorageFileName);
         String[] row;
+        StateManager stateManager = StateManager.getStateManager();
         while ((row = incomeCsvFile.readLine()) != null) {
             if (validRow(row) && row.length >= TRANSACTIONS_ROW_LENGTH) {
                 Transaction transaction = prepareTransaction(row);
@@ -257,10 +289,10 @@ public class Storage {
 
                 Goal goal = convertToGoal(row[GOAL]);
                 Income income = new Income(transaction, goal);
-                StateManager.getStateManager().addIncome(income);
+                stateManager.addIncome(income);
             }
         }
-        StateManager.getStateManager().sortIncomes();
+        stateManager.sortIncomes();
         incomeCsvFile.close();
     }
 
@@ -272,6 +304,7 @@ public class Storage {
     public void loadExpense() throws DukeException {
         CsvReader expenseCsvFile = new CsvReader(expenseStorageFileName);
         String[] row;
+        StateManager stateManager = StateManager.getStateManager();
         while ((row = expenseCsvFile.readLine()) != null) {
             if (validRow(row) && row.length >= TRANSACTIONS_ROW_LENGTH) {
                 Transaction transaction = prepareTransaction(row);
@@ -281,10 +314,10 @@ public class Storage {
 
                 Category category = convertToCategory(row[CATEGORY]);
                 Expense expense = new Expense(transaction, category);
-                StateManager.getStateManager().addExpense(expense);
+                stateManager.addExpense(expense);
             }
         }
-        StateManager.getStateManager().sortExpenses();
+        stateManager.sortExpenses();
         expenseCsvFile.close();
     }
 
@@ -304,7 +337,8 @@ public class Storage {
      */
     public void saveGoal() throws DukeException {
         CsvWriter goalStorageFile = new CsvWriter(goalStorageFileName);
-        ArrayList<Goal> goalList = StateManager.getStateManager().getAllGoals();
+        StateManager stateManager = StateManager.getStateManager();
+        ArrayList<Goal> goalList = stateManager.getAllGoals();
         goalStorageFile.write(GOAL_HEADER);
         for (Goal goal : goalList) {
             String description = goal.getDescription();
@@ -322,7 +356,8 @@ public class Storage {
      */
     public void saveCategory() throws DukeException {
         CsvWriter categoryStorageFile = new CsvWriter(categoryStorageFileName);
-        ArrayList<Category> categoryList = StateManager.getStateManager().getAllCategories();
+        StateManager stateManager = StateManager.getStateManager();
+        ArrayList<Category> categoryList = stateManager.getAllCategories();
         categoryStorageFile.write(CATEGORY_HEADER);
         for (Category category : categoryList) {
             String name = category.getName();
@@ -339,7 +374,8 @@ public class Storage {
      */
     public void saveIncome() throws DukeException {
         CsvWriter incomeStorageFile = new CsvWriter(incomeStorageFileName);
-        ArrayList<Income> incomesList = StateManager.getStateManager().getAllIncomes();
+        StateManager stateManager = StateManager.getStateManager();
+        ArrayList<Income> incomesList = stateManager.getAllIncomes();
         incomeStorageFile.write(INCOME_HEADER);
         for (Income income : incomesList) {
             Transaction transaction = income.getTransaction();
@@ -362,7 +398,8 @@ public class Storage {
      */
     public void saveExpense() throws DukeException {
         CsvWriter expenseStorageFile = new CsvWriter(expenseStorageFileName);
-        ArrayList<Expense> expensesList = StateManager.getStateManager().getAllExpenses();
+        StateManager stateManager = StateManager.getStateManager();
+        ArrayList<Expense> expensesList = stateManager.getAllExpenses();
         expenseStorageFile.write(EXPENSE_HEADER);
         for (Expense expense : expensesList) {
             Transaction transaction = expense.getTransaction();
@@ -386,19 +423,4 @@ public class Storage {
         saveExpense();
     }
 
-    private boolean isTransactionInvalid(String description, String recurrence, String hasRecurrence) {
-        if (description.isBlank()) {
-            return true;
-        }
-
-        if (TransactionRecurrence.getRecurrence(recurrence) == null) {
-            return true;
-        }
-
-        if (!(validBoolean(hasRecurrence))) {
-            return true;
-        }
-
-        return false;
-    }
 }
