@@ -68,12 +68,12 @@ Format: `in DESCRIPTION /amount AMOUNT [/goal GOAL] [/date DATE in DDMMYYYY] [/r
     * i.e. If `RECURRENCE` is weekly, date specified must not be more than 6 days in the past.
 * `RECURRENCE` is a string that indicates whether the income added is recurring.<br>
   Possible values are `none`, `daily`, `weekly` and `monthly`. If this option is not specified, recurrence defaults to `none`.
-* `GOAL` must already exist beforehand, if not the user would be prompted to create the goal first.
+* If `GOAL` is specified, it must either be `Uncategorised` or the goal must already exist beforehand.
 
 **Usage Example:**
 
-`in part-time job /amount 500 /goal car` <br>
-Adds an income entry for 'part-time job' with an amount of 500 towards a goal called 'car'.
+`in part-time job /amount 500` <br>
+Adds an income entry for 'part-time job' with an amount of 500. As goal is not specified, a default goal `Uncategorised` would be assigned to it.
 
 `in red packet money /amount 50 /goal PS5 /date 18092023`<br>
 Adds an income entry that happened on 18 Sept 2023 for 'red packet money' for an amount of 50 towards
@@ -126,13 +126,19 @@ Format: `delete INDEX /type (in | out)`
 
 
 ### List Transactions: `list`
-Shows a sorted list of all added transactions based on type, with filters for goals and categories.
+Shows a sorted list of all added transactions based on type, with filters for goals, categories and recurrence, or shows a list of current goals and categories.
 
-Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`
-* User must specify /type option to list either transactions added under income or expense
-* Deletion has to be based on the ID of the transaction without any filters.
+Formats: 
+
+`list (goal | category)`
+
+`list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]`
+
+* Deletion has to be based on the ID of the transaction without any filters (e.g. only `list /type in` or `list /type out`).
 * User must only specify either `/week` or `/month`. If both are specified, then `/week` will take priority.
-* The list that would be printed will be sorted descending by date, then transaction description.
+* The list that would be printed will be sorted in descending order by date.
+* If `list goal` or `list category` is used, there must not be any other arguments that come after that.
+* If arguments are specified, such as `list /type in`, there should not be anything before the argument. (`list goal /type in` would be considered an invalid command)
 
 **Usage Example:**
 
@@ -148,6 +154,10 @@ Format: `list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month
 
 `list /type in /month` - List all income transactions in the current month
 
+`list goal` - Lists all current goals and the progress towards each goal
+
+`list category` - Lists all current categories and the spending for each category
+
 **Sample Output:**
 ```
 Alright! Displaying 3 transactions.
@@ -158,13 +168,25 @@ ID    Description                      Date         Amount       Goal         Re
 3     red packet money                 2023-09-18   50.00        PS5          none
 ====================================== IN TRANSACTIONS ======================================
 ```
+```
+==================================== Goals Status ====================================
+Name                   Amount                 Progress
+Savings                300.00/500.00          [============        ] 60.00%
+Uncategorised          300.00
+
+Unused Goals:
+Goal                   Target Amount
+Tuition                300.00
+==================================== Goals Status ====================================
+```
 ### Add/Remove a goal: `goal`
 Creates or deletes a user's goal (used for income)
 
 Format: `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`
 * Only either `/add` or `/remove` can be provided. They should not be provided together.
-* `GOAL` is case-insensitive.
-* `/add GOAL` has to be accompanied with `/amount AMOUNT`.
+* `GOAL` is case-insensitive
+* `/add GOAL` has to be accompanied with `/amount AMOUNT`
+* `AMOUNT` has to be a positive number
 
 ### Add/Remove a category: `category`
 Creates or deletes a user's category (used for expenses)
