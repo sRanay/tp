@@ -234,6 +234,25 @@ the transaction just added by the user.
 
 ### Edit transaction feature
 
+The edit transaction feature is facilitated by `EditTransactionCommand`, which extends `Command`. Based on the `/type` argument value,
+either the income or expense transaction will be edited. User can edit the description, amount, goal (for income transaction) and category (for expense transaction). 
+Date and recurrence of the transaction cannot be edited.
+
+The command will first call `EditTransactionCommand#throwIfInvalidDescOrArgs()` to check that valid arguments and value are supplied by the user. Afterward, `EditTransactionCommand#editTransaction()`
+will get the maximum number of transaction from `EditTransactionCommand#getTransactionMaxSize()`,
+then parse the index supplied by the user and ensure is a valid integer using `EditTransactionCommand#parseIdx()`. This parsed index will then be used to update the
+transaction from the `StateManager`. Afterward, `EditTransactionCommand#printSuccess()` will be called to print a success message
+to inform the user that the transaction has been updated with the new values.
+
+Given below is an example usage scenario and how the edit transaction feature behaves.
+
+Step 1. The user launches the application for the first time. There will be no transaction available.
+
+Step 2. The user input `out dinner /amount 10 /category food` to add expense transaction.
+
+Step 3. The user input `edit 1 /type out /description lunch /amount 12 /category essentials`. This will edit the first expense transaction, which is
+the transaction just added by the user. The new description will be `lunch`, amount `12` and category `essentials`.
+
 ### List feature
 
 ### Summary feature
@@ -264,9 +283,8 @@ Step 4. The total amount will be output.
 
 ### Value proposition
 
-Personal finance tracker to make it easy for users to track and manage their spending, \
-and generate daily/weekly/monthly reports to break down how they spend (e.g. spending categories, \
-whether they spend above their income, etc).
+Personal finance tracker to make it easy for users to track and manage their saving/spending, \
+and view a summary of their daily/weekly/monthly transactions.
 
 ## User Stories
 
@@ -410,15 +428,17 @@ Listed below are the steps to test the program manually.
 
 ### Editing a transaction
 1. Editing an income transaction
-   1. Prerequisite: Ensure that there is at least one income transaction.
+   1. Prerequisite: Ensure that there is at least one income transaction. `car` goal is added.
    2. Test Case: `edit 1 /type in /description New Edited Description` <br>
    Expected: The description of the first income transaction shown when listing income transactions will be changed to 
    `New Edited Description`.
    3. Test Case: `edit 1 /type in /amount 1234` <br>
       Expected: The amount of the first income transaction shown when listing income transactions will be changed to
       `1234.00`.
+   4. Test Case: `edit 1 /type in /description New Edited Description /amount 1234 /goal car` <br>
+         Expected: The first income transaction will be changed to description `New Edited Description`, amount `1234.00`, goal `car`.
 2. Editing an expense transaction
-   1. The output will be similar to editing income transaction, with type `out`.
+   1. The output will be similar to editing income transaction, with type `out`. Instead of `goal`, `category` is edited instead.
 
 ### Summarise the transaction total
 1. Summarise income transactions
