@@ -12,7 +12,11 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HelpCommandTest {
-    
+
+    /**
+     * Test if the full list is printed correctly.
+     * @throws DukeException if the command does not execute.
+     */
     @Test
     void helpCommand_printFullList() throws DukeException  {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -38,6 +42,10 @@ public class HelpCommandTest {
                 "bye               Exits the program\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if it will print the full list with empty space.
+     * @throws DukeException if the command does not execute.
+     */
     @Test
     void helpCommand_withEmptyCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -63,6 +71,10 @@ public class HelpCommandTest {
                 "bye               Exits the program\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if it will print out error message if a invalid command is entered.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withInvalidCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -76,6 +88,10 @@ public class HelpCommandTest {
         assertEquals("\nNO SUCH COMMAND\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the help for in command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidInCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -95,6 +111,10 @@ public class HelpCommandTest {
                 "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the command enter is case-insensitive will work as intended.
+     * @throws DukeException if the command does not execute.
+     */
     @Test
     void helpCommand_commandCaseSensitive() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -114,6 +134,10 @@ public class HelpCommandTest {
                 "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the command enter is in uppercase will work as intended.
+     * @throws DukeException if the command does not execute.
+     */
     @Test
     void helpCommand_commandAllUpperCase() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -133,6 +157,10 @@ public class HelpCommandTest {
                 "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the help for out command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidOutCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -152,6 +180,10 @@ public class HelpCommandTest {
                 "/recurrence       Indicates whether the expense added is recurring\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the help for delete command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidDeleteCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -166,7 +198,11 @@ public class HelpCommandTest {
                 "Option            Description\n" +
                 "/type             To set whether it is a in or out transaction\n\n", outputStream.toString());
     }
-    
+
+    /**
+     * Test if the help for list command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidListCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -187,7 +223,11 @@ public class HelpCommandTest {
                 "/month            To filter the transactions to those in the current month\n\n"
                 , outputStream.toString());
     }
-    
+
+    /**
+     * Test if the help for help command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidHelpCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -201,6 +241,10 @@ public class HelpCommandTest {
         assertEquals("\nUsage: help\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the help for bye command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidByeCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -214,6 +258,10 @@ public class HelpCommandTest {
         assertEquals("\nUsage: bye\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the help for goal command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidGoalCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -232,6 +280,10 @@ public class HelpCommandTest {
                 "/remove           Name of goal to be removed\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the help for category command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidCategoryCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -249,6 +301,10 @@ public class HelpCommandTest {
                 "/remove           Name of spending category to be deleted\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the help for edit command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidEditCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -269,6 +325,10 @@ public class HelpCommandTest {
                 "/category         New category to be specified\n\n", outputStream.toString());
     }
 
+    /**
+     * Test if the help for summary command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
     @Test
     void helpCommand_withValidSummaryCommand() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
