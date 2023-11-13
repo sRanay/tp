@@ -1,0 +1,89 @@
+@startuml
+-> ":AddIncomeCommand": execute(ui: Ui)
+activate ":AddIncomeCommand" #FFBBBB
+":AddIncomeCommand" -> ":AddIncomeCommand": throwIfInvalidDescOrArgs()
+ref over ":AddIncomeCommand": validate user's provided inputs
+activate ":AddIncomeCommand" #FFBBBB
+":AddIncomeCommand" --> ":AddIncomeCommand"
+deactivate
+
+":AddIncomeCommand" -> ":AddIncomeCommand": prepareTransaction()
+activate ":AddIncomeCommand" #FFBBBB
+create ":Transaction"
+":AddIncomeCommand" -> ":Transaction": new Transaction(description, amount, date)
+activate ":Transaction" #FFBBBB
+":Transaction" --> ":AddIncomeCommand": transaction: Transaction
+deactivate
+
+":AddIncomeCommand" --> ":AddIncomeCommand": transaction: Transaction
+deactivate
+
+":AddIncomeCommand" -> ":AddIncomeCommand": addNewIncome(transaction)
+activate ":AddIncomeCommand" #FFBBBB
+
+":AddIncomeCommand" -> ":AddIncomeCommand": handleGoal()
+activate ":AddIncomeCommand" #FFBBBB
+
+":AddIncomeCommand" -> ":AddIncomeCommand": getArg(GOAL_ARG)
+activate ":AddIncomeCommand" #FFBBBB
+":AddIncomeCommand" --> ":AddIncomeCommand": goalArg: String
+deactivate
+
+participant "StateManager" <<class>>
+":AddIncomeCommand" -> "StateManager": getStateManager()
+activate "StateManager" #FFBBBB
+"StateManager" --> ":AddIncomeCommand": stateManager: StateManager
+deactivate
+
+alt goal == null or goal == "Uncategorised"
+    ":AddIncomeCommand" -> "stateManager:StateManager": getUncategorisedGoal()
+    activate "stateManager:StateManager" #FFBBBB
+    "stateManager:StateManager" --> ":AddIncomeCommand": goal: Goal
+    deactivate
+else goal exists
+    ":AddIncomeCommand" -> "stateManager:StateManager": getGoalIndex(goalArg)
+    activate "stateManager:StateManager" #FFBBBB
+    "stateManager:StateManager" --> ":AddIncomeCommand": index: int
+    deactivate
+    ":AddIncomeCommand" -> "stateManager:StateManager": getGoal(index)
+    activate "stateManager:StateManager" #FFBBBB
+    "stateManager:StateManager" --> ":AddIncomeCommand": goal: Goal
+    deactivate
+end
+":AddIncomeCommand" --> ":AddIncomeCommand": goal: Goal
+deactivate
+
+create ":Income"
+":AddIncomeCommand" -> ":Income": new Income(transaction, goal)
+activate ":Income" #FFBBBB
+":Income" --> ":AddIncomeCommand": income: Income
+deactivate
+":AddIncomeCommand" -> "StateManager": getStateManager()
+activate "StateManager" #FFBBBB
+"StateManager" --> ":AddIncomeCommand": stateManager: StateManager
+deactivate
+":AddIncomeCommand" -> "stateManager:StateManager": addIncome(income)
+activate "stateManager:StateManager" #FFBBBB
+"stateManager:StateManager" --> ":AddIncomeCommand"
+deactivate
+":AddIncomeCommand" --> ":AddIncomeCommand": income: Income
+deactivate
+
+":AddIncomeCommand" -> ":AddIncomeCommand": printSuccess(ui, income)
+activate ":AddIncomeCommand" #FFBBBB
+":AddIncomeCommand" --> ":AddIncomeCommand"
+deactivate
+
+":AddIncomeCommand" -> "StateManager": getStateManager()
+activate "StateManager" #FFBBBB
+"StateManager" --> ":AddIncomeCommand": stateManager: StateManager
+deactivate
+
+":AddIncomeCommand" -> "stateManager:StateManager": sortIncomes()
+activate "stateManager:StateManager" #FFBBBB
+"stateManager:StateManager" --> ":AddIncomeCommand"
+deactivate
+
+<-- ":AddIncomeCommand"
+deactivate
+@enduml

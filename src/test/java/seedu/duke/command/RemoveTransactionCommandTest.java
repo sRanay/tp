@@ -67,6 +67,10 @@ class RemoveTransactionCommandTest {
         });
     }
 
+    /**
+     * Test to ensure that Exception will be thrown when the index
+     * is invalid.
+     */
     @Test
     void execute_negativeIdx_exceptionThrown() throws DukeException {
         Command command = parser.parse("delete -1 /type in");
@@ -75,6 +79,10 @@ class RemoveTransactionCommandTest {
         });
     }
 
+    /**
+     * Test to ensure that Exception will be thrown when the index
+     * is out or range.
+     */
     @Test
     void execute_outOfRangeIdx_exceptionThrown() throws DukeException {
         Command command = parser.parse("delete 1000 /type in");
@@ -83,6 +91,10 @@ class RemoveTransactionCommandTest {
         });
     }
 
+    /**
+     * Test to ensure that income transaction is removed from the
+     * StateManager when the index is valid.
+     */
     @Test
     void execute_validIncomeIdx_removedFromStateManager() throws DukeException {
         Command command = parser.parse("delete 1 /type in");
@@ -92,6 +104,10 @@ class RemoveTransactionCommandTest {
         assertNotEquals("part-time-job", transactionDescription);
     }
 
+    /**
+     * Test to ensure that expense transaction is removed from the
+     * StateManager when the index is valid.
+     */
     @Test
     void execute_validExpenseIdx_removedFromStateManager() throws DukeException {
         Command command = parser.parse("delete 2 /type out");

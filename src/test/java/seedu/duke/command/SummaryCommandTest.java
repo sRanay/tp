@@ -23,6 +23,9 @@ class SummaryCommandTest {
         StateManager.clearStateManager();
     }
 
+    /**
+     * Populates the StateManager with test income transactions.
+     */
     private static void addInEntriesWithDates() {
         Parser parser = new Parser();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -38,6 +41,9 @@ class SummaryCommandTest {
         }
     }
 
+    /**
+     * Populates the StateManager with test expense transactions.
+     */
     private static void addOutEntriesWithDates() {
         Parser parser = new Parser();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -53,6 +59,10 @@ class SummaryCommandTest {
 
     }
 
+    /**
+     * Test to ensure that the summary command will throw
+     * Exception when called without /type.
+     */
     @Test
     void execute_summaryWithoutType_throwsDukeException() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -145,6 +155,10 @@ class SummaryCommandTest {
         assertEquals("Good job! Total income for This Month: $810.00\n", outputStream.toString());
     }
 
+    /**
+     * Test to ensure that if multiple filters are indicated,
+     * filter by day will take priority.
+     */
     @Test
     void execute_incomeSummaryByDayWeekMonth_printTotalIncomeByDay() throws DukeException {
         addInEntriesWithDates();
@@ -222,6 +236,10 @@ class SummaryCommandTest {
         assertEquals("Wise spending! Total expense for This Month: $38.80\n", outputStream.toString());
     }
 
+    /**
+     * Test to ensure that if multiple filters are indicated,
+     * filter by day will take priority.
+     */
     @Test
     void execute_expenseSummaryByDayWeekMonth_printTotalExpenseByDay() throws DukeException {
         addOutEntriesWithDates();

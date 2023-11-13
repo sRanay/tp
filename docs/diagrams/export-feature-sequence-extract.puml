@@ -1,0 +1,37 @@
+@startuml
+mainframe **sd** extract transaction data
+-> ":ExportCommand": extractTransactionData(transaction, row)
+activate ":ExportCommand" #FFBBBB
+
+":ExportCommand" -> ":Transaction": getDescription()
+activate ":Transaction" #FFBBBB
+":Transaction" --> ":ExportCommand": description: String
+deactivate
+":ExportCommand" -> ":Transaction": getDate()
+activate ":Transaction" #FFBBBB
+":Transaction" --> ":ExportCommand": dateObj: LocalDate
+deactivate
+":ExportCommand" -> ":LocalDate": toString()
+activate ":LocalDate" #FFBBBB
+":LocalDate" --> ":ExportCommand": date: String
+deactivate
+":ExportCommand" -> ":Transaction": getAmount()
+activate ":Transaction" #FFBBBB
+":Transaction" --> ":ExportCommand": amountDouble: Double
+deactivate
+":ExportCommand" -> ":Ui": formatAmount(amountDouble)
+activate ":Ui" #FFBBBB
+":Ui" --> ":ExportCommand": amount: String
+deactivate
+":ExportCommand" -> ":Transaction": getRecurrence()
+activate ":Transaction" #FFBBBB
+":Transaction" --> ":ExportCommand": recurrenceObj: TransactionRecurrence
+deactivate
+":ExportCommand" -> ":TransactionRecurrence": toString()
+activate ":TransactionRecurrence" #FFBBBB
+":TransactionRecurrence" --> ":ExportCommand": recurrence: String
+deactivate
+
+<-- ":ExportCommand": row: String[]
+deactivate
+@enduml

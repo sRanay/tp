@@ -77,7 +77,7 @@ public class ListCommand extends Command {
 
         if (getArgs().containsKey(TYPE)) {
             String type = getArg(TYPE);
-            if (!type.equals("in") && !type.equals("out")) {
+            if (!type.equalsIgnoreCase("in") && !type.equalsIgnoreCase("out")) {
                 errorMessage(INVALID_TYPE_FORMAT);
             }
         }
@@ -140,10 +140,10 @@ public class ListCommand extends Command {
         }
         String type = getArg(TYPE);
         assert type != null;
-        if (type.equals("in")) {
+        if (type.equalsIgnoreCase("in")) {
             checkInArgs();
             listIncome();
-        } else if (type.equals("out")) {
+        } else if (type.equalsIgnoreCase("out")) {
             checkOutArgs();
             listExpenses();
         }

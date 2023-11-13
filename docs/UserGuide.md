@@ -3,7 +3,7 @@
 ## Introduction
 
 FinText is a **Command Line Interface (CLI)-based personal finance tracker to make it easy for users to track and manage
-their spending,** and generate daily/weekly/monthly reports to break down how they spend. Application Data will be stored into a folder called `data`.
+their saving/spending,** and view a summary of their daily/weekly/monthly transactions. Application Data will be stored into a folder called `data`.
 
 * [Quick Start](#quick-start)
 * [Features](#features)
@@ -36,6 +36,8 @@ their spending,** and generate daily/weekly/monthly reports to break down how th
     command.
 > * Arguments can be in any order. <br>
     e.g. if a command has the arguments `/amount AMOUNT /goal GOAL`, `/goal GOAL /amount AMOUNT` is acceptable as well.
+> * Argument names are case-sensitive, while argument values are case-insensitive. <br>
+    e.g. `/type` and `/Type` are different argument. `/type in` and `/type IN` will indicate the `in` transaction type.
 > * Additional supplied arguments or unnecessary description will be simply ignored.
 > * User is intentionally not restricted to input future or past date to the `/date DATE` argument to allow for flexibility in managing their transactions.
 > * Duplicate arguments are not accepted by the program. A message will be shown in such cases.
@@ -211,14 +213,14 @@ Format: `export [/type (in | out)]`
 ### Edit Transactions: `edit`
 Edits an existing transaction.
 
-Format: `edit INDEX /type (in | out) (/description DESCRIPTION | /amount AMOUNT | /goal GOAL | /category CATEGORY)`
+Format: `edit INDEX /type (in | out) [/description DESCRIPTION] [/amount AMOUNT] [/goal GOAL] [/category CATEGORY]`
 
 - User must specify /type option to edit either a transaction under income or expense.
 - User must specify a valid income/expense transaction index.
-- User must only specify either /description or /amount or /goal (if editing an income transaction) or /category (if editing an expense transaction). If more than 1 option or no options are specified, an error will be triggered.
-- User must enter a value that is different from the previous value of the corresponding field to edit.
-- User can not edit the date field.
-- In case of editing a goal/category, it must exist beforehand.
+- User must only specify at least either `/description`, `/amount`, `/goal` (if editing an income transaction) or `/category` (if editing an expense transaction).
+- User cannot edit the date field.
+- User cannot edit the recurrence field.
+- In case of editing a goal, it must exist beforehand.
 
 **Usage Example:**
 
@@ -227,6 +229,8 @@ Format: `edit INDEX /type (in | out) (/description DESCRIPTION | /amount AMOUNT 
 `edit 2 /type in /goal ps5` - Edits the goal of the second income transaction to be ps5.
 
 `edit 2 /type out /amount 10` - Edits the amount of the second expense transaction to be 10.
+
+`edit 2 /type out /description grab /amount 10 /category transport` - Edits the second expense transaction description to `grab`, amount to `10`, category to `transport`.
 
 
 ### Transaction Summary: `summary`
