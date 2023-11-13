@@ -14,9 +14,9 @@ activate ":RemoveTransactionCommand" #FFBBBB
 activate ":RemoveTransactionCommand" #FFBBBB
 ":RemoveTransactionCommand" --> ":RemoveTransactionCommand": type: String
 deactivate
-":RemoveTransactionCommand" -> "type:String": toLowerCase()
-activate "type:String" #FFBBBB
-"type:String" --> ":RemoveTransactionCommand": type: String
+":RemoveTransactionCommand" -> ":String": toLowerCase()
+activate ":String" #FFBBBB
+":String" --> ":RemoveTransactionCommand": type: String
 deactivate
 
 ":RemoveTransactionCommand" -> ":RemoveTransactionCommand": getTransactionMaxSize(type)
