@@ -1,3 +1,9 @@
+/**
+ * The EditTransactionCommandTest class contains JUnit tests for the EditTransactionCommand class,
+ * which is responsible for editing transactions.
+ * It tests various scenarios such as missing arguments, invalid indices, too many arguments, and successful edits.
+ */
+
 package seedu.duke.command;
 
 import org.junit.jupiter.api.AfterEach;
@@ -19,6 +25,9 @@ public class EditTransactionCommandTest {
     private static final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private static final Ui ui = new Ui(outputStream);
 
+    /**
+     * Populates the StateManager with sample transactions before each test.
+     */
     @BeforeEach
     void populateStateManager() {
         try {
@@ -42,18 +51,33 @@ public class EditTransactionCommandTest {
         StateManager.clearStateManager();
     }
 
+    /**
+     * Tests whether an exception is thrown when the index is missing.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void execute_missingIdx_exceptionThrown() throws DukeException {
         Command command = parser.parse("edit /type in /description part-time job");
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
+    /**
+     * Tests whether an exception is thrown when the type argument is missing.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void execute_missingTypeArgument_exceptionThrown() throws DukeException {
         Command command = parser.parse("edit 1 ");
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
+    /**
+     * Tests whether an exception is thrown when the type value is missing.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void execute_missingTypeValue_exceptionThrown() throws DukeException {
         Command command = parser.parse("edit 1 /type /description part-time job");
@@ -66,6 +90,11 @@ public class EditTransactionCommandTest {
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
+    /**
+     * Tests whether an exception is thrown when the index is out of range.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void execute_outOfRangeIdx_exceptionThrown() throws DukeException {
         Command command = parser.parse("edit 1000 /type in /description part-time job");
@@ -78,11 +107,22 @@ public class EditTransactionCommandTest {
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
+    /**
+     * Tests whether an exception is thrown when attempting to edit the date.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void execute_attemptToEditDate_exceptionThrown() throws DukeException {
         Command command = parser.parse("edit 1 /type in /date 18102023");
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
+
+    /**
+     * Tests whether a valid income transaction is successfully edited.
+     *
+     * @throws DukeException if the test fails.
+     */
 
     @Test
     void execute_validIncomeIdx_edited() throws DukeException {
@@ -93,6 +133,11 @@ public class EditTransactionCommandTest {
         assertNotEquals("part-time job", transactionDescription);
     }
 
+    /**
+     * Tests whether a valid expense transaction is successfully edited.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void execute_validExpenseIdx_edited() throws DukeException {
         Command command = parser.parse("edit 2 /type out /amount 10");

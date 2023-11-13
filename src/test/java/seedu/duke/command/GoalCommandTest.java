@@ -1,3 +1,9 @@
+/**
+ * The GoalCommandTest class contains JUnit tests for the GoalCommand class,
+ * which is responsible for managing goals.
+ * It tests various scenarios such as adding, removing, and handling exceptions related to goals.
+ */
+
 package seedu.duke.command;
 
 import org.junit.jupiter.api.AfterEach;
@@ -16,11 +22,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class GoalCommandTest {
+
+    /**
+     * Clears the StateManager after each test to ensure a clean slate for the next test.
+     */
     @AfterEach
     void clearStateManager() {
         StateManager.clearStateManager();
     }
 
+    /**
+     * Tests handling of an invalid goal command.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void invalidGoal() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -35,6 +50,11 @@ class GoalCommandTest {
         });
     }
 
+    /**
+     * Tests handling of an empty goal addition.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void emptyGoalAdd() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -49,6 +69,11 @@ class GoalCommandTest {
         });
     }
 
+    /**
+     * Tests handling of missing amount during goal addition.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void missingAmount() throws DukeException{
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -62,6 +87,12 @@ class GoalCommandTest {
             command.execute(ui);
         });
     }
+
+    /**
+     * Tests handling of an invalid amount during goal addition.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void invalidAmount() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -76,6 +107,11 @@ class GoalCommandTest {
         });
     }
 
+    /**
+     * Tests successful addition of a valid goal.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void validGoal() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -88,6 +124,12 @@ class GoalCommandTest {
         command.execute(ui);
         assertEquals("Successfully added test!\n", outputStream.toString());
     }
+
+    /**
+     * Tests handling of an invalid goal removal command.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void invalidRemoveGoal() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -101,6 +143,12 @@ class GoalCommandTest {
             command.execute(ui);
         });
     }
+
+    /**
+     * Tests successful removal of a valid goal.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void validRemoveGoal() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
