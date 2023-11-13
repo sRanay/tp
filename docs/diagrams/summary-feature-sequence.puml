@@ -39,7 +39,7 @@ alt type == TYPE_IN
         opt filterByDay || filterByWeek || filterByMonth
             ":SummaryCommand" -> ":SummaryCommand": filterIncome(incomeArray)
             activate ":SummaryCommand" #FFBBBB
-            ref over ":SummaryCommand": filter incomes by day, week or month, which every is stated first
+            ref over ":SummaryCommand": filter incomes by day, week or month, if multiple stated, the former order takes precedence
             ":SummaryCommand" --> ":SummaryCommand": incomeArray: ArrayList<Income>
             deactivate
         end
@@ -78,7 +78,7 @@ else type == TYPE_OUT
         opt filterByDay || filterByWeek || filterByMonth
             ":SummaryCommand" -> ":SummaryCommand": filterExpense(expenseArray)
             activate ":SummaryCommand" #FFBBBB
-            ref over ":SummaryCommand": filter expenses by day, week or month, which every is stated first
+            ref over ":SummaryCommand": filter expenses by day, week or month, if multiple stated, the former order takes precedence
             ":SummaryCommand" --> ":SummaryCommand": expenseArray: ArrayList<Expense>
             deactivate
         end
