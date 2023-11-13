@@ -23,6 +23,9 @@ class SummaryCommandTest {
         StateManager.clearStateManager();
     }
 
+    /**
+     * Populates the StateManager with test income transactions.
+     */
     private static void addInEntriesWithDates() {
         Parser parser = new Parser();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -38,6 +41,9 @@ class SummaryCommandTest {
         }
     }
 
+    /**
+     * Populates the StateManager with test expense transactions.
+     */
     private static void addOutEntriesWithDates() {
         Parser parser = new Parser();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -53,6 +59,10 @@ class SummaryCommandTest {
 
     }
 
+    /**
+     * Test to ensure that the summary command will throw
+     * Exception when called without /type.
+     */
     @Test
     void execute_summaryWithoutType_throwsDukeException() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -94,7 +104,7 @@ class SummaryCommandTest {
         Ui ui = new Ui(outputStream);
         Command command = parser.parse("summary /type in");
         command.execute(ui);
-        assertEquals("Good job! Total income: $960.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far: $960.00\n", outputStream.toString());
     }
 
     @Test
@@ -110,7 +120,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Good job! Total income for Today: $10.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far for Today: $10.00\n", outputStream.toString());
     }
 
     @Test
@@ -126,7 +136,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Good job! Total income for This Week: $510.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far for This Week: $510.00\n", outputStream.toString());
     }
 
     @Test
@@ -142,9 +152,13 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Good job! Total income for This Month: $810.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far for This Month: $810.00\n", outputStream.toString());
     }
 
+    /**
+     * Test to ensure that if multiple filters are indicated,
+     * filter by day will take priority.
+     */
     @Test
     void execute_incomeSummaryByDayWeekMonth_printTotalIncomeByDay() throws DukeException {
         addInEntriesWithDates();
@@ -160,7 +174,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Good job! Total income for Today: $10.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far for Today: $10.00\n", outputStream.toString());
     }
 
     @Test
@@ -171,7 +185,7 @@ class SummaryCommandTest {
         Ui ui = new Ui(outputStream);
         Command command = parser.parse("summary /type out");
         command.execute(ui);
-        assertEquals("Wise spending! Total expense: $49.30\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far: $49.30\n", outputStream.toString());
     }
 
     @Test
@@ -187,7 +201,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Wise spending! Total expense for Today: $20.80\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far for Today: $20.80\n", outputStream.toString());
     }
 
     @Test
@@ -203,7 +217,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Wise spending! Total expense for This Week: $28.30\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far for This Week: $28.30\n", outputStream.toString());
     }
 
     @Test
@@ -219,9 +233,13 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Wise spending! Total expense for This Month: $38.80\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far for This Month: $38.80\n", outputStream.toString());
     }
 
+    /**
+     * Test to ensure that if multiple filters are indicated,
+     * filter by day will take priority.
+     */
     @Test
     void execute_expenseSummaryByDayWeekMonth_printTotalExpenseByDay() throws DukeException {
         addOutEntriesWithDates();
@@ -237,7 +255,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Wise spending! Total expense for Today: $20.80\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far for Today: $20.80\n", outputStream.toString());
     }
 
 }

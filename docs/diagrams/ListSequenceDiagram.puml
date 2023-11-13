@@ -1,0 +1,124 @@
+@startuml
+!define LOGIC_COLOR #7accff
+!define LOGIC_COLOR_T1 #7777DB
+!define LOGIC_COLOR_T2 #5252CE
+!define LOGIC_COLOR_T3 #1616B0
+!define LOGIC_COLOR_T4 #101086
+
+participant ":ListCommand" order 1
+participant "StateManager" as s1 << class >> order 2
+participant ":StateManager" order 3
+participant ":Expense" as e2 order 6
+participant ":Category" as c order 7
+participant "ui:Ui" order 8
+
+--> ":ListCommand": execute(ui: Ui)
+activate ":ListCommand" #FFBBBB
+":ListCommand" -> ":ListCommand": validateInput()
+ref over ":ListCommand": validate user input
+activate ":ListCommand"#FFBBBB
+return
+":ListCommand" -> ":ListCommand": listTypeHandler()
+activate ":ListCommand" #FFBBBB
+alt description != null && !description.isBlank()
+    ":ListCommand" -> ":ListCommand" : printTypeStatus()
+    activate ":ListCommand" #FFBBBB
+alt description == "goal"
+    ":ListCommand" -> s1 : getStateManager()
+    activate s1 #FFBBBB
+    return :StateManager
+    ":ListCommand" -> ":StateManager" : getGoalsStatus()
+    activate ":StateManager" #FFBBBB
+    return map:HashMap
+    ":ListCommand" -> "ui:Ui" : printGoalsStatus(map)
+    activate "ui:Ui" #FFBBBB
+    return
+else description == "category"
+    participant ":StateManager" as s1 << class >>
+    ":ListCommand" -> s1 : getStateManager()
+    activate s1 #FFBBBB
+    return :StateManager
+    ":ListCommand" -> ":StateManager" : getCategoriesStatus()
+    activate ":StateManager" #FFBBBB
+    return map:HashMap
+    ":ListCommand" -> "ui:Ui" : printCategoryStatus(map)
+    activate "ui:Ui" #FFBBBB
+    return
+return
+end
+alt type == in
+    ":ListCommand" -> ":ListCommand" : checkInArgs()
+    activate ":ListCommand" #FFBBBB
+    return
+    ":ListCommand" -> ":ListCommand" : listIncome()
+    activate ":ListCommand" #FFBBBB
+    opt goal argument exists
+    ":ListCommand" -> ":ListCommand" : getArg("goal")
+    activate ":ListCommand" #FFBBBB
+    return filterGoal: String
+    end
+    ":ListCommand" -> s1 : getStateManager()
+    activate s1 #FFBBBB
+    return :StateManager
+    ":ListCommand" -> ":StateManager" : getAllIncomes()
+    activate ":StateManager" #FFBBBB
+    return incomeArray:ArrayList<Income>
+    opt week or month argument exists
+    ref over ":ListCommand": Filters incomeArray by week/month
+    end
+    loop through incomeArray
+        participant ":Income" as i2 order 4
+        participant ":Goal" as g order 5
+        ":ListCommand" -> i2 : getGoal()
+        activate i2 #FFBBBB
+        return :Goal
+        ":ListCommand" -> g : getDescription()
+        activate g #FFBBBB
+        return goal:String
+        alt filterGoal == null or filterGoal == goal
+        ref over ":ListCommand": Adds matching transactions to an ArrayList \n of ArrayList<String> called printIncomes
+        end
+    end
+    ":ListCommand" -> "ui:Ui" : printList(printIncomes, "IN TRANSACTIONS")
+    activate "ui:Ui" #FFBBBB
+    return
+else type == out
+    ":ListCommand" -> ":ListCommand" : checkOutArgs()
+    activate ":ListCommand" #FFBBBB
+    return
+    ":ListCommand" -> ":ListCommand" : listExpenses()
+    activate ":ListCommand" #FFBBBB
+    opt category argument exists
+    ":ListCommand" -> ":ListCommand" : getArg("category")
+    activate ":ListCommand" #FFBBBB
+    return filterCategory: String
+    end
+    ":ListCommand" -> s1 : getStateManager()
+    activate s1 #FFBBBB
+    return :StateManager
+    ":ListCommand" -> ":StateManager" : getAllExpenses()
+    activate ":StateManager" #FFBBBB
+    return expenseArray:ArrayList<Expense>
+    opt week or month argument exists
+    ref over ":ListCommand": Filters expenseArray by week/month
+    end
+    loop through expenseArray
+        ":ListCommand" -> e2 : getCategory()
+        activate e2 #FFBBBB
+        return :Category
+        ":ListCommand" -> c : getDescription()
+        activate c #FFBBBB
+        return category:String
+        alt filterCategory == null or filterCategory == category
+        ref over ":ListCommand": Adds matching transactions to an ArrayList \n of ArrayList<String> called printExpenses
+        end
+    end
+    ":ListCommand" -> "ui:Ui" : printList(printExpenses, "OUT TRANSACTIONS")
+    activate "ui:Ui" #FFBBBB
+    return
+deactivate
+return
+end
+return
+return
+@enduml

@@ -14,24 +14,24 @@ public class HelpCommand extends Command {
     private static final String HELP_DESCRIPTION = "Shows a list of all the commands available to the user";
     private static final String IN_COMMAND = "in";
     private static final String IN_DESCRIPTION = "Adds an income towards goal";
-    private static final String IN_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT /goal GOAL [/date DATE in DDMMYYYY]" +
+    private static final String IN_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT [/goal GOAL] [/date DATE in DDMMYYYY]" +
                                                    " [/recurrence RECURRENCE]";
     private static final String[] IN_COMMAND_FLAGS = {"/amount", "/goal", "/date", "/recurrence"};
     private static final String[] IN_COMMAND_FLAGS_DESCRIPTION = {"Amount to be added", 
                                                                   "The goal to classify it under", 
                                                                   "Date of the transaction",
-                                                                  "Indicates whether of the income" +
-                                                                  " added is recurring."};
+                                                                  "Indicates whether the income" +
+                                                                  " added is recurring"};
     private static final String OUT_COMMAND = "out";
     private static final String OUT_DESCRIPTION = "Adds an expense for a category";
     private static final String OUT_COMMAND_USAGE = " DESCRIPTION /amount AMOUNT " +
-                                                    "/category CATEGORY [/date DATE in DDMMYYYY]" +
+                                                    "[/category CATEGORY] [/date DATE in DDMMYYYY]" +
                                                     " [/recurrence RECURRENCE]";
     private static final String[] OUT_COMMAND_FLAGS = {"/amount", "/category", "/date", "/recurrence"};
     private static final String[] OUT_COMMAND_FLAGS_DESCRIPTION = {"Amount to be deducted", 
                                                                    "The spending category to classify it under", 
                                                                    "Date of the transaction",
-                                                                   "Indicates whether of the expense" +
+                                                                   "Indicates whether the expense" +
                                                                    " added is recurring"};
     private static final String DELETE_COMMAND = "delete";
     private static final String DELETE_DESCRIPTION = "Delete a specific transaction based on the index in the list";
@@ -40,13 +40,19 @@ public class HelpCommand extends Command {
     private static final String[] DELETE_COMMAND_FLAGS_DESCRIPTION = {"To set whether it is a in or out transaction"};
     private static final String LIST_COMMAND = "list";
     private static final String LIST_DESCRIPTION = "Shows a list of all added transactions based on type";
-    private static final String LIST_COMMAND_USAGE = " /type (in | out) [/goal GOAL] [/category CATEGORY]";
-    private static final String[] LIST_COMMAND_FLAGS = {"/type", "/goal", "/category"};
+    private static final String LIST_COMMAND_USAGE_TRANSACTION = " /type (in | out) [/goal GOAL] [/category CATEGORY]" +
+                                                                 " [/week] [/month]";
+    private static final String LIST_COMMAND_USAGE_GOALCAT = " (goal | category)";
+    private static final String[] LIST_COMMAND_FLAGS = {"/type", "/goal", "/category", "/week", "/month"};
     private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether to display \"in\" or" +
                                                                     " \"out\" transactions",
                                                                     "The goal which it is classified under",
                                                                     "The spending category which" +
-                                                                    " it is classified under"};
+                                                                    " it is classified under",
+                                                                    "To filter the transactions to those in the " +
+                                                                    "current week",
+                                                                    "To filter the transactions to those in the " +
+                                                                    "current month"};
     private static final String EXPORT_COMMAND = "export";
     private static final String EXPORT_DESCRIPTION = "Exports the transactions stored into a CSV File. " +
                                                      "By Default, it will export ALL transactions";
@@ -68,7 +74,30 @@ public class HelpCommand extends Command {
     private static final String CATEGORY_REMOVE_USAGE = " /remove NAME";
     private static final String[] CATEGORY_COMMAND_FLAGS = {"/add", "/remove"};
     private static final String[] CATEGORY_COMMAND_FLAGS_DESCRIPTION = {"Name of spending category to be created",
-                                                                        "Name of spending cateogry to be deleted"};
+                                                                        "Name of spending category to be deleted"};
+    private static final String EDIT_COMMAND = "edit";
+    private static final String EDIT_DESCRIPTION = "Edits an existing transaction";
+    private static final String EDIT_COMMAND_USAGE = " INDEX /type (in | out) (/description DESCRIPTION | " +
+                                                     "/amount AMOUNT | /goal GOAL | /category CATEGORY)";
+    private static final String[] EDIT_COMMAND_FLAGS = {"/type", "/description", "/amount", "/goal", "/category"};
+    private static final String[] EDIT_COMMAND_FLAGS_DESCRIPTION = {"To specify either in or out " +
+                                                                    "transaction to be edited",
+                                                                    "New description to be specified",
+                                                                    "New amount to be specified",
+                                                                    "New goal to be specified",
+                                                                    "New category to be specified"};
+    private static final String SUMMARY_COMMAND = "summary";
+    private static final String SUMMARY_DESCRIPTION = "Shows the summarised total of transactions";
+    private static final String SUMMARY_COMMAND_USAGE = " /type (in | out) [/day] [/week] [/month]";
+    private static final String[] SUMMARY_COMMAND_FLAGS = {"/type", "/day", "/week", "/month"};
+    private static final String[] SUMMARY_COMMAND_FLAGS_DESCRIPTION = {"To specific either in or out transaction to " +
+                                                                       "be listed",
+                                                                       "To filter transactions to those of current day",
+                                                                       "To filter the transactions to those in the " +
+                                                                       "current week",
+                                                                       "To filter the transactions to those in the " +
+                                                                       "current month"};
+
     private static final String BYE_COMMAND = "bye";
     private static final String BYE_DESCRIPTION = "Exits the program";
     private static final String USAGE_PREFIX = "Usage: ";
@@ -95,108 +124,32 @@ public class HelpCommand extends Command {
     }
 
     /**
-     * Returns the help command and its description.
+     * Returns the Arraylist that contains the command name and its description.
      *
-     * @return ArrayList that contains both the help command and its description.
+     * @param commandName Name of the command.
+     * @param commandDescription Description for the command.
+     * @return ArrayList that contains both the command and its description.
      */
-    public ArrayList<String> printHelpDescription() {
-        ArrayList<String> helpDescriptionList = convertCommandList(HELP_COMMAND, HELP_DESCRIPTION);
-        return helpDescriptionList;
-    }
-
-    /**
-     * Returns the bye command and its description.
-     *
-     * @return ArrayList that contains both the bye command and its description.
-     */
-    public ArrayList<String> printByeDescription() {
-        ArrayList<String> byeDescriptionList = convertCommandList(BYE_COMMAND, BYE_DESCRIPTION);
-        return byeDescriptionList;
-    }
-
-    /**
-     * Returns the in command and its description.
-     *
-     * @return ArrayList that contains both the in command and its description.
-     */
-    public ArrayList<String> printInDescription() {
-        ArrayList<String> inDescriptionList = convertCommandList(IN_COMMAND, IN_DESCRIPTION);
-        return inDescriptionList;
-    }
-
-    /**
-     * Returns the out command and its description.
-     *
-     * @return ArrayList that contains both the out command and its description.
-     */
-    public ArrayList<String> printOutDescription() {
-        ArrayList<String> outDescriptionList = convertCommandList(OUT_COMMAND, OUT_DESCRIPTION);
-        return outDescriptionList;
-    }
-
-    /**
-     * Returns the delete command and its description.
-     *
-     * @return ArrayList that contains both the delete command and its description.
-     */
-    public ArrayList<String> printDeleteDescription() {
-        ArrayList<String> deleteDescriptionList = convertCommandList(DELETE_COMMAND, DELETE_DESCRIPTION);
-        return deleteDescriptionList;
-    }
-
-    /**
-     * Returns the list command and its description.
-     *
-     * @return ArrayList that contains both the list command and its description.
-     */
-    public ArrayList<String> printListDescription() {
-        ArrayList<String> listDescriptionList = convertCommandList(LIST_COMMAND, LIST_DESCRIPTION);
-        return listDescriptionList;
-    }
-
-    /**
-     * Returns the export command and its description.
-     *
-     * @return ArrayList that contains both the export command and its description.
-     */
-    public ArrayList<String> printExportDescription() {
-        ArrayList<String> exportDescriptionList = convertCommandList(EXPORT_COMMAND, EXPORT_DESCRIPTION);
-        return exportDescriptionList;
-    }
-
-    /**
-     * Returns the category command and its description.
-     *
-     * @return ArrayList that contains both the category command and its description.
-     */
-    public ArrayList<String> printCategoryDescription() {
-        ArrayList<String> categoryDescriptionList = convertCommandList(CATEGORY_COMMAND, CATEGORY_DESCRIPTION);
-        return categoryDescriptionList;
-    }
-
-    /**
-     * Returns the goal command and its description.
-     *
-     * @return ArrayList that contains both the goal command and its description.
-     */
-    public ArrayList<String> printGoalDescription() {
-        ArrayList<String> goalDescriptionList = convertCommandList(GOAL_COMMAND, GOAL_DESCRIPTION);
-        return goalDescriptionList;
+    public ArrayList<String> printCommandDescription(String commandName, String commandDescription) {
+        ArrayList<String> commandDescriptionList = convertCommandList(commandName, commandDescription);
+        return commandDescriptionList;
     }
 
     /**
      * Add all the commands into helpList to be printed out.
      */
     public void printFullList() {
-        this.helpList.add(printHelpDescription());
-        this.helpList.add(printInDescription());
-        this.helpList.add(printOutDescription());
-        this.helpList.add(printDeleteDescription());
-        this.helpList.add(printListDescription());
-        this.helpList.add(printCategoryDescription());
-        this.helpList.add(printGoalDescription());
-        this.helpList.add(printExportDescription());
-        this.helpList.add(printByeDescription());
+        this.helpList.add(printCommandDescription(HELP_COMMAND, HELP_DESCRIPTION));
+        this.helpList.add(printCommandDescription(IN_COMMAND, IN_DESCRIPTION));
+        this.helpList.add(printCommandDescription(OUT_COMMAND, OUT_DESCRIPTION));
+        this.helpList.add(printCommandDescription(DELETE_COMMAND, DELETE_DESCRIPTION));
+        this.helpList.add(printCommandDescription(LIST_COMMAND, LIST_DESCRIPTION));
+        this.helpList.add(printCommandDescription(CATEGORY_COMMAND, CATEGORY_DESCRIPTION));
+        this.helpList.add(printCommandDescription(GOAL_COMMAND, GOAL_DESCRIPTION));
+        this.helpList.add(printCommandDescription(EXPORT_COMMAND, EXPORT_DESCRIPTION));
+        this.helpList.add(printCommandDescription(EDIT_COMMAND, EDIT_DESCRIPTION));
+        this.helpList.add(printCommandDescription(SUMMARY_COMMAND, SUMMARY_DESCRIPTION));
+        this.helpList.add(printCommandDescription(BYE_COMMAND, BYE_DESCRIPTION));
         assert this.helpList != null;
     }
 
@@ -246,12 +199,20 @@ public class HelpCommand extends Command {
     }
 
     /**
-     * Crafts the list usage string.
+     * Crafts the list usage string for Transactions.
      *
-     * @return list usage string.
+     * @return list usage string for Transaction.
      */
-    public String listUsage() {
-        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE;
+    public String listTransactionUsage() {
+        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE_TRANSACTION;
+    }
+    /**
+     * Crafts the list usage string for Goal and Category.
+     *
+     * @return list usage string for Goal and Category.
+     */
+    public String listGoalCategoryUsage() {
+        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE_GOALCAT;
     }
 
     /**
@@ -300,6 +261,24 @@ public class HelpCommand extends Command {
     }
 
     /**
+     * Crafts the edit usage string.
+     *
+     * @return edit usage string.
+     */
+    public String editUsage() {
+        return USAGE_PREFIX + EDIT_COMMAND + EDIT_COMMAND_USAGE;
+    }
+
+    /**
+     * Crafts the edit usage string.
+     *
+     * @return edit usage string.
+     */
+    public String summaryUsage() {
+        return USAGE_PREFIX + SUMMARY_COMMAND + SUMMARY_COMMAND_USAGE;
+    }
+
+    /**
      * Converts the command flags and description into ArrayList and stores it into helpList.
      *
      * @param flags Flags for the command.
@@ -343,7 +322,8 @@ public class HelpCommand extends Command {
             convertIntoList(DELETE_COMMAND_FLAGS, DELETE_COMMAND_FLAGS_DESCRIPTION);
             break;
         case "list":
-            ui.print(listUsage());
+            ui.print(listGoalCategoryUsage());
+            ui.print(listTransactionUsage());
             convertIntoList(LIST_COMMAND_FLAGS, LIST_COMMAND_FLAGS_DESCRIPTION);
             break;
         case "export":
@@ -362,6 +342,14 @@ public class HelpCommand extends Command {
             break;
         case "bye":
             ui.print(byeUsage());
+            break;
+        case "edit":
+            ui.print(editUsage());
+            convertIntoList(EDIT_COMMAND_FLAGS, EDIT_COMMAND_FLAGS_DESCRIPTION);
+            break;
+        case "summary":
+            ui.print(summaryUsage());
+            convertIntoList(SUMMARY_COMMAND_FLAGS, SUMMARY_COMMAND_FLAGS_DESCRIPTION);
             break;
         default:
             ui.print(INVALID_COMMAND);

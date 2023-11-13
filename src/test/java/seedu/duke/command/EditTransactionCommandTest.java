@@ -33,11 +33,9 @@ public class EditTransactionCommandTest {
         try {
             parser.parse("goal /add car /amount 1000").execute(ui);
             parser.parse("goal /add ps5 /amount 1000").execute(ui);
-
             parser.parse("in part-time job /amount 1000 /goal car /date 18092023").execute(ui);
             parser.parse("in allowance /amount 500 /goal car").execute(ui);
             parser.parse("in sell stuff /amount 50 /goal ps5").execute(ui);
-
             parser.parse("out buy dinner /amount 15 /category food").execute(ui);
             parser.parse("out popmart /amount 12 /category toy").execute(ui);
             parser.parse("out grab /amount 20 /category transport").execute(ui);
@@ -101,11 +99,6 @@ public class EditTransactionCommandTest {
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
-    @Test
-    void execute_tooManyArguments_exceptionThrown() throws DukeException {
-        Command command = parser.parse("edit 2 /type in /description part-time job /amount 50");
-        assertThrows(DukeException.class, () -> command.execute(ui));
-    }
 
     /**
      * Tests whether an exception is thrown when attempting to edit the date.
@@ -126,11 +119,11 @@ public class EditTransactionCommandTest {
 
     @Test
     void execute_validIncomeIdx_edited() throws DukeException {
-        Command command = parser.parse("edit 1 /type in /description allowance");
+        Command command = parser.parse("edit 1 /type in /description salary");
         command.execute(ui);
         String transactionDescription = StateManager.getStateManager().getIncome(0) // 0-based indexing
                 .getTransaction().getDescription();
-        assertNotEquals("part-time job", transactionDescription);
+        assertNotEquals("allowance", transactionDescription);
     }
 
     /**

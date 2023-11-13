@@ -21,8 +21,8 @@ public class SummaryCommand extends Command {
     private static final String INVALID_TYPE = "Please indicate either /type in or /type out.";
     private static final String EMPTY_LIST = "It appears that we have come up empty. Why not try adding some" +
             " transactions first?";
-    private static final String STARTING_INCOME_MSG = "Good job! Total income";
-    private static final String STARTING_EXPENSE_MSG = "Wise spending! Total expense";
+    private static final String STARTING_INCOME_MSG = "Good job! Total income so far";
+    private static final String STARTING_EXPENSE_MSG = "Wise spending! Total expense so far";
     private static final String DAY_ARG = "day";
     private static final String WEEK_ARG = "week";
     private static final String MONTH_ARG = "month";
@@ -43,6 +43,12 @@ public class SummaryCommand extends Command {
         this.currentDate = currentDate;
     }
 
+    /**
+     * Executes the command.
+     *
+     * @param ui Ui class that is used to print in standardised format.
+     * @throws DukeException if the file cannot be created during the exporting process.
+     */
     @Override
     public void execute(Ui ui) throws DukeException {
         this.ui = ui;
@@ -74,8 +80,14 @@ public class SummaryCommand extends Command {
         }
     }
 
+    /**
+     * Returns the total sum of the income transaction.
+     *
+     * @return double total income.
+     * @throws DukeException if there is no income transaction available.
+     */
     private double getIncomeSummary() throws DukeException {
-        ArrayList<Income> incomeArray = StateManager.getStateManager().sortedIncomes();
+        ArrayList<Income> incomeArray = StateManager.getStateManager().getAllIncomes();
         if (incomeArray == null || incomeArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
         }
@@ -90,6 +102,13 @@ public class SummaryCommand extends Command {
         return totalSum;
     }
 
+    /**
+     * Returns filtered arraylist of income transactions.
+     * Filters the income transactions based on the filter indicated.
+     *
+     * @param transactionsArrayList arraylist of income transaction.
+     * @return ArrayList of income transaction.
+     */
     private ArrayList<Income> filterIncome(ArrayList<Income> transactionsArrayList) {
         ArrayList<Income> filteredArrayList = new ArrayList<>();
         for (Income transaction : transactionsArrayList) {
@@ -105,8 +124,14 @@ public class SummaryCommand extends Command {
         return filteredArrayList;
     }
 
+    /**
+     * Returns the total sum of the expense transaction.
+     *
+     * @return double total expense.
+     * @throws DukeException if there is no expense transaction available.
+     */
     private double getExpenseSummary() throws DukeException {
-        ArrayList<Expense> expenseArray = StateManager.getStateManager().sortedExpenses();
+        ArrayList<Expense> expenseArray = StateManager.getStateManager().getAllExpenses();
         if (expenseArray == null || expenseArray.isEmpty()) {
             throw new DukeException(EMPTY_LIST);
         }
@@ -121,6 +146,13 @@ public class SummaryCommand extends Command {
         return totalSum;
     }
 
+    /**
+     * Returns filtered arraylist of expense transactions.
+     * Filters the expense transactions based on the filter indicated.
+     *
+     * @param transactionsArrayList arraylist of expense transaction.
+     * @return ArrayList of expense transaction.
+     */
     private ArrayList<Expense> filterExpense(ArrayList<Expense> transactionsArrayList) {
         ArrayList<Expense> filteredArrayList = new ArrayList<>();
         for (Expense transaction : transactionsArrayList) {
@@ -160,10 +192,10 @@ public class SummaryCommand extends Command {
 
     private void printSummary() throws DukeException {
         String msg = "";
-        if (getArg(TYPE_ARG).equals(TYPE_IN)) {
+        if (getArg(TYPE_ARG).equalsIgnoreCase(TYPE_IN)) {
             double totalSum = getIncomeSummary();
             msg = getSummaryMsg(TYPE_IN, totalSum);
-        } else if (getArg(TYPE_ARG).equals(TYPE_OUT)) {
+        } else if (getArg(TYPE_ARG).equalsIgnoreCase(TYPE_OUT)) {
             double totalSum = getExpenseSummary();
             msg = getSummaryMsg(TYPE_OUT, totalSum);
         }
@@ -172,7 +204,7 @@ public class SummaryCommand extends Command {
 
     private String getSummaryMsg(String type, double totalSum) {
         String msg = "";
-        if (type.equals(TYPE_IN)) {
+        if (type.equalsIgnoreCase(TYPE_IN)) {
             msg = STARTING_INCOME_MSG;
         } else {
             msg = STARTING_EXPENSE_MSG;

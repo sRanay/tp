@@ -75,7 +75,7 @@ class GoalCommandTest {
      * @throws DukeException if the test fails.
      */
     @Test
-    void missingAmount() throws DukeException{
+    void missingAmount() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Parser parser = new Parser();
         Ui ui = new Ui(outputStream);

@@ -58,6 +58,10 @@ class ParserTest {
                 parser.getDescription("in /amount 100 /goal car"));
     }
 
+    /**
+     * Test to verify that the getArguments method
+     * will parse the argument and values correctly.
+     */
     @Test
     void getArguments_validArguments_hashmapOfArguments() throws DukeException {
         Parser parser = new Parser();
@@ -104,11 +108,13 @@ class ParserTest {
         assertEquals(Parser.parseNonNegativeDouble("0.5"), 0.5);
         assertEquals(Parser.parseNonNegativeDouble(".5"), 0.5);
         assertEquals(Parser.parseNonNegativeDouble("18.5"), 18.5);
+        assertEquals(Parser.parseNonNegativeDouble("9999999.99"), 9_999_999.99);
     }
 
     @Test
     void parseDoublePositiveZero() {
         assertEquals(Parser.parseNonNegativeDouble("0"), 0);
+        assertEquals(Parser.parseNonNegativeDouble("0.00"), 0);
     }
 
     @Test
@@ -121,8 +127,14 @@ class ParserTest {
         assertNull(Parser.parseNonNegativeDouble("-18.5"));
         assertNull(Parser.parseNonNegativeDouble("-18."));
         assertNull(Parser.parseNonNegativeDouble("-.5"));
+        assertNull(Parser.parseNonNegativeDouble("0.000"));
+        assertNull(Parser.parseNonNegativeDouble("10000000"));
     }
 
+    /**
+     * Test to verify that the getArguments method
+     * throws an Exception when duplicate arguments are provided.
+     */
     @Test
     void getArguments_duplicateArgsWithValues_throwsDukeException() {
         Parser parser = new Parser();
@@ -130,6 +142,7 @@ class ParserTest {
             parser.getArguments("in part time job /amount 100 /goal car /goal house");
         });
     }
+
 
     @Test
     void getArguments_duplicateArgsWithOneEmptyValue_throwsDukeException() {

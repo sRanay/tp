@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.stream.IntStream;
 
 public class StateManager {
+    public static final String UNCATEGORISED_CLASS = "Uncategorised";
     private static StateManager stateManager = null;
     private final ArrayList<Goal> goals = new ArrayList<>();
-    private final Goal uncategorisedGoal = new Goal("Uncategorised", 0);
+    private final Goal uncategorisedGoal = new Goal(UNCATEGORISED_CLASS, 0);
     private final ArrayList<Category> categories = new ArrayList<>();
-    private final Category uncategorisedCategory = new Category("Uncategorised");
+    private final Category uncategorisedCategory = new Category(UNCATEGORISED_CLASS);
     private final ArrayList<Income> incomes = new ArrayList<>();
     private final ArrayList<Expense> expenses = new ArrayList<>();
 
@@ -179,22 +180,16 @@ public class StateManager {
                 .orElse(-1);
     }
 
-    public ArrayList<Income> sortedIncomes() {
+    public void sortIncomes() {
         Comparator<Income> dateComparator = Comparator.comparing((Income i) -> i.getTransaction().getDate(),
                 Comparator.reverseOrder());
-        Comparator<Income> nameComparator = Comparator.comparing((Income i) -> i.getTransaction().getDescription());
-        ArrayList<Income> sortIncomes = incomes;
-        sortIncomes.sort(dateComparator.thenComparing(nameComparator));
-        return sortIncomes;
+        incomes.sort(dateComparator);
     }
 
-    public ArrayList<Expense> sortedExpenses() {
+    public void sortExpenses() {
         Comparator<Expense> dateComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDate(),
                 Comparator.reverseOrder());
-        Comparator<Expense> nameComparator = Comparator.comparing((Expense e) -> e.getTransaction().getDescription());
-        ArrayList<Expense> sortExpenses = expenses;
-        sortExpenses.sort(dateComparator.thenComparing(nameComparator));
-        return sortExpenses;
+        expenses.sort(dateComparator);
     }
 
     public HashMap<Goal, Double> getGoalsStatus() {
@@ -208,11 +203,23 @@ public class StateManager {
 
     public HashMap<Category, Double> getCategoriesStatus() {
         HashMap<Category, Double> map = new HashMap<>();
-        for (Expense e: expenses) {
+        for (Expense e : expenses) {
             Category key = e.getCategory();
             map.put(key, map.getOrDefault(key, 0.0) + e.getTransaction().getAmount());
         }
         return map;
+    }
+
+    public void unassignCategoryTransactions(Category category) {
+        expenses.stream()
+                .filter(e -> e.getCategory() == category)
+                .forEach(e -> e.setCategory(uncategorisedCategory));
+    }
+
+    public void unassignGoalTransactions(Goal goal) {
+        incomes.stream()
+                .filter(g -> g.getGoal() == goal)
+                .forEach(g -> g.setGoal(uncategorisedGoal));
     }
 
 }

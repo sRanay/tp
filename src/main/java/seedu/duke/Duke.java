@@ -9,6 +9,9 @@ import seedu.duke.parser.Parser;
 import seedu.duke.storage.Storage;
 import seedu.duke.ui.Ui;
 
+/**
+ * The type Duke.
+ */
 public class Duke {
 
     private static Ui ui;
@@ -40,14 +43,19 @@ public class Duke {
         );
     }
 
+
+    /**
+     * Gets the user input and execute the command based on the input.
+     */
     public void run() {
         ui.printGreeting();
         String userInput;
         boolean continueRunning = true;
         while (continueRunning) {
             System.out.print("> User: ");
-            userInput = ui.readUserInput();
+
             try {
+                userInput = ui.readUserInput();
                 Command command = new Parser().parse(userInput);
                 command.execute(ui);
 
@@ -58,6 +66,8 @@ public class Duke {
 
             } catch (DukeException e) {
                 System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Oops unexpected error occurred.");
             }
         }
         ui.close();
@@ -67,6 +77,10 @@ public class Duke {
      * Main entry-point for the java.duke.Duke application.
      */
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.print("\n");
+            ui.printBye();
+        }));
         Duke duke = new Duke();
         duke.load();
         duke.run();

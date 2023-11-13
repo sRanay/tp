@@ -1,0 +1,68 @@
+@startuml
+-> ":ExportCommand": execute(ui: Ui)
+activate ":ExportCommand" #FFBBBB
+
+":ExportCommand" -> ":ExportCommand": checkType()
+activate ":ExportCommand" #FFBBBB
+":ExportCommand" -> ":ExportCommand": getArg(TYPE_ARG)
+activate ":ExportCommand" #FFBBBB
+":ExportCommand" --> ":ExportCommand": type: String
+deactivate
+":ExportCommand" --> ":ExportCommand": transactionType: TransactionType
+deactivate
+
+alt transactionType != ERROR
+    ":ExportCommand" -> ":ExportCommand": writeHeader()
+    activate ":ExportCommand" #FFBBBB
+    ":ExportCommand" -> "csvFile:CsvWriter": write(HEADERS)
+    activate "csvFile:CsvWriter" #FFBBBB
+    "csvFile:CsvWriter" --> ":ExportCommand"
+    deactivate
+    ":ExportCommand" --> ":ExportCommand"
+    deactivate
+    ":ExportCommand" -> ":ExportCommand": exportData(transactionType)
+    activate ":ExportCommand" #FFBBBB
+    alt transactionType == IN
+        ":ExportCommand" -> ":ExportCommand": exportIncomeData()
+        activate ":ExportCommand" #FFBBBB
+        ref over ":ExportCommand": export income data
+        ":ExportCommand" --> ":ExportCommand"
+        deactivate
+    else transactionType == OUT
+        ":ExportCommand" -> ":ExportCommand": exportExpenseData()
+        activate ":ExportCommand" #FFBBBB
+        ref over ":ExportCommand": export expense data
+        ":ExportCommand" --> ":ExportCommand"
+        deactivate
+    else else
+        ":ExportCommand" -> ":ExportCommand": exportIncomeData()
+        activate ":ExportCommand" #FFBBBB
+        ref over ":ExportCommand": export income data
+        ":ExportCommand" --> ":ExportCommand"
+        deactivate
+        ":ExportCommand" -> ":ExportCommand": exportExpenseData()
+        activate ":ExportCommand" #FFBBBB
+        ref over ":ExportCommand": export expense data
+        ":ExportCommand" --> ":ExportCommand"
+        deactivate
+    end
+    ":ExportCommand" --> ":ExportCommand"
+    deactivate
+    ":ExportCommand" -> ":Ui": print(SUCCESSFUL_MSG)
+    activate ":Ui" #FFBBBB
+    ":Ui" --> ":ExportCommand"
+    deactivate
+    ":ExportCommand" -> "csvFile:CsvWriter": close()
+    activate "csvFile:CsvWriter" #FFBBBB
+    "csvFile:CsvWriter" --> ":ExportCommand"
+    deactivate
+else else
+    ":ExportCommand" -> ":Ui": print(WRONG_TYPE_MSG)
+    activate ":Ui" #FFBBBB
+    ":Ui" --> ":ExportCommand"
+    deactivate
+end
+
+<-- ":ExportCommand"
+deactivate
+@enduml

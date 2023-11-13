@@ -3,7 +3,6 @@ package seedu.duke.command;
 import seedu.duke.classes.Expense;
 import seedu.duke.classes.Goal;
 import seedu.duke.classes.Category;
-import seedu.duke.classes.Income;
 import seedu.duke.classes.StateManager;
 import seedu.duke.exception.DukeException;
 import seedu.duke.parser.Parser;
@@ -24,13 +23,14 @@ public class EditTransactionCommand extends Command {
     private static final String MISSING_TYPE = "Please indicate the transaction type.";
     private static final String INVALID_TYPE = "Please indicate either /type in or /type out.";
     private static final String MISSING_EDIT = "Please enter the attribute to edit";
-    private static final String TOO_MANY_ARGUMENTS = "Please enter only one attribute to edit";
-    private static final String BAD_AMOUNT = "Invalid amount value specified...";
-    private static final String DATE_EDIT = "Can not edit Date...";
-    private static final String SAME_GOAL = "Please enter a different goal description";
-    private static final String SAME_CATEGORY = "Please enter a different category name";
-
-    private static final String ERROR_MSG = "Error encountered when editing transaction.";
+    private static final String BAD_AMOUNT = "Invalid amount value specified.";
+    private static final String DATE_EDIT = "Date cannot be edited.";
+    private static final String TYPE_ARG = "type";
+    private static final String TYPE_IN = "in";
+    private static final String TYPE_OUT = "out";
+    private static final String MISSING_GOAL = "Please enter the goal value.";
+    private static final String MISSING_CATEGORY = "Please enter the category value.";
+    private static final String MISSING_DESCRIPTION = "Please enter the description.";
 
     public EditTransactionCommand(String description, HashMap<String, String> args) {
         super(description, args);
@@ -46,6 +46,26 @@ public class EditTransactionCommand extends Command {
         assert getDescription() != null;
         assert getArgs() != null;
 
+        checkIndex();
+        checkType();
+        if (getArg(TYPE_ARG).equalsIgnoreCase(TYPE_IN)) {
+            checkGoal();
+        } else if (getArg(TYPE_ARG).equalsIgnoreCase(TYPE_OUT)) {
+            checkCategory();
+        }
+        checkAmount();
+        checkDescription();
+        checkHasArgument();
+        checkDate();
+    }
+
+    private void checkDate() throws DukeException {
+        if (getArg(DATE_ARG) != null && !getArg(DATE_ARG).isBlank()) {
+            throw new DukeException(DATE_EDIT);
+        }
+    }
+
+    private void checkIndex() throws DukeException {
         if (getDescription().isBlank()) {
             throw new DukeException(MISSING_IDX);
         }
@@ -53,33 +73,42 @@ public class EditTransactionCommand extends Command {
         if (!isInteger(description)) {
             throw new DukeException(INVALID_IDX);
         }
+    }
 
-        String typeArg = getArg("type");
+    private void checkType() throws DukeException {
+        String typeArg = getArg(TYPE_ARG);
         if (typeArg == null) {
             throw new DukeException(MISSING_TYPE);
         }
 
-        if (!(typeArg.equalsIgnoreCase("in") || typeArg.equalsIgnoreCase("out"))) {
+        if (!(typeArg.equalsIgnoreCase(TYPE_IN) || typeArg.equalsIgnoreCase(TYPE_OUT))) {
             throw new DukeException(INVALID_TYPE);
         }
+    }
 
-        if (getArg(DATE_ARG) != null && !getArg(DATE_ARG).isBlank()) {
-            throw new DukeException(DATE_EDIT);
+    private void checkGoal() throws DukeException {
+        if (!getArgs().containsKey(GOAL_ARG)) {
+            return;
         }
 
-        if (getArgs().size() == 1) {
-            throw new DukeException(MISSING_EDIT);
+        if (getArg(GOAL_ARG).isBlank()) {
+            throw new DukeException(MISSING_GOAL);
         }
 
-        if (getArgs().size() > 2) {
-            throw new DukeException(TOO_MANY_ARGUMENTS);
+        String newGoalName = getArg(GOAL_ARG);
+        int newGoalIdx = StateManager.getStateManager().getGoalIndex(newGoalName);
+        if (newGoalIdx == -1 && !newGoalName.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
+            throw new DukeException("Please add " + newGoalName + " as a goal first.");
+        }
+    }
+
+    private void checkCategory() throws DukeException {
+        if (!getArgs().containsKey(CATEGORY_ARG)) {
+            return;
         }
 
-        if (getArg(AMOUNT_ARG) != null && !getArg(AMOUNT_ARG).isBlank()) {
-            Double amount = Parser.parseNonNegativeDouble(getArg(AMOUNT_ARG));
-            if (amount == null) {
-                throw new DukeException(BAD_AMOUNT);
-            }
+        if (getArg(CATEGORY_ARG).isBlank()) {
+            throw new DukeException(MISSING_CATEGORY);
         }
     }
 
@@ -92,64 +121,76 @@ public class EditTransactionCommand extends Command {
         return true;
     }
 
+    private void checkAmount() throws DukeException {
+        if (getArg(AMOUNT_ARG) != null) {
+            if (getArg(AMOUNT_ARG).isBlank()) {
+                throw new DukeException(BAD_AMOUNT);
+            }
+            Double amount = Parser.parseNonNegativeDouble(getArg(AMOUNT_ARG));
+            if (amount == null) {
+                throw new DukeException(BAD_AMOUNT);
+            }
+        }
+    }
+
+    private void checkDescription() throws DukeException {
+        if (!getArgs().containsKey(DESCRIPTION_ARG)) {
+            return;
+        }
+        if (getArg(DESCRIPTION_ARG).isBlank()) {
+            throw new DukeException(MISSING_DESCRIPTION);
+        }
+    }
+
+    private void checkHasArgument() throws DukeException {
+        boolean hasDescArg = getArgs().containsKey(DESCRIPTION_ARG);
+        boolean hasGoalArg = getArgs().containsKey(GOAL_ARG);
+        boolean hasCategoryArg = getArgs().containsKey(CATEGORY_ARG);
+        boolean hasAmountArg = getArgs().containsKey(AMOUNT_ARG);
+        boolean isInType = getArg(TYPE_ARG).equalsIgnoreCase(TYPE_IN);
+        boolean isOutType = getArg(TYPE_ARG).equalsIgnoreCase(TYPE_OUT);
+        if (!getArgs().containsKey(DESCRIPTION_ARG)) {
+            return;
+        }
+        if (getArg(DESCRIPTION_ARG).isBlank()) {
+            throw new DukeException(MISSING_DESCRIPTION);
+        }
+
+        if (isInType && !(hasDescArg || hasAmountArg || hasGoalArg)) {
+            throw new DukeException(MISSING_EDIT);
+        } else if (isOutType && !(hasDescArg || hasAmountArg || hasCategoryArg)) {
+            throw new DukeException(MISSING_EDIT);
+        }
+    }
+
     private void editTransaction(Ui ui) throws DukeException {
-        String type = getArg("type").toLowerCase();
+        String type = getArg(TYPE_ARG).toLowerCase();
         int maxSize = getTransactionMaxSize(type);
         int idx = parseIdx(maxSize) - 1; //-1 due to 0 based indexing for arraylist
         assert idx >= 0 : "Index should be a valid integer greater than 0";
 
-        boolean isSuccess = false;
         String transactionDescription = "";
-        if (type.equals("in")) {
-            Income income = StateManager.getStateManager().getIncome(idx);
+        if (type.equals(TYPE_IN)) {
+            editIncome(idx);
             transactionDescription = StateManager.getStateManager().getIncome(idx)
                     .getTransaction().getDescription();
-            if (getArg(DESCRIPTION_ARG) != null && !getArg(DESCRIPTION_ARG).isBlank()) {
-                String originalDescription = income.getTransaction().getDescription();
-                StateManager.getStateManager().getIncome(idx)
-                        .getTransaction().setDescription(getArg(DESCRIPTION_ARG));
-                String newDescription = income.getTransaction().getDescription();
-                isSuccess = !originalDescription.equals(newDescription);
-            } else if (getArg(AMOUNT_ARG) != null && !getArg(AMOUNT_ARG).isBlank()) {
-                Double originalAmount = income.getTransaction().getAmount();
-                StateManager.getStateManager().getIncome(idx)
-                        .getTransaction().setAmount(Parser.parseNonNegativeDouble(getArg(AMOUNT_ARG)));
-                Double newAmount = income.getTransaction().getAmount();
-                isSuccess = !originalAmount.equals(newAmount);
-            } else if (getArg(GOAL_ARG) != null && !getArg(GOAL_ARG).isBlank()) {
-                isSuccess = handleGoalEdit(income, idx);
-            }
-        } else if (type.equals("out")) {
-            Expense expense = StateManager.getStateManager().getExpense(idx);
+
+        } else if (type.equals(TYPE_OUT)) {
+            editExpense(idx);
             transactionDescription = StateManager.getStateManager().getExpense(idx)
                     .getTransaction().getDescription();
-            if (getArg(DESCRIPTION_ARG) != null && !getArg(DESCRIPTION_ARG).isBlank()) {
-                String originalDescription = expense.getTransaction().getDescription();
-                StateManager.getStateManager().getExpense(idx)
-                        .getTransaction().setDescription(getArg(DESCRIPTION_ARG));
-                String newDescription = expense.getTransaction().getDescription();
-                isSuccess = !originalDescription.equals(newDescription);
-            } else if (getArg(AMOUNT_ARG) != null && !getArg(AMOUNT_ARG).isBlank()) {
-                Double originalAmount = expense.getTransaction().getAmount();
-                StateManager.getStateManager().getExpense(idx)
-                        .getTransaction().setAmount(Parser.parseNonNegativeDouble(getArg(AMOUNT_ARG)));
-                Double newAmount = expense.getTransaction().getAmount();
-                isSuccess = !originalAmount.equals(newAmount);
-            } else if (getArg(CATEGORY_ARG) != null && !getArg(CATEGORY_ARG).isBlank()) {
-                isSuccess = handleCategoryEdit(expense, idx);
-            }
         }
-        if (!isSuccess) {
-            throw new DukeException(ERROR_MSG);
+
+        if (!transactionDescription.isBlank()) {
+            printSuccess(ui, transactionDescription, idx + 1); // idx + 1 for format to show to user
         }
-        printSuccess(ui, transactionDescription, idx + 1); // idx + 1 for format to show to user
     }
 
     private int getTransactionMaxSize(String type) {
         int maxSize = 0;
-        if (type.equals("in")) {
+        if (type.equals(TYPE_IN)) {
             maxSize = StateManager.getStateManager().getIncomesSize();
-        } else if (type.equals("out")) {
+        } else if (type.equals(TYPE_OUT)) {
             maxSize = StateManager.getStateManager().getExpensesSize();
         }
         return maxSize;
@@ -162,45 +203,70 @@ public class EditTransactionCommand extends Command {
         }
         return index;
     }
-    
+
     private void printSuccess(Ui ui, String description, int idx) {
-        String type = getArg("type").toLowerCase();
-        String transactionType = type.equals("in") ? "income" : "expense";
+        String type = getArg(TYPE_ARG).toLowerCase();
+        String transactionType = type.equals(TYPE_IN) ? "income" : "expense";
         String msg = "Successfully edited " + transactionType + " no." + idx + " " + description;
         ui.print(msg);
     }
 
-    private boolean handleGoalEdit(Income income, int idx) throws DukeException {
-        Goal originalGoal = income.getGoal();
+    private void handleGoalEdit(int idx) {
+        StateManager stateManager = StateManager.getStateManager();
         String newGoalDescription = getArg(GOAL_ARG);
-        if (originalGoal.getDescription().equalsIgnoreCase(newGoalDescription)) {
-            throw new DukeException(SAME_GOAL);
-        }
 
-        int newGoalIdx = StateManager.getStateManager().getGoalIndex(newGoalDescription);
-        if (newGoalIdx == -1) {
-            throw new DukeException("Please add " + newGoalDescription + " as a goal first.");
+        int newGoalIdx = stateManager.getGoalIndex(newGoalDescription);
+        Goal newGoal = stateManager.getGoal(newGoalIdx);
+        if (newGoal == null) {
+            assert newGoalDescription.equals(StateManager.UNCATEGORISED_CLASS);
+            newGoal = stateManager.getUncategorisedGoal();
         }
-
-        Goal newGoal = StateManager.getStateManager().getGoal(newGoalIdx);
-        StateManager.getStateManager().getIncome(idx).setGoal(newGoal);
-        return !originalGoal.equals(income.getGoal());
+        stateManager.getIncome(idx).setGoal(newGoal);
     }
 
-    private boolean handleCategoryEdit(Expense expense, int idx) throws DukeException {
-        Category originalCategory = expense.getCategory();
+    private void handleCategoryEdit(int idx) {
+        StateManager stateManager = StateManager.getStateManager();
         String newCategoryDescription = getArg(CATEGORY_ARG);
-        if (originalCategory.getName().equalsIgnoreCase(newCategoryDescription)) {
-            throw new DukeException(SAME_CATEGORY);
+        Expense expense = stateManager.getExpense(idx);
+        if (newCategoryDescription.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
+            expense.setCategory(stateManager.getUncategorisedCategory());
+            return;
         }
 
-        int newCategoryIdx = StateManager.getStateManager().getCategoryIndex(newCategoryDescription);
-        if (newCategoryIdx == -1) {
-            throw new DukeException("Please add " + newCategoryDescription + " as a category first.");
+        int newCategoryIdx = stateManager.getCategoryIndex(newCategoryDescription);
+        Category newCategory = stateManager.getCategory(newCategoryIdx);
+        if (newCategory == null) {
+            newCategory = new Category(newCategoryDescription);
         }
-
-        Category newCategory = StateManager.getStateManager().getCategory(newCategoryIdx);
-        StateManager.getStateManager().getExpense(idx).setCategory(newCategory);
-        return !originalCategory.equals(expense.getCategory());
+        expense.setCategory(newCategory);
     }
+
+    private void editIncome(int idx) {
+        if (getArgs().containsKey(DESCRIPTION_ARG)) {
+            StateManager.getStateManager().getIncome(idx)
+                    .getTransaction().setDescription(getArg(DESCRIPTION_ARG));
+        }
+        if (getArgs().containsKey(AMOUNT_ARG)) {
+            StateManager.getStateManager().getIncome(idx)
+                    .getTransaction().setAmount(Parser.parseNonNegativeDouble(getArg(AMOUNT_ARG)));
+        }
+        if (getArgs().containsKey(GOAL_ARG)) {
+            handleGoalEdit(idx);
+        }
+    }
+
+    private void editExpense(int idx) {
+        if (getArgs().containsKey(DESCRIPTION_ARG)) {
+            StateManager.getStateManager().getExpense(idx)
+                    .getTransaction().setDescription(getArg(DESCRIPTION_ARG));
+        }
+        if (getArgs().containsKey(AMOUNT_ARG)) {
+            StateManager.getStateManager().getExpense(idx)
+                    .getTransaction().setAmount(Parser.parseNonNegativeDouble(getArg(AMOUNT_ARG)));
+        }
+        if (getArgs().containsKey(CATEGORY_ARG)) {
+            handleCategoryEdit(idx);
+        }
+    }
+
 }

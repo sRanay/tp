@@ -7,7 +7,7 @@ import seedu.duke.ui.Ui;
 
 import java.util.HashMap;
 
-public class CategoryCommand extends Command {
+public class CategoryCommand extends ClassificationCommand {
     private static final String ADD_COMMAND = "add";
     private static final String REMOVE_COMMAND = "remove";
     private static final String INVALID_INPUT = "Your category input is empty/invalid :(";
@@ -16,6 +16,12 @@ public class CategoryCommand extends Command {
         super(description, args);
     }
 
+    /**
+     * Executes the command.
+     *
+     * @param ui Ui class that is used to format output.
+     * @throws DukeException if user input is invalid.
+     */
     @Override
     public void execute(Ui ui) throws DukeException {
         String inputType = validateInput();
@@ -33,38 +39,12 @@ public class CategoryCommand extends Command {
         }
     }
 
-    public String validateInput() throws DukeException {
-        if (getArgs().isEmpty()) {
-            throw new DukeException(INVALID_INPUT);
-        } else if (getArgs().containsKey(ADD_COMMAND) && getArgs().containsKey(REMOVE_COMMAND)) {
-            errorMessage(INVALID_INPUT);
-        }
-        if (getArgs().containsKey(ADD_COMMAND)) {
-            String add = getArg(ADD_COMMAND);
-            if (add == null) {
-                errorMessage(INVALID_INPUT);
-            } else if (add.isBlank()) {
-                errorMessage(INVALID_INPUT);
-            }
-            return ADD_COMMAND;
-        }
-        if (getArgs().containsKey(REMOVE_COMMAND)) {
-            String remove = getArg(REMOVE_COMMAND);
-            if (remove == null) {
-                errorMessage(INVALID_INPUT);
-            } else if (remove.isBlank()) {
-                errorMessage(INVALID_INPUT);
-            }
-            return REMOVE_COMMAND;
-        }
-        return null;
-    }
 
-    private void errorMessage(String message) throws DukeException {
-        String commonMessage = "\nThe correct usage is 'category /add NAME' or 'category /remove NAME'";
-        throw new DukeException(message + commonMessage);
-    }
-
+    /**
+     * Adds a category to the category ArrayList in StateManager
+     * @param category category to add
+     * @throws DukeException if category already exists
+     */
     private void addCategory(String category) throws DukeException {
         StateManager state = StateManager.getStateManager();
         if (state.getCategoryIndex(category) == -1) {
@@ -77,14 +57,21 @@ public class CategoryCommand extends Command {
 
     }
 
+    /**
+     * Removes a category to the category ArrayList in StateManager
+     * @param  category to remove
+     * @throws DukeException if category does not already exist
+     */
     private void removeCategory(String category) throws DukeException {
         StateManager state = StateManager.getStateManager();
         int index = state.getCategoryIndex(category);
-        boolean removedCategory = false;
+        Category categoryToRemove = state.getCategory(index);
+        boolean removedClassification = false;
         if (index != -1) {
-            removedCategory = state.removeCategory(index);
+            state.unassignCategoryTransactions(categoryToRemove);
+            removedClassification = state.removeCategory(categoryToRemove);
         }
-        if (!removedCategory) {
+        if (!removedClassification) {
             String failedRemoval = "Failed to remove '" + category + "' as it does not exist!";
             throw new DukeException(failedRemoval);
         }

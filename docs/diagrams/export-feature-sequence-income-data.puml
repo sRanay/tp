@@ -1,0 +1,35 @@
+@startuml
+mainframe **sd** export income data
+-> ":ExportCommand": exportIncomeData()
+activate ":ExportCommand" #FFBBBB
+loop for every Income in incomeArray
+    ":ExportCommand" -> ":Income": getTransaction()
+    activate ":Income" #FFBBBB
+    ":Income" --> ":ExportCommand": currentTransaction: Transaction
+    deactivate
+    create ":String[]"
+    ":ExportCommand" -> ":String[]": new String[DATA_LENGTH]
+    activate ":String[]" #FFBBBB
+    ":String[]" --> ":ExportCommand": row: String[]
+    deactivate
+    ":ExportCommand" -> ":Income": getGoal()
+    activate ":Income" #FFBBBB
+    ":Income" --> ":ExportCommand": goal: Goal
+    deactivate
+    ":ExportCommand" -> ":Goal": getDescription()
+    activate ":Goal" #FFBBBB
+    ":Goal" --> ":ExportCommand": row[GOAL]: String
+    deactivate
+    ":ExportCommand" -> ":ExportCommand": extractTransactionData(currentTransaction, row)
+    activate ":ExportCommand" #FFBBBB
+    ref over ":ExportCommand": extract transaction data
+    ":ExportCommand" --> ":ExportCommand": row: String[]
+    deactivate
+    ":ExportCommand" -> "csvFile:CsvWriter": write(row)
+    activate "csvFile:CsvWriter" #FFBBBB
+    "csvFile:CsvWriter" --> ":ExportCommand"
+    deactivate
+end
+<-- ":ExportCommand"
+deactivate
+@enduml

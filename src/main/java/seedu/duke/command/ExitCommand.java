@@ -6,6 +6,6 @@ public class ExitCommand extends Command {
 
     @Override
     public void execute(Ui ui) {
-        ui.printBye();
+        //Does nothing as the ShutDownHook will print the Bye message
     }
 }

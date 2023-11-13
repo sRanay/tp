@@ -21,9 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HelpCommandTest {
 
     /**
-     * Tests the HelpCommand for printing the full list of commands.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the full list is printed correctly.
+     * @throws DukeException if the command does not execute.
      */
     @Test
     void helpCommand_printFullList() throws DukeException  {
@@ -45,13 +44,14 @@ public class HelpCommandTest {
                 "goal              Add or remove goals\n" +
                 "export            Exports the transactions stored into a CSV File. " +
                 "By Default, it will export ALL transactions\n" +
+                "edit              Edits an existing transaction\n" +
+                "summary           Shows the summarised total of transactions\n" +
                 "bye               Exits the program\n\n", outputStream.toString());
     }
 
     /**
-     * Tests the HelpCommand with an empty command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if it will print the full list with empty space.
+     * @throws DukeException if the command does not execute.
      */
     @Test
     void helpCommand_withEmptyCommand() throws DukeException {
@@ -73,13 +73,14 @@ public class HelpCommandTest {
                 "goal              Add or remove goals\n" +
                 "export            Exports the transactions stored into a CSV File. " +
                 "By Default, it will export ALL transactions\n" +
+                "edit              Edits an existing transaction\n" +
+                "summary           Shows the summarised total of transactions\n" +
                 "bye               Exits the program\n\n", outputStream.toString());
     }
 
     /**
-     * Tests the HelpCommand with an invalid command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if it will print out error message if a invalid command is entered.
+     * @throws DukeException if the command cannot be executed.
      */
     @Test
     void helpCommand_withInvalidCommand() throws DukeException {
@@ -95,9 +96,8 @@ public class HelpCommandTest {
     }
 
     /**
-     * Tests the HelpCommand with a valid "in" command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the help for in command work as intended.
+     * @throws DukeException if the command cannot be executed.
      */
     @Test
     void helpCommand_withValidInCommand() throws DukeException {
@@ -109,19 +109,18 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT /goal GOAL" +
+        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT [/goal GOAL]" +
                 " [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]\n" +
                 "Option            Description\n" +
                 "/amount           Amount to be added\n" +
                 "/goal             The goal to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the income added is recurring.\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
     /**
-     * Tests the HelpCommand with a case-sensitive command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the command enter is case-insensitive will work as intended.
+     * @throws DukeException if the command does not execute.
      */
     @Test
     void helpCommand_commandCaseSensitive() throws DukeException {
@@ -133,19 +132,18 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT /goal GOAL" +
+        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT [/goal GOAL]" +
                 " [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]\n" +
                 "Option            Description\n" +
                 "/amount           Amount to be added\n" +
                 "/goal             The goal to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the income added is recurring.\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
     /**
-     * Tests the HelpCommand with an all-uppercase command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the command enter is in uppercase will work as intended.
+     * @throws DukeException if the command does not execute.
      */
     @Test
     void helpCommand_commandAllUpperCase() throws DukeException {
@@ -157,19 +155,18 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT /goal GOAL" +
+        assertEquals("\nUsage: in DESCRIPTION /amount AMOUNT [/goal GOAL]" +
                 " [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]\n" +
                 "Option            Description\n" +
                 "/amount           Amount to be added\n" +
                 "/goal             The goal to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the income added is recurring.\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the income added is recurring\n\n", outputStream.toString());
     }
 
     /**
-     * Tests the HelpCommand with a valid "out" command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the help for out command work as intended.
+     * @throws DukeException if the command cannot be executed.
      */
     @Test
     void helpCommand_withValidOutCommand() throws DukeException {
@@ -181,19 +178,18 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: out DESCRIPTION /amount AMOUNT /category CATEGORY" +
+        assertEquals("\nUsage: out DESCRIPTION /amount AMOUNT [/category CATEGORY]" +
                 " [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]\n" +
                 "Option            Description\n" +
                 "/amount           Amount to be deducted\n" +
                 "/category         The spending category to classify it under\n" +
                 "/date             Date of the transaction\n" +
-                "/recurrence       Indicates whether of the expense added is recurring\n\n", outputStream.toString());
+                "/recurrence       Indicates whether the expense added is recurring\n\n", outputStream.toString());
     }
 
     /**
-     * Tests the HelpCommand with a valid "delete" command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the help for delete command work as intended.
+     * @throws DukeException if the command cannot be executed.
      */
     @Test
     void helpCommand_withValidDeleteCommand() throws DukeException {
@@ -211,9 +207,8 @@ public class HelpCommandTest {
     }
 
     /**
-     * Tests the HelpCommand with a valid "list" command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the help for list command work as intended.
+     * @throws DukeException if the command cannot be executed.
      */
     @Test
     void helpCommand_withValidListCommand() throws DukeException {
@@ -225,17 +220,20 @@ public class HelpCommandTest {
         String commandWord = parser.getDescription(userInput);
         HelpCommand command = new HelpCommand(commandWord, args);
         command.execute(ui);
-        assertEquals("\nUsage: list /type (in | out) [/goal GOAL] [/category CATEGORY]\n" +
+        assertEquals("\nUsage: list (goal | category)\n" +
+                "Usage: list /type (in | out) [/goal GOAL] [/category CATEGORY] [/week] [/month]\n" +
                 "Option            Description\n" +
                 "/type             To set whether to display \"in\" or \"out\" transactions\n" +
                 "/goal             The goal which it is classified under\n" +
-                "/category         The spending category which it is classified under\n\n", outputStream.toString());
+                "/category         The spending category which it is classified under\n" +
+                "/week             To filter the transactions to those in the current week\n" +
+                "/month            To filter the transactions to those in the current month\n\n"
+                , outputStream.toString());
     }
 
     /**
-     * Tests the HelpCommand with a valid "help" command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the help for help command work as intended.
+     * @throws DukeException if the command cannot be executed.
      */
     @Test
     void helpCommand_withValidHelpCommand() throws DukeException {
@@ -251,9 +249,8 @@ public class HelpCommandTest {
     }
 
     /**
-     * Tests the HelpCommand with a valid "bye" command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the help for bye command work as intended.
+     * @throws DukeException if the command cannot be executed.
      */
     @Test
     void helpCommand_withValidByeCommand() throws DukeException {
@@ -269,9 +266,8 @@ public class HelpCommandTest {
     }
 
     /**
-     * Tests the HelpCommand with a valid "goal" command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the help for goal command work as intended.
+     * @throws DukeException if the command cannot be executed.
      */
     @Test
     void helpCommand_withValidGoalCommand() throws DukeException {
@@ -292,9 +288,8 @@ public class HelpCommandTest {
     }
 
     /**
-     * Tests the HelpCommand with a valid "category" command.
-     *
-     * @throws DukeException If an error occurs during command execution.
+     * Test if the help for category command work as intended.
+     * @throws DukeException if the command cannot be executed.
      */
     @Test
     void helpCommand_withValidCategoryCommand() throws DukeException {
@@ -310,6 +305,53 @@ public class HelpCommandTest {
                 "Usage: category /remove NAME\n" +
                 "Option            Description\n" +
                 "/add              Name of spending category to be created\n" +
-                "/remove           Name of spending cateogry to be deleted\n\n", outputStream.toString());
+                "/remove           Name of spending category to be deleted\n\n", outputStream.toString());
+    }
+
+    /**
+     * Test if the help for edit command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
+    @Test
+    void helpCommand_withValidEditCommand() throws DukeException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "help edit";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        HelpCommand command = new HelpCommand(commandWord, args);
+        command.execute(ui);
+        assertEquals("\nUsage: edit INDEX /type (in | out) (/description DESCRIPTION" +
+                " | /amount AMOUNT | /goal GOAL | /category CATEGORY)\n" +
+                "Option            Description\n" +
+                "/type             To specify either in or out transaction to be edited\n"+
+                "/description      New description to be specified\n" +
+                "/amount           New amount to be specified\n" +
+                "/goal             New goal to be specified\n" +
+                "/category         New category to be specified\n\n", outputStream.toString());
+    }
+
+    /**
+     * Test if the help for summary command work as intended.
+     * @throws DukeException if the command cannot be executed.
+     */
+    @Test
+    void helpCommand_withValidSummaryCommand() throws DukeException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Parser parser = new Parser();
+        Ui ui = new Ui(outputStream);
+        String userInput = "help summary";
+        HashMap<String, String> args = parser.getArguments(userInput);
+        String commandWord = parser.getDescription(userInput);
+        HelpCommand command = new HelpCommand(commandWord, args);
+        command.execute(ui);
+        assertEquals("\nUsage: summary /type (in | out) [/day] [/week] [/month]\n" +
+                "Option            Description\n" +
+                "/type             To specific either in or out transaction to be listed\n"+
+                "/day              To filter transactions to those of current day\n" +
+                "/week             To filter the transactions to those in the current week\n" +
+                "/month            To filter the transactions to " +
+                "those in the current month\n\n", outputStream.toString());
     }
 }
