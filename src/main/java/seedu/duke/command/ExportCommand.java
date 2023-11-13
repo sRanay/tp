@@ -62,7 +62,7 @@ public class ExportCommand extends Command {
     public String[] extractTransactionData(Transaction transaction, String[] row) {
         String description = transaction.getDescription();
         String date = transaction.getDate().toString();
-        String amount = String.valueOf(ui.formatAmount(transaction.getAmount()));
+        String amount = ui.formatAmount(transaction.getAmount());
         row[DESCRIPTION] = description;
         row[DATE] = date;
         row[AMOUNT] = amount;
