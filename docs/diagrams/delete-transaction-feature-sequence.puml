@@ -1,0 +1,107 @@
+@startuml
+-> ":RemoveTransactionCommand": execute(ui: UI)
+activate ":RemoveTransactionCommand" #FFBBBB
+
+":RemoveTransactionCommand" -> ":RemoveTransactionCommand": throwIfInvalidDescOrArgs()
+activate ":RemoveTransactionCommand" #FFBBBB
+ref over ":RemoveTransactionCommand": validate user's provide inputs
+":RemoveTransactionCommand" --> ":RemoveTransactionCommand"
+deactivate
+
+":RemoveTransactionCommand" -> ":RemoveTransactionCommand": removeTransaction(ui)
+activate ":RemoveTransactionCommand" #FFBBBB
+":RemoveTransactionCommand" -> ":RemoveTransactionCommand": getArg("type")
+activate ":RemoveTransactionCommand" #FFBBBB
+":RemoveTransactionCommand" --> ":RemoveTransactionCommand": type: String
+deactivate
+":RemoveTransactionCommand" -> ":String": toLowerCase()
+activate ":String" #FFBBBB
+":String" --> ":RemoveTransactionCommand": type: String
+deactivate
+
+":RemoveTransactionCommand" -> ":RemoveTransactionCommand": getTransactionMaxSize(type)
+activate ":RemoveTransactionCommand" #FFBBBB
+participant StateManager <<class>>
+":RemoveTransactionCommand" -> "StateManager": getStateManager()
+activate "StateManager" #FFBBBB
+"StateManager" --> ":RemoveTransactionCommand": stateManager: StateManager
+deactivate
+alt type == "in"
+    ":RemoveTransactionCommand" -> ":StateManager": getIncomesSize()
+    activate ":StateManager" #FFBBBB
+    ":StateManager" --> ":RemoveTransactionCommand": maxSize: int
+    deactivate
+else type == "out"
+    ":RemoveTransactionCommand" -> ":StateManager": getExpensesSize()
+    activate ":StateManager" #FFBBBB
+    ":StateManager" --> ":RemoveTransactionCommand": maxSize: int
+    deactivate
+end
+":RemoveTransactionCommand" --> ":RemoveTransactionCommand": maxSize: int
+deactivate
+
+":RemoveTransactionCommand" -> ":RemoveTransactionCommand": parseIdx(maxSize)
+activate ":RemoveTransactionCommand" #FFBBBB
+participant Integer <<class>>
+":RemoveTransactionCommand" -> ":RemoveTransactionCommand": getDescription()
+activate ":RemoveTransactionCommand" #FFBBBB
+":RemoveTransactionCommand" --> ":RemoveTransactionCommand": description: String
+deactivate
+":RemoveTransactionCommand" -> "Integer": parseInt(description)
+activate "Integer" #FFBBBB
+"Integer" --> ":RemoveTransactionCommand": index: int
+deactivate
+opt index < 1 || index > maxSize
+    ref over ":RemoveTransactionCommand": throw error indicating invalid index
+end
+":RemoveTransactionCommand" --> ":RemoveTransactionCommand": index: int
+deactivate
+
+":RemoveTransactionCommand" -> "StateManager": getStateManager()
+activate "StateManager" #FFBBBB
+"StateManager" --> ":RemoveTransactionCommand": stateManager: StateManager
+deactivate
+
+alt type == "in"
+    ":RemoveTransactionCommand" -> "stateManager:StateManager": getIncome(index)
+    activate "stateManager:StateManager" #FFBBBB
+    "stateManager:StateManager" --> ":RemoveTransactionCommand": incomeEntry: Income
+    deactivate
+    ":RemoveTransactionCommand" -> ":Income": getDescription()
+    activate ":Income" #FFBBBB
+    ":Income" --> ":RemoveTransactionCommand": transactionDescription: String
+    deactivate
+    ":RemoveTransactionCommand" -> "stateManager:StateManager": removeIncome(incomeEntry)
+    activate "stateManager:StateManager" #FFBBBB
+    "stateManager:StateManager" --> ":RemoveTransactionCommand": isSuccess: bool
+    deactivate
+else type == "out"
+    ":RemoveTransactionCommand" -> "stateManager:StateManager": getExpense(index)
+    activate "stateManager:StateManager" #FFBBBB
+    "stateManager:StateManager" --> ":RemoveTransactionCommand": expenseEntry: Expense
+    deactivate
+    ":RemoveTransactionCommand" -> ":Expense": getDescription()
+    activate ":Expense" #FFBBBB
+    ":Expense" --> ":RemoveTransactionCommand": transactionDescription: String
+    deactivate
+    ":RemoveTransactionCommand" -> "stateManager:StateManager": removeExpense(expenseEntry)
+    activate "stateManager:StateManager" #FFBBBB
+    "stateManager:StateManager" --> ":RemoveTransactionCommand": isSuccess: bool
+    deactivate
+end
+
+alt isSuccess
+    ":RemoveTransactionCommand" -> ":RemoveTransactionCommand": printSuccess(ui, transactionDescription, index+1)
+    activate ":RemoveTransactionCommand" #FFBBBB
+    ":RemoveTransactionCommand" --> ":RemoveTransactionCommand"
+    deactivate
+else !isSuccess
+    ref over ":RemoveTransactionCommand": throw error indicating failure
+end
+
+":RemoveTransactionCommand" --> ":RemoveTransactionCommand"
+deactivate
+
+<-- ":RemoveTransactionCommand"
+deactivate
+@enduml

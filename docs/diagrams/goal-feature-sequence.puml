@@ -1,0 +1,99 @@
+@startuml
+-> ":GoalCommand": execute(ui: Ui)
+activate ":GoalCommand" #FFBBBB
+
+":GoalCommand" -> ":GoalCommand": validateInput()
+activate ":GoalCommand" #FFBBBB
+ref over ":GoalCommand": validate user's provided inputs
+":GoalCommand" --> ":GoalCommand": inputType: String
+deactivate
+
+alt inputType != null
+    alt inputType == "add"
+        ":GoalCommand" -> ":GoalCommand": validateAmount()
+        activate ":GoalCommand" #FFBBBB
+        ":GoalCommand" --> ":GoalCommand"
+        deactivate
+        ":GoalCommand" -> ":GoalCommand": getArg(ADD_COMMAND)
+        activate ":GoalCommand" #FFBBBB
+        ":GoalCommand" --> ":GoalCommand": goalName: String
+        deactivate
+        participant "Parser" <<class>>
+        ":GoalCommand" -> ":GoalCommand": getArg(AMOUNT)
+        activate ":GoalCommand" #FFBBBB
+        ":GoalCommand" --> ":GoalCommand": amountStr: String
+        deactivate
+        ":GoalCommand" -> "Parser": parseNonNegativeDouble(amountStr)
+        activate "Parser" #FFBBBB
+        "Parser" --> ":GoalCommand": amount: Double
+        deactivate
+
+        ":GoalCommand" -> ":GoalCommand": addGoal(goalName, amount)
+        activate ":GoalCommand" #FFBBBB
+        participant "StateManager" <<class>>
+        ":GoalCommand" -> "StateManager": getStateManager()
+        activate "StateManager" #FFBBBB
+        "StateManager" --> ":GoalCommand": stateManager: StateManager
+        deactivate
+        alt goal does already not exist
+            create ":Goal"
+            ":GoalCommand" -> ":Goal": new Goal(goalName, amount)
+            activate ":Goal" #FFBBBB
+            ":Goal" --> ":GoalCommand": goal: Goal
+            deactivate
+            ":GoalCommand" -> "stateManager:StateManager": addGoal(goal)
+            activate "stateManager:StateManager" #FFBBBB
+            "stateManager:StateManager" --> ":GoalCommand"
+            deactivate
+            ":GoalCommand" --> ":GoalCommand"
+            deactivate
+            ":GoalCommand" -> ":Ui": print(successMessage)
+            activate ":Ui" #FFBBBB
+            ":Ui" --> ":GoalCommand"
+            deactivate
+            else goal already exists
+            ref over ":GoalCommand": throw error indicating goal exists
+        end
+    else inputType == "remove"
+        ":GoalCommand" -> ":GoalCommand": getArg(REMOVE_COMMAND)
+        activate ":GoalCommand" #FFBBBB
+        ":GoalCommand" --> ":GoalCommand": goalName: String
+        deactivate
+
+        ":GoalCommand" -> ":GoalCommand": removeGoal(goalName)
+        activate ":GoalCommand" #FFBBBB
+        ":GoalCommand" -> "StateManager": getStateManager()
+        activate "StateManager" #FFBBBB
+        "StateManager" --> ":GoalCommand": stateManager: StateManager
+        deactivate
+       ":GoalCommand" -> "stateManager:StateManager": getGoalIndex(goalToRemove)
+        activate "stateManager:StateManager" #FFBBBB
+        "stateManager:StateManager" --> ":GoalCommand": index: int
+        deactivate
+        ":GoalCommand" -> "stateManager:StateManager": getGoal(index)
+        activate "stateManager:StateManager" #FFBBBB
+        "stateManager:StateManager" --> ":GoalCommand": goalToRemove: Goal
+        deactivate
+        opt index != -1
+            ":GoalCommand" -> "stateManager:StateManager": unassignGoalTransactions(goalToRemove)
+            activate "stateManager:StateManager" #FFBBBB
+            "stateManager:StateManager" --> ":GoalCommand":
+            deactivate
+            ":GoalCommand" -> "stateManager:StateManager": removeGoal(goalToRemove)
+            activate "stateManager:StateManager" #FFBBBB
+            "stateManager:StateManager" --> ":GoalCommand": removedGoal: boolean
+            deactivate
+        end
+        opt index == -1 or removedGoal == false
+            ref over ":GoalCommand": throw error indicating goal removal failure
+        end
+        ":GoalCommand" --> ":GoalCommand"
+        deactivate
+    end
+else inputType == null
+    ref over ":GoalCommand": throw error indicating invalid input
+end
+
+<-- ":GoalCommand"
+deactivate
+@enduml

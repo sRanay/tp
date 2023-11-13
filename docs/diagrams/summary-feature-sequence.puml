@@ -1,0 +1,116 @@
+@startuml
+-> ":SummaryCommand": execute(ui: Ui)
+activate ":SummaryCommand" #FFBBBB
+
+":SummaryCommand" -> ":SummaryCommand": throwIfInvalidDescOrArgs()
+activate ":SummaryCommand" #FFBBBB
+ref over ":SummaryCommand": validate user's provided inputs
+":SummaryCommand" --> ":SummaryCommand"
+deactivate
+
+":SummaryCommand" -> ":SummaryCommand": getFilter()
+activate ":SummaryCommand" #FFBBBB
+":SummaryCommand" -> ":SummaryCommand": getArgs()
+activate ":SummaryCommand" #FFBBBB
+":SummaryCommand" --> ":SummaryCommand": args: HashMap<String, String>
+deactivate
+":SummaryCommand" --> ":SummaryCommand"
+deactivate
+
+":SummaryCommand" -> ":SummaryCommand": printSummary()
+activate ":SummaryCommand" #FFBBBB
+":SummaryCommand" -> ":SummaryCommand": getArg(TYPE_ARG)
+activate ":SummaryCommand" #FFBBBB
+":SummaryCommand" --> ":SummaryCommand": type: String
+deactivate
+alt type == TYPE_IN
+    ":SummaryCommand" -> ":SummaryCommand": getIncomeSummary()
+    activate ":SummaryCommand" #FFBBBB
+    participant StateManager <<class>>
+    ":SummaryCommand" -> "StateManager": getStateManager()
+    activate StateManager #FFBBBB
+    "StateManager" --> ":SummaryCommand": stateManager: StateManager
+    deactivate
+    ":SummaryCommand" -> "stateManager:StateManager": getAllIncomes()
+    activate "stateManager:StateManager" #FFBBBB
+    "stateManager:StateManager" --> ":SummaryCommand": incomeArray: ArrayList<Income>
+    deactivate
+    alt incomeArray not empty
+        opt filterByDay || filterByWeek || filterByMonth
+            ":SummaryCommand" -> ":SummaryCommand": filterIncome(incomeArray)
+            activate ":SummaryCommand" #FFBBBB
+            ref over ":SummaryCommand": filter incomes by day, week or month, if multiple stated, the former order takes precedence
+            ":SummaryCommand" --> ":SummaryCommand": incomeArray: ArrayList<Income>
+            deactivate
+        end
+        loop every income in incomeArray
+            ":SummaryCommand" -> ":Income": getTransaction()
+            activate ":Income" #FFBBBB
+            ":Income" --> ":SummaryCommand": transaction: Transaction
+            deactivate
+            ":SummaryCommand" -> ":Transaction": getAmount()
+            activate ":Transaction" #FFBBBB
+            ":Transaction" --> ":SummaryCommand": amount: double
+            deactivate
+        end
+    else else
+        ref over ":SummaryCommand": throw error indicating empty incomes
+    end
+    ":SummaryCommand" --> ":SummaryCommand": totalSum: double
+    deactivate
+
+    ":SummaryCommand" -> ":SummaryCommand": getSummaryMsg(TYPE_IN, totalSum)
+    activate ":SummaryCommand" #FFBBBB
+    ":SummaryCommand" --> ":SummaryCommand": msg: String
+    deactivate
+else type == TYPE_OUT
+    ":SummaryCommand" -> ":SummaryCommand": getExpenseSummary()
+    activate ":SummaryCommand" #FFBBBB
+    ":SummaryCommand" -> "StateManager": getStateManager()
+    activate StateManager #FFBBBB
+    "StateManager" --> ":SummaryCommand": stateManager: StateManager
+    deactivate
+    ":SummaryCommand" -> "stateManager:StateManager": getAllExpenses()
+    activate "stateManager:StateManager" #FFBBBB
+    "stateManager:StateManager" --> ":SummaryCommand": expenseArray: ArrayList<Expense>
+    deactivate
+    alt expenseArray not empty
+        opt filterByDay || filterByWeek || filterByMonth
+            ":SummaryCommand" -> ":SummaryCommand": filterExpense(expenseArray)
+            activate ":SummaryCommand" #FFBBBB
+            ref over ":SummaryCommand": filter expenses by day, week or month, if multiple stated, the former order takes precedence
+            ":SummaryCommand" --> ":SummaryCommand": expenseArray: ArrayList<Expense>
+            deactivate
+        end
+        loop every expense in expenseArray
+            ":SummaryCommand" -> ":Expense": getTransaction()
+            activate ":Expense" #FFBBBB
+            ":Expense" --> ":SummaryCommand": transaction: Transaction
+            deactivate
+            ":SummaryCommand" -> ":Transaction": getAmount()
+            activate ":Transaction" #FFBBBB
+            ":Transaction" --> ":SummaryCommand": amount: double
+            deactivate
+        end
+    else else
+        ref over ":SummaryCommand": throw error indicating empty expenses
+    end
+    ":SummaryCommand" --> ":SummaryCommand": totalSum: double
+    deactivate
+
+    ":SummaryCommand" -> ":SummaryCommand": getSummaryMsg(TYPE_OUT, totalSum)
+    activate ":SummaryCommand" #FFBBBB
+    ":SummaryCommand" --> ":SummaryCommand": msg: String
+    deactivate
+end
+":SummaryCommand" -> ":Ui": print(msg)
+activate ":Ui" #FFBBBB
+":Ui" --> ":SummaryCommand"
+deactivate
+
+":SummaryCommand" --> ":SummaryCommand"
+deactivate
+
+<-- ":SummaryCommand"
+deactivate
+@enduml
