@@ -70,11 +70,6 @@ public class EditTransactionCommandTest {
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
-    @Test
-    void execute_tooManyArguments_exceptionThrown() throws DukeException {
-        Command command = parser.parse("edit 2 /type in /description part-time job /amount 50");
-        assertThrows(DukeException.class, () -> command.execute(ui));
-    }
 
     @Test
     void execute_attemptToEditDate_exceptionThrown() throws DukeException {

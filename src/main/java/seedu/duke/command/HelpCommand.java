@@ -40,8 +40,9 @@ public class HelpCommand extends Command {
     private static final String[] DELETE_COMMAND_FLAGS_DESCRIPTION = {"To set whether it is a in or out transaction"};
     private static final String LIST_COMMAND = "list";
     private static final String LIST_DESCRIPTION = "Shows a list of all added transactions based on type";
-    private static final String LIST_COMMAND_USAGE = " /type (in | out) [/goal GOAL] [/category CATEGORY]" +
-                                                     " [/week] [/month]";
+    private static final String LIST_COMMAND_USAGE_TRANSACTION = " /type (in | out) [/goal GOAL] [/category CATEGORY]" +
+                                                                 " [/week] [/month]";
+    private static final String LIST_COMMAND_USAGE_GOALCAT = " (goal | category)";
     private static final String[] LIST_COMMAND_FLAGS = {"/type", "/goal", "/category", "/week", "/month"};
     private static final String[] LIST_COMMAND_FLAGS_DESCRIPTION = {"To set whether to display \"in\" or" +
                                                                     " \"out\" transactions",
@@ -123,130 +124,32 @@ public class HelpCommand extends Command {
     }
 
     /**
-     * Returns the help command and its description.
+     * Returns the Arraylist that contains the command name and its description.
      *
-     * @return ArrayList that contains both the help command and its description.
+     * @param commandName Name of the command.
+     * @param commandDescription Description for the command.
+     * @return ArrayList that contains both the command and its description.
      */
-    public ArrayList<String> printHelpDescription() {
-        ArrayList<String> helpDescriptionList = convertCommandList(HELP_COMMAND, HELP_DESCRIPTION);
-        return helpDescriptionList;
-    }
-
-    /**
-     * Returns the bye command and its description.
-     *
-     * @return ArrayList that contains both the bye command and its description.
-     */
-    public ArrayList<String> printByeDescription() {
-        ArrayList<String> byeDescriptionList = convertCommandList(BYE_COMMAND, BYE_DESCRIPTION);
-        return byeDescriptionList;
-    }
-
-    /**
-     * Returns the in command and its description.
-     *
-     * @return ArrayList that contains both the in command and its description.
-     */
-    public ArrayList<String> printInDescription() {
-        ArrayList<String> inDescriptionList = convertCommandList(IN_COMMAND, IN_DESCRIPTION);
-        return inDescriptionList;
-    }
-
-    /**
-     * Returns the out command and its description.
-     *
-     * @return ArrayList that contains both the out command and its description.
-     */
-    public ArrayList<String> printOutDescription() {
-        ArrayList<String> outDescriptionList = convertCommandList(OUT_COMMAND, OUT_DESCRIPTION);
-        return outDescriptionList;
-    }
-
-    /**
-     * Returns the delete command and its description.
-     *
-     * @return ArrayList that contains both the delete command and its description.
-     */
-    public ArrayList<String> printDeleteDescription() {
-        ArrayList<String> deleteDescriptionList = convertCommandList(DELETE_COMMAND, DELETE_DESCRIPTION);
-        return deleteDescriptionList;
-    }
-
-    /**
-     * Returns the list command and its description.
-     *
-     * @return ArrayList that contains both the list command and its description.
-     */
-    public ArrayList<String> printListDescription() {
-        ArrayList<String> listDescriptionList = convertCommandList(LIST_COMMAND, LIST_DESCRIPTION);
-        return listDescriptionList;
-    }
-
-    /**
-     * Returns the export command and its description.
-     *
-     * @return ArrayList that contains both the export command and its description.
-     */
-    public ArrayList<String> printExportDescription() {
-        ArrayList<String> exportDescriptionList = convertCommandList(EXPORT_COMMAND, EXPORT_DESCRIPTION);
-        return exportDescriptionList;
-    }
-
-    /**
-     * Returns the category command and its description.
-     *
-     * @return ArrayList that contains both the category command and its description.
-     */
-    public ArrayList<String> printCategoryDescription() {
-        ArrayList<String> categoryDescriptionList = convertCommandList(CATEGORY_COMMAND, CATEGORY_DESCRIPTION);
-        return categoryDescriptionList;
-    }
-
-    /**
-     * Returns the goal command and its description.
-     *
-     * @return ArrayList that contains both the goal command and its description.
-     */
-    public ArrayList<String> printGoalDescription() {
-        ArrayList<String> goalDescriptionList = convertCommandList(GOAL_COMMAND, GOAL_DESCRIPTION);
-        return goalDescriptionList;
-    }
-
-    /**
-     * Returns the edit command and its description.
-     *
-     * @return ArrayList that contains both the edit command and its description.
-     */
-    public ArrayList<String> printEditDescription() {
-        ArrayList<String> editDescriptionList = convertCommandList(EDIT_COMMAND, EDIT_DESCRIPTION);
-        return editDescriptionList;
-    }
-
-    /**
-     * Returns the summary command and its description.
-     *
-     * @return ArrayList that contains both the summary command and its description.
-     */
-    public ArrayList<String> printSummaryDescription() {
-        ArrayList<String> summaryDescriptionList = convertCommandList(SUMMARY_COMMAND, SUMMARY_DESCRIPTION);
-        return summaryDescriptionList;
+    public ArrayList<String> printCommandDescription(String commandName, String commandDescription) {
+        ArrayList<String> commandDescriptionList = convertCommandList(commandName, commandDescription);
+        return commandDescriptionList;
     }
 
     /**
      * Add all the commands into helpList to be printed out.
      */
     public void printFullList() {
-        this.helpList.add(printHelpDescription());
-        this.helpList.add(printInDescription());
-        this.helpList.add(printOutDescription());
-        this.helpList.add(printDeleteDescription());
-        this.helpList.add(printListDescription());
-        this.helpList.add(printCategoryDescription());
-        this.helpList.add(printGoalDescription());
-        this.helpList.add(printExportDescription());
-        this.helpList.add(printEditDescription());
-        this.helpList.add(printSummaryDescription());
-        this.helpList.add(printByeDescription());
+        this.helpList.add(printCommandDescription(HELP_COMMAND, HELP_DESCRIPTION));
+        this.helpList.add(printCommandDescription(IN_COMMAND, IN_DESCRIPTION));
+        this.helpList.add(printCommandDescription(OUT_COMMAND, OUT_DESCRIPTION));
+        this.helpList.add(printCommandDescription(DELETE_COMMAND, DELETE_DESCRIPTION));
+        this.helpList.add(printCommandDescription(LIST_COMMAND, LIST_DESCRIPTION));
+        this.helpList.add(printCommandDescription(CATEGORY_COMMAND, CATEGORY_DESCRIPTION));
+        this.helpList.add(printCommandDescription(GOAL_COMMAND, GOAL_DESCRIPTION));
+        this.helpList.add(printCommandDescription(EXPORT_COMMAND, EXPORT_DESCRIPTION));
+        this.helpList.add(printCommandDescription(EDIT_COMMAND, EDIT_DESCRIPTION));
+        this.helpList.add(printCommandDescription(SUMMARY_COMMAND, SUMMARY_DESCRIPTION));
+        this.helpList.add(printCommandDescription(BYE_COMMAND, BYE_DESCRIPTION));
         assert this.helpList != null;
     }
 
@@ -296,12 +199,20 @@ public class HelpCommand extends Command {
     }
 
     /**
-     * Crafts the list usage string.
+     * Crafts the list usage string for Transactions.
      *
-     * @return list usage string.
+     * @return list usage string for Transaction.
      */
-    public String listUsage() {
-        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE;
+    public String listTransactionUsage() {
+        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE_TRANSACTION;
+    }
+    /**
+     * Crafts the list usage string for Goal and Category.
+     *
+     * @return list usage string for Goal and Category.
+     */
+    public String listGoalCategoryUsage() {
+        return USAGE_PREFIX + LIST_COMMAND + LIST_COMMAND_USAGE_GOALCAT;
     }
 
     /**
@@ -411,7 +322,8 @@ public class HelpCommand extends Command {
             convertIntoList(DELETE_COMMAND_FLAGS, DELETE_COMMAND_FLAGS_DESCRIPTION);
             break;
         case "list":
-            ui.print(listUsage());
+            ui.print(listGoalCategoryUsage());
+            ui.print(listTransactionUsage());
             convertIntoList(LIST_COMMAND_FLAGS, LIST_COMMAND_FLAGS_DESCRIPTION);
             break;
         case "export":

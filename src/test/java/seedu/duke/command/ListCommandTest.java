@@ -308,7 +308,7 @@ class ListCommandTest {
         addInEntriesWithDates();
         Command command = parser.parse("list /type in /month");
         command.execute(ui);
-        if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
+        if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) { // when current and previous week is in same month
             assertEquals("Alright! Displaying 2 transactions.\n" +
                             "=========================================== IN TRANSACTIONS ============================" +
                             "===============\n" +
@@ -321,7 +321,7 @@ class ListCommandTest {
                             "=========================================== IN TRANSACTIONS ===========================" +
                             "================\n"
                     , outputStream.toString());
-        } else {
+        } else { // when current and previous week date is in different month
             assertEquals("Alright! Displaying 1 transaction.\n" +
                             "=========================================== IN TRANSACTIONS ============================" +
                             "===============\n" +
@@ -340,7 +340,7 @@ class ListCommandTest {
         addOutEntriesWithDates();
         Command command = parser.parse("list /type out /month");
         command.execute(ui);
-        if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
+        if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) { // when current and previous week is in same month
             assertEquals("Alright! Displaying 2 transactions.\n" +
                             "========================================== OUT TRANSACTIONS ============================" +
                             "===============\n" +
@@ -354,7 +354,7 @@ class ListCommandTest {
                             "========================================== OUT TRANSACTIONS ============================" +
                             "===============\n"
                     , outputStream.toString());
-        } else {
+        } else { // when current and previous week date is in different month
             assertEquals("Alright! Displaying 1 transaction.\n" +
                             "========================================== OUT TRANSACTIONS ===========================" +
                             "================\n" +
@@ -407,13 +407,13 @@ class ListCommandTest {
         addInEntries();
         Command command = parser.parse("list goal");
         command.execute(ui);
-        assertEquals("================= Goals Status =================\n" +
-                "Name                   Amount\n" +
-                "PS5                    50.00/300.00\n" +
-                "Progress: [===                 ] 16.67%\n" +
-                "car                    500.00/5000.00\n" +
-                "Progress: [==                  ] 10.00%\n" +
-                "================= Goals Status =================\n", outputStream.toString());
+        assertEquals("==================================== Goals Status ======================" +
+                        "==============\n" +
+                "Name                   Amount                 Progress\n" +
+                "PS5                    50.00/300.00           [===                 ] 16.67%\n" +
+                "car                    500.00/5000.00         [==                  ] 10.00%\n" +
+                "==================================== Goals Status ====================================\n"
+                , outputStream.toString());
     }
 
     @Test

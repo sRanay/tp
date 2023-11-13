@@ -9,7 +9,7 @@
 
 ### Architecture
 
-The bulk of the app's work is done by the following four components:
+The bulk of the app's work is done by the following five components:
 - `UI`: The UI of the App.
 - `Parser`: Formats the user's input.
 - `Command`: Command's logic and execution.
@@ -124,8 +124,6 @@ Transaction tracking is a core functionality in the program. This feature includ
 the ability to add/remove income or expenses respectively. Also, the user is able to associate an income entry with a goal or have an expense
 entry be associated to a category of expenditure.
 
-**Addition Process Flow**
-
 The following functionalities are implemented in `AddIncomeCommand` and `AddExpenseCommand` and its' parent class `AddTransactionCommand`.
 
 An example of the usage of the `in` and `out` command can be found in the [User Guide](https://ay2324s1-cs2113-w12-3.github.io/tp/UserGuide.html).
@@ -144,9 +142,22 @@ If any of the above validation fails, an error message relevant to the failure w
 For attempts to add an income entry, the command will additionally verify that the goal (if specified) already exists in the program. Otherwise,
 an error will be returned.
 
-Once a user's inputs are verified and deemed valid, a `Transaction` object is prepared along with a corresponding `Goal` or `Category` object (if required).
+Once a user's inputs are verified and deemed valid, a `Transaction` object is prepared through a call to `AddTransactionCommand#prepareTransaction()`. The returned `Transaction` object is encapsulated together with a corresponding `Goal` or `Category` object in an `Income` or `Expense` object as required.
 
 These prepared objects are then encapsulated in a corresponding `Income` or `Expense` object and added to the program using `StateManager#addIncome(Income)` or `StateManager#addExpense(Expense)`.
+
+Given below is an example usage scenario and how the transaction tracking feature behaves at each step.
+
+Step 1. The user launches the application for the first time. There will be no transactions in the program.
+
+Step 2. The user executes `in pocket money /amount 100` to add an income transaction with description set to `pocket money` and amount set to `100`. Since no date, goal or recurrence are explicitly stated, they are set to `Uncategorised`, the system's current date and `none` respectively.
+
+Step 3. An income entry is creating corresponding to the above parameters and a success message containing the added transaction is printed.
+
+Below is the sequence diagram for the transaction tracking feature. Specifically, the sequence for adding an income entry. The sequence
+diagram for adding expense will be omitted because it is largely similar to the sequence for adding an income with slight differences.
+
+![Add income entry sequence diagram](./images/transaction-tracking-sequence.png "Add income entry sequence diagram")
 
 ### Export feature
 
@@ -164,6 +175,16 @@ Step 2. The user executes `in part-time job /amount 500 /goal car` to create a t
 Step 3. So when the user executes `export`, it will get all the transactions that the program stored and exports to a CSV file called `Transactions.csv`
 
 However, if the user wishes to export only the income or expense transactions, the user could enter `export /type in` or `export /type out` respectively.
+
+Below is the sequence diagrams for the export feature.
+
+![Export feature sequence diagram](./images/export-feature-sequence.png "Export feature sequence diagram")
+
+![Export income data sequence diagram](./images/export-feature-sequence-income-data.png "Export income data sequence diagram")
+
+![Export expense data sequence diagram](./images/export-feature-sequence-expense-data.png "Export expense data sequence diagram")
+
+![Extract transaction data sequence diagram](./images/export-feature-sequence-extract.png "Extract transaction data sequence diagram")
 
 ### Goal Feature
 
@@ -186,6 +207,10 @@ Step 2. The user executes `goal /add car /amount 100000`, which will add a `car`
 
 Step 3. The user executes `goal /remove car`, which will remove the newly added `car` goal.
 
+Below is the sequence diagram for the goal feature.
+
+![Goal feature sequence diagram](./images/goal-feature-sequence.png "Goal feature sequence diagram")
+
 ### Category Feature
 
 The category feature is facilitated by `CategoryCommand`, which extends `Command`. Based on the argument, either `/add` or `/remove`,
@@ -205,6 +230,10 @@ Step 1. The user launches the application for the first time. There will be no c
 Step 2. The user executes `category /add food`, which will add a `food` category.
 
 Step 3. The user executes `category /remove food`, which will remove the newly added `food` category.
+
+Below is the sequence diagram for the category feature.
+
+![Category feature sequence diagram](./images/category-feature-sequence.png "Category feature sequence diagram")
 
 ### Delete transaction feature
 
@@ -226,7 +255,30 @@ Step 2. The user input `out dinner /amount 10` to add expense transaction.
 Step 3. The user input `delete 1 /type out`. This will remove the first expense transaction, which is 
 the transaction just added by the user.
 
+Below is the sequence diagram for the delete transaction feature.
+
+![Delete transaction feature sequence diagram](./images/delete-transaction-feature-sequence.png "Delete transaction feature sequence diagram")
+
 ### Edit transaction feature
+
+The edit transaction feature is facilitated by `EditTransactionCommand`, which extends `Command`. Based on the `/type` argument value,
+either the income or expense transaction will be edited. User can edit the description, amount, goal (for income transaction) and category (for expense transaction). 
+Date and recurrence of the transaction cannot be edited.
+
+The command will first call `EditTransactionCommand#throwIfInvalidDescOrArgs()` to check that valid arguments and value are supplied by the user. Afterward, `EditTransactionCommand#editTransaction()`
+will get the maximum number of transaction from `EditTransactionCommand#getTransactionMaxSize()`,
+then parse the index supplied by the user and ensure is a valid integer using `EditTransactionCommand#parseIdx()`. This parsed index will then be used to update the
+transaction from the `StateManager`. Afterward, `EditTransactionCommand#printSuccess()` will be called to print a success message
+to inform the user that the transaction has been updated with the new values.
+
+Given below is an example usage scenario and how the edit transaction feature behaves.
+
+Step 1. The user launches the application for the first time. There will be no transaction available.
+
+Step 2. The user input `out dinner /amount 10 /category food` to add expense transaction.
+
+Step 3. The user input `edit 1 /type out /description lunch /amount 12 /category essentials`. This will edit the first expense transaction, which is
+the transaction just added by the user. The new description will be `lunch`, amount `12` and category `essentials`.
 
 ### List feature
 The list feature is facilitated by `ListCommand`, which extends `Command`. Depending on user input, the user would
@@ -285,6 +337,10 @@ Step 3. The program will filter all the income transaction by the current date, 
 
 Step 4. The total amount will be output.
 
+Below is the sequence diagram for the summary feature.
+
+![Summary feature sequence diagram](./images/summary-feature-sequence.png "Delete transaction feature sequence diagram")
+
 ## Product scope
 
 ### Target user profile
@@ -293,9 +349,8 @@ Step 4. The total amount will be output.
 
 ### Value proposition
 
-Personal finance tracker to make it easy for users to track and manage their spending, \
-and generate daily/weekly/monthly reports to break down how they spend (e.g. spending categories, \
-whether they spend above their income, etc).
+Personal finance tracker to make it easy for users to track and manage their saving/spending, \
+and view a summary of their daily/weekly/monthly transactions.
 
 ## User Stories
 
@@ -439,15 +494,17 @@ Listed below are the steps to test the program manually.
 
 ### Editing a transaction
 1. Editing an income transaction
-   1. Prerequisite: Ensure that there is at least one income transaction.
+   1. Prerequisite: Ensure that there is at least one income transaction. `car` goal is added.
    2. Test Case: `edit 1 /type in /description New Edited Description` <br>
    Expected: The description of the first income transaction shown when listing income transactions will be changed to 
    `New Edited Description`.
    3. Test Case: `edit 1 /type in /amount 1234` <br>
       Expected: The amount of the first income transaction shown when listing income transactions will be changed to
       `1234.00`.
+   4. Test Case: `edit 1 /type in /description New Edited Description /amount 1234 /goal car` <br>
+         Expected: The first income transaction will be changed to description `New Edited Description`, amount `1234.00`, goal `car`.
 2. Editing an expense transaction
-   1. The output will be similar to editing income transaction, with type `out`.
+   1. The output will be similar to editing income transaction, with type `out`. Instead of `goal`, `category` is edited instead.
 
 ### Summarise the transaction total
 1. Summarise income transactions
