@@ -18,6 +18,12 @@ public class GoalCommand extends ClassificationCommand {
         super(description, args);
     }
 
+    /**
+     * Executes the command.
+     *
+     * @param ui Ui class that is used to format output.
+     * @throws DukeException if user input is invalid.
+     */
     @Override
     public void execute(Ui ui) throws DukeException {
         String inputType = validateInput();
@@ -37,6 +43,10 @@ public class GoalCommand extends ClassificationCommand {
         }
     }
 
+    /**
+     * Validates if amount specified by user is correct
+     * @throws DukeException if amount is invalid
+     */
     private void validateAmount() throws DukeException {
         String amount = getArg(AMOUNT);
         if (amount == null || amount.isBlank()) {
@@ -48,6 +58,12 @@ public class GoalCommand extends ClassificationCommand {
         }
     }
 
+    /**
+     * Adds goal to StateManager
+     * @param goal name of goal to add
+     * @param amount goal amount
+     * @throws DukeException if goal already exists in list
+     */
     private void addGoal(String goal, double amount) throws DukeException {
         StateManager state = StateManager.getStateManager();
         if (state.getGoalIndex(goal) == -1) {
@@ -60,6 +76,11 @@ public class GoalCommand extends ClassificationCommand {
 
     }
 
+    /**
+     * Removes goal in StateManager
+     * @param goal name of goal to remove
+     * @throws DukeException if goal does not already exist in list
+     */
     private void removeGoal(String goal) throws DukeException {
         StateManager state = StateManager.getStateManager();
         int index = state.getGoalIndex(goal);

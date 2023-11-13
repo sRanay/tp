@@ -16,6 +16,12 @@ public class CategoryCommand extends ClassificationCommand {
         super(description, args);
     }
 
+    /**
+     * Executes the command.
+     *
+     * @param ui Ui class that is used to format output.
+     * @throws DukeException if user input is invalid.
+     */
     @Override
     public void execute(Ui ui) throws DukeException {
         String inputType = validateInput();
@@ -34,6 +40,11 @@ public class CategoryCommand extends ClassificationCommand {
     }
 
 
+    /**
+     * Adds a category to the category ArrayList in StateManager
+     * @param category category to add
+     * @throws DukeException if category already exists
+     */
     private void addCategory(String category) throws DukeException {
         StateManager state = StateManager.getStateManager();
         if (state.getCategoryIndex(category) == -1) {
@@ -46,9 +57,14 @@ public class CategoryCommand extends ClassificationCommand {
 
     }
 
-    private void removeCategory(String classification) throws DukeException {
+    /**
+     * Removes a category to the category ArrayList in StateManager
+     * @param  category to remove
+     * @throws DukeException if category does not already exist
+     */
+    private void removeCategory(String category) throws DukeException {
         StateManager state = StateManager.getStateManager();
-        int index = state.getCategoryIndex(classification);
+        int index = state.getCategoryIndex(category);
         Category categoryToRemove = state.getCategory(index);
         boolean removedClassification = false;
         if (index != -1) {
@@ -56,7 +72,7 @@ public class CategoryCommand extends ClassificationCommand {
             removedClassification = state.removeCategory(categoryToRemove);
         }
         if (!removedClassification) {
-            String failedRemoval = "Failed to remove '" + classification + "' as it does not exist!";
+            String failedRemoval = "Failed to remove '" + category + "' as it does not exist!";
             throw new DukeException(failedRemoval);
         }
     }

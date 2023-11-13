@@ -21,6 +21,12 @@ public class AddExpenseCommand extends AddTransactionCommand {
         super(description, args);
     }
 
+    /**
+     * Executes the command.
+     *
+     * @param ui Ui class that is used to format output.
+     * @throws DukeException if user input is invalid.
+     */
     @Override
     public void execute(Ui ui) throws DukeException {
         throwIfInvalidDescOrArgs();
@@ -30,6 +36,12 @@ public class AddExpenseCommand extends AddTransactionCommand {
         StateManager.getStateManager().sortExpenses();
     }
 
+    /**
+     * Adds a new expense to the Expense arraylist in StateManager
+     * @param transaction transaction to add to Expense object
+     * @return Expense object to be used for printing in printSuccess
+     * @throws DukeException if category is invalid, or any issue is encountered when adding expense
+     */
     private Expense addNewExpense(Transaction transaction) throws DukeException {
         Category category = handleCategory();
         Expense expense = new Expense(transaction, category);
@@ -37,6 +49,11 @@ public class AddExpenseCommand extends AddTransactionCommand {
         return expense;
     }
 
+    /**
+     * Print successful addition of expense transaction message
+     * @param ui Ui class for printing
+     * @param expense expense transaction to print
+     */
     private void printSuccess(Ui ui, Expense expense) {
         Transaction transaction = expense.getTransaction();
         ArrayList<String> printValues = new ArrayList<>();
@@ -49,6 +66,11 @@ public class AddExpenseCommand extends AddTransactionCommand {
         ui.printTableRow(printValues, HEADERS, HEADERS_WIDTH);
     }
 
+    /**
+     * Validates user input for the /category argument and retrieves/add a category object
+     * @return category of the transaction
+     * @throws DukeException if category user input is invalid
+     */
     private Category handleCategory() throws DukeException {
         StateManager state = StateManager.getStateManager();
         String category = getArg(CATEGORY_ARG);
