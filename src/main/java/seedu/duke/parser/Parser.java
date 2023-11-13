@@ -226,6 +226,11 @@ public class Parser {
         return parsedValue;
     }
 
+    /**
+     * Parses a date (in {@value DATE_INPUT_PATTERN} format) from string
+     * @param value Date string to be parsed
+     * @return LocalDate value if valid otherwise {@code null}
+     */
     public static LocalDate parseDate(String value) {
         if (value == null) {
             return null;
