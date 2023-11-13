@@ -32,7 +32,8 @@ public class CommandTestCase {
     }
 
     /**
-     * Constructs a CommandTestCase with the specified command input, expected output, expected exception, and executable.
+     * Constructs a CommandTestCase with the specified command input, expected output, expected exception,
+     * and executable.
      *
      * @param commandInput  The input string representing the command to be tested.
      * @param commandOutput The expected output string after executing the command.
