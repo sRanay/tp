@@ -104,7 +104,7 @@ class SummaryCommandTest {
         Ui ui = new Ui(outputStream);
         Command command = parser.parse("summary /type in");
         command.execute(ui);
-        assertEquals("Good job! Total income: $960.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far: $960.00\n", outputStream.toString());
     }
 
     @Test
@@ -120,7 +120,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Good job! Total income for Today: $10.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far for Today: $10.00\n", outputStream.toString());
     }
 
     @Test
@@ -136,7 +136,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Good job! Total income for This Week: $510.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far for This Week: $510.00\n", outputStream.toString());
     }
 
     @Test
@@ -152,7 +152,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Good job! Total income for This Month: $810.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far for This Month: $810.00\n", outputStream.toString());
     }
 
     /**
@@ -174,7 +174,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Good job! Total income for Today: $10.00\n", outputStream.toString());
+        assertEquals("Good job! Total income so far for Today: $10.00\n", outputStream.toString());
     }
 
     @Test
@@ -185,7 +185,7 @@ class SummaryCommandTest {
         Ui ui = new Ui(outputStream);
         Command command = parser.parse("summary /type out");
         command.execute(ui);
-        assertEquals("Wise spending! Total expense: $49.30\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far: $49.30\n", outputStream.toString());
     }
 
     @Test
@@ -201,7 +201,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Wise spending! Total expense for Today: $20.80\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far for Today: $20.80\n", outputStream.toString());
     }
 
     @Test
@@ -217,7 +217,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Wise spending! Total expense for This Week: $28.30\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far for This Week: $28.30\n", outputStream.toString());
     }
 
     @Test
@@ -233,7 +233,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Wise spending! Total expense for This Month: $38.80\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far for This Month: $38.80\n", outputStream.toString());
     }
 
     /**
@@ -255,7 +255,7 @@ class SummaryCommandTest {
             }};
         Command command = new SummaryCommand(description, argMaps, currentDate);
         command.execute(ui);
-        assertEquals("Wise spending! Total expense for Today: $20.80\n", outputStream.toString());
+        assertEquals("Wise spending! Total expense so far for Today: $20.80\n", outputStream.toString());
     }
 
 }
