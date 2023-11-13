@@ -3,7 +3,7 @@
 ## Project: FinText
 
 FinText is a **Command Line Interface (CLI)-based personal finance tracker to make it easy for users to track and manage
-their spending,** and generate daily/weekly/monthly reports to break down how they spend.
+their saving/spending,** and view a summary of their daily/weekly/monthly transactions. Application Data will be stored into a folder called `data`.
 
 Given below are my contributions to the project.
 
@@ -32,7 +32,7 @@ Given below are my contributions to the project.
 - Contributions to team-based tasks:
     - Updated the user stories for DG: [#41](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/41)
 - Review/mentoring contributions:
-    - PRs reviewed: [#164](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/164), [#161](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/161), [#154](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/154), [#129](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/129), [#130](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/130), [#131](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/131), [#91](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/91), [#85](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/85), [#82](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/82), [#79](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/79), [#78](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/78), [#77](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/77), [#70](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/70), [#68](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/68), [#67](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/67), [#64](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/64), [#59](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/59), [#58](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/58), [#31](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/31), [#27](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/27), [#24](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/24), [#12](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/12), [#8](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/8), [#6](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/6)
+    - PRs reviewed: [Pull Request](https://github.com/AY2324S1-CS2113-W12-3/tp/pulls?q=is%3Apr+reviewed-by%3AsRanay)
     - PRs reviewed with comments to fix potential issue with commit: [#85](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/85), [#82](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/82) 
 - Contributions beyond the project teams:
     - DG Review: CS2113-T18-3 ([Pull request](https://github.com/nus-cs2113-AY2324S1/tp/pull/22))
