@@ -3,8 +3,7 @@ title: Jun Hong's Project Portfolio Page
 ---
 
 ### Project: FinText
-FinText is a **Command Line Interface (CLI)-based personal finance tracker to make it easy for users to track and manage
-their spending,** and generate daily/weekly/monthly reports to break down how they spend.
+FinText is a Command Line Interface (CLI)-based personal finance tracker to make it easy for users to track and manage their saving/spending, and view a summary of their daily/weekly/monthly transactions.
 
 Given below are my contributions to the project.
 
@@ -23,6 +22,9 @@ Given below are my contributions to the project.
 * **Enhancements to existing features:**
   * Allowed a user to not specify a goal or category when adding income or expenses, instead assigning 'Uncategorised'
     to it. [\#132](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/132)
+  * Improved input validation behaviour for ListCommand and Goal/CategoryCommand [\#136](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/136), [\#143](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/143)
+  * Abstracted some parts of the input validation for GoalCommand and CategoryCommand into a separate abstract class ClassificationCommand
+  to reduce code reuse [\#143](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/143)
 
 * **Documentation:**
   * User Guide:
@@ -30,10 +32,17 @@ Given below are my contributions to the project.
     * Updated documentation for features 'list', 'goal' and 'category' [\#84](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/84)
   * Developer Guide:
     * Added information about 'Command' component of DG [\#55](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/55/)
+    * Added implementation details about ListCommand and sequence diagram for ListCommand [\#166](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/166)
+    * Updated class diagram for UI [\#166](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/166)
 
 * **Contribution to team-based tasks:**
   * Actively participated in tutorial activities and gave feedback through project development
   * Prepared the release of the JAR files for v1.0 and v2.0
+  * Added Javadocs to AddIncomeCommand, AddExpenseCommand, AddTransactionCommand, CategoryCommand, ClassificationCommand, GoalCommand and ListCommand [\#171](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/171)
 
+
+* **Review Contributions:**
+  * PRs Reviewed: [List](https://github.com/AY2324S1-CS2113-W12-3/tp/pulls?q=is%3Apr+reviewed-by%3Ahooami) 
 * **Community:**
   * Reported bugs and suggestions for other teams in the class (examples: [1](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/141), [2](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/149), [3](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/171), [4](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/157), [5](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/205), [6](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/199), [7](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/164))
+  * 
