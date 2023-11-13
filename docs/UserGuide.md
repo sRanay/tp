@@ -36,6 +36,8 @@ their saving/spending,** and view a summary of their daily/weekly/monthly transa
     command.
 > * Arguments can be in any order. <br>
     e.g. if a command has the arguments `/amount AMOUNT /goal GOAL`, `/goal GOAL /amount AMOUNT` is acceptable as well.
+> * Argument names are case-sensitive, while argument values are case-insensitive. <br>
+    e.g. `/type` and `/Type` are different argument. `/type in` and `/type IN` will indicate the `in` transaction type.
 > * Additional supplied arguments or unnecessary description will be simply ignored.
 > * User is intentionally not restricted to input future or past date to the `/date DATE` argument to allow for flexibility in managing their transactions.
 > * Duplicate arguments are not accepted by the program. A message will be shown in such cases.

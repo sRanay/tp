@@ -108,10 +108,10 @@ public class ExportCommand extends Command {
         if (type == null) {
             return TransactionType.ALL;
         }
-        if (type.equals("in")) {
+        if (type.equalsIgnoreCase("in")) {
             return TransactionType.IN;
         }
-        if (type.equals("out")) {
+        if (type.equalsIgnoreCase("out")) {
             return TransactionType.OUT;
         }
         return TransactionType.ERROR;

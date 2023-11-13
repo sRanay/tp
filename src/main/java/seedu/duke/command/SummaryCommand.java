@@ -192,10 +192,10 @@ public class SummaryCommand extends Command {
 
     private void printSummary() throws DukeException {
         String msg = "";
-        if (getArg(TYPE_ARG).equals(TYPE_IN)) {
+        if (getArg(TYPE_ARG).equalsIgnoreCase(TYPE_IN)) {
             double totalSum = getIncomeSummary();
             msg = getSummaryMsg(TYPE_IN, totalSum);
-        } else if (getArg(TYPE_ARG).equals(TYPE_OUT)) {
+        } else if (getArg(TYPE_ARG).equalsIgnoreCase(TYPE_OUT)) {
             double totalSum = getExpenseSummary();
             msg = getSummaryMsg(TYPE_OUT, totalSum);
         }
@@ -204,7 +204,7 @@ public class SummaryCommand extends Command {
 
     private String getSummaryMsg(String type, double totalSum) {
         String msg = "";
-        if (type.equals(TYPE_IN)) {
+        if (type.equalsIgnoreCase(TYPE_IN)) {
             msg = STARTING_INCOME_MSG;
         } else {
             msg = STARTING_EXPENSE_MSG;
