@@ -1,5 +1,6 @@
 package seedu.duke.command;
 
+import seedu.duke.classes.Expense;
 import seedu.duke.classes.Goal;
 import seedu.duke.classes.Category;
 import seedu.duke.classes.StateManager;
@@ -95,9 +96,8 @@ public class EditTransactionCommand extends Command {
         }
 
         String newGoalName = getArg(GOAL_ARG);
-
         int newGoalIdx = StateManager.getStateManager().getGoalIndex(newGoalName);
-        if (newGoalIdx == -1) {
+        if (newGoalIdx == -1 && !newGoalName.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
             throw new DukeException("Please add " + newGoalName + " as a goal first.");
         }
     }
@@ -212,21 +212,33 @@ public class EditTransactionCommand extends Command {
     }
 
     private void handleGoalEdit(int idx) {
+        StateManager stateManager = StateManager.getStateManager();
         String newGoalDescription = getArg(GOAL_ARG);
 
-        int newGoalIdx = StateManager.getStateManager().getGoalIndex(newGoalDescription);
-
-        Goal newGoal = StateManager.getStateManager().getGoal(newGoalIdx);
-        StateManager.getStateManager().getIncome(idx).setGoal(newGoal);
+        int newGoalIdx = stateManager.getGoalIndex(newGoalDescription);
+        Goal newGoal = stateManager.getGoal(newGoalIdx);
+        if (newGoal == null) {
+            assert newGoalDescription.equals(StateManager.UNCATEGORISED_CLASS);
+            newGoal = stateManager.getUncategorisedGoal();
+        }
+        stateManager.getIncome(idx).setGoal(newGoal);
     }
 
     private void handleCategoryEdit(int idx) {
+        StateManager stateManager = StateManager.getStateManager();
         String newCategoryDescription = getArg(CATEGORY_ARG);
+        Expense expense = stateManager.getExpense(idx);
+        if (newCategoryDescription.equalsIgnoreCase(StateManager.UNCATEGORISED_CLASS)) {
+            expense.setCategory(stateManager.getUncategorisedCategory());
+            return;
+        }
 
-        int newCategoryIdx = StateManager.getStateManager().getCategoryIndex(newCategoryDescription);
-
-        Category newCategory = StateManager.getStateManager().getCategory(newCategoryIdx);
-        StateManager.getStateManager().getExpense(idx).setCategory(newCategory);
+        int newCategoryIdx = stateManager.getCategoryIndex(newCategoryDescription);
+        Category newCategory = stateManager.getCategory(newCategoryIdx);
+        if (newCategory == null) {
+            newCategory = new Category(newCategoryDescription);
+        }
+        expense.setCategory(newCategory);
     }
 
     private void editIncome(int idx) {
