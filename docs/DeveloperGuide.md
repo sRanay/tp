@@ -9,7 +9,7 @@
 
 ### Architecture
 
-The bulk of the app's work is done by the following four components:
+The bulk of the app's work is done by the following five components:
 - `UI`: The UI of the App.
 - `Parser`: Formats the user's input.
 - `Command`: Command's logic and execution.
@@ -154,6 +154,11 @@ Step 2. The user executes `in pocket money /amount 100` to add an income transac
 
 Step 3. An income entry is creating corresponding to the above parameters and a success message containing the added transaction is printed.
 
+Below is the sequence diagram for the transaction tracking feature. Specifically, the sequence for adding an income entry. The sequence
+diagram for adding expense will be omitted because it is largely similar to the sequence for adding an income with slight differences.
+
+![Add income entry sequence diagram](./images/transaction-tracking-sequence.png "Add income entry sequence diagram")
+
 ### Export feature
 
 The export feature is facilitated by `CsvWriter` class which uses a third party library called OpenCSV. It implements the following operation:
@@ -170,6 +175,16 @@ Step 2. The user executes `in part-time job /amount 500 /goal car` to create a t
 Step 3. So when the user executes `export`, it will get all the transactions that the program stored and exports to a CSV file called `Transactions.csv`
 
 However, if the user wishes to export only the income or expense transactions, the user could enter `export /type in` or `export /type out` respectively.
+
+Below is the sequence diagrams for the export feature.
+
+![Export feature sequence diagram](./images/export-feature-sequence.png "Export feature sequence diagram")
+
+![Export income data sequence diagram](./images/export-feature-sequence-income-data.png "Export income data sequence diagram")
+
+![Export expense data sequence diagram](./images/export-feature-sequence-expense-data.png "Export expense data sequence diagram")
+
+![Extract transaction data sequence diagram](./images/export-feature-sequence-extract.png "Extract transaction data sequence diagram")
 
 ### Goal Feature
 
@@ -192,6 +207,10 @@ Step 2. The user executes `goal /add car /amount 100000`, which will add a `car`
 
 Step 3. The user executes `goal /remove car`, which will remove the newly added `car` goal.
 
+Below is the sequence diagram for the goal feature.
+
+![Goal feature sequence diagram](./images/goal-feature-sequence.png "Goal feature sequence diagram")
+
 ### Category Feature
 
 The category feature is facilitated by `CategoryCommand`, which extends `Command`. Based on the argument, either `/add` or `/remove`,
@@ -212,6 +231,10 @@ Step 2. The user executes `category /add food`, which will add a `food` category
 
 Step 3. The user executes `category /remove food`, which will remove the newly added `food` category.
 
+Below is the sequence diagram for the category feature.
+
+![Category feature sequence diagram](./images/category-feature-sequence.png "Category feature sequence diagram")
+
 ### Delete transaction feature
 
 The delete transaction feature is facilitated by `RemoveTransactionCommand`, which extends `Command`. Based on the `/type` argument value, 
@@ -231,6 +254,10 @@ Step 2. The user input `out dinner /amount 10` to add expense transaction.
 
 Step 3. The user input `delete 1 /type out`. This will remove the first expense transaction, which is 
 the transaction just added by the user.
+
+Below is the sequence diagram for the delete transaction feature.
+
+![Delete transaction feature sequence diagram](./images/delete-transaction-feature-sequence.png "Delete transaction feature sequence diagram")
 
 ### Edit transaction feature
 
@@ -274,6 +301,10 @@ Step 2. The user input `summary /type in /day`.
 Step 3. The program will filter all the income transaction by the current date, and sum up the total amount.
 
 Step 4. The total amount will be output.
+
+Below is the sequence diagram for the summary feature.
+
+![Summary feature sequence diagram](./images/summary-feature-sequence.png "Delete transaction feature sequence diagram")
 
 ## Product scope
 
