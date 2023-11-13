@@ -29,13 +29,13 @@ Given below are my contributions to the project.
 
 * **Enhancements to existing features**:
     * Fixed test cases for list command ([\#38](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/38))
-    * Fixed failing tests due to inter-test dependencies ([\#59](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/59/files))
+    * Fixed failing tests due to inter-test dependencies ([\#59](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/59))
         * Tests were indirectly dependent on one another because state program state was not properly cleared after tests ran for different components.
     * Fixed edge case for edit command ([\#177](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/177))
 
 * **Documentation**:
     * User Guide:
-        * Updated documentation for the features `in` and `out` to include information about `recurrence` option ([\#70](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/70), [\#131](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/131/files))
+        * Updated documentation for the features `in` and `out` to include information about `recurrence` option ([\#70](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/70), [\#131](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/131))
     * Developer Guide:
         * Added information about `UI` class of program ([\#46](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/46), [\#79](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/79), [\#92](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/92)).
         * Added section for `StateManager` and `in` and `out` commands ([\#154](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/154), [\#164](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/164))
@@ -47,6 +47,6 @@ Given below are my contributions to the project.
     * Participated in team discussions about product and gave feedback about proposed features and implementation.
 
 * **Community**:
-    * PR reviewed (with non-trivial review comments): [\#78](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/78), [\#85](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/85), [\#166](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/166)
+    * PR reviewed (with non-trivial review comments): [\#78](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/78), [\#85](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/85), [\#143](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/143), [\#166](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/166)
     * All PRs reviewed: [PRs Reviewed](https://github.com/AY2324S1-CS2113-W12-3/tp/pulls?q=is%3Apr+reviewed-by%3AJonoans)
     * Reported bugs and suggestions for other teams in the class (examples: [1](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/86), [2](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/92), [3](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/116), [4](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/122), [5](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/97))
