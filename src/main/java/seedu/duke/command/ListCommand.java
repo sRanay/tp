@@ -32,6 +32,7 @@ public class ListCommand extends Command {
     private static final String TYPE = "type";
     private static final String WEEK = "week";
     private static final String MONTH = "month";
+    private static final String UNCATEGORISED = "Uncategorised";
     private static final int INVALID_VALUE = -1;
     private Ui ui;
 
@@ -129,6 +130,8 @@ public class ListCommand extends Command {
             String goal = getArg(GOAL);
             if (goal.isBlank()) {
                 errorMessage(INVALID_GOAL_FORMAT);
+            } else if (goal.equalsIgnoreCase(UNCATEGORISED)) {
+                return;
             }
             int result = StateManager.getStateManager().getGoalIndex(goal);
             if (result == INVALID_VALUE) {
@@ -142,16 +145,19 @@ public class ListCommand extends Command {
             errorMessage("'list /type out' should be used with /category, not /goal");
         }
         if (getArgs().containsKey(CATEGORY)) {
-            if (getArg(CATEGORY).isBlank()) {
-                errorMessage(INVALID_CATEGORY_FORMAT);
-            }
             String category = getArg(CATEGORY);
+            if (category.isBlank()) {
+                errorMessage(INVALID_CATEGORY_FORMAT);
+            } else if (category.equalsIgnoreCase(UNCATEGORISED)) {
+                return;
+            }
             int result = StateManager.getStateManager().getCategoryIndex(category);
             if (result == INVALID_VALUE) {
                 errorMessage(INVALID_CATEGORY_FORMAT);
             }
         }
     }
+
     private void printTypeStatus(String description) {
         if (description.equalsIgnoreCase(GOAL)) {
             HashMap<Goal, Double> map = StateManager.getStateManager().getGoalsStatus();
@@ -246,7 +252,7 @@ public class ListCommand extends Command {
      * Filters the income transactions based on the filter indicated.
      *
      * @param transactionsArrayList arraylist of income transaction.
-     * @param filterByMonth boolean to indicate if filter by month, else filter by week.
+     * @param filterByMonth         boolean to indicate if filter by month, else filter by week.
      * @return ArrayList of income transaction.
      */
     private ArrayList<Income> filterIncome(ArrayList<Income> transactionsArrayList, boolean filterByMonth) {
@@ -267,7 +273,7 @@ public class ListCommand extends Command {
      * Filters the expense transactions based on the filter indicated.
      *
      * @param transactionsArrayList arraylist of expense transaction.
-     * @param filterByMonth boolean to indicate if filter by month, else filter by week.
+     * @param filterByMonth         boolean to indicate if filter by month, else filter by week.
      * @return ArrayList of expense transaction.
      */
     private ArrayList<Expense> filterExpense(ArrayList<Expense> transactionsArrayList, boolean filterByMonth) {
