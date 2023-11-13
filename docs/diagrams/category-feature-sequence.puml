@@ -1,0 +1,92 @@
+@startuml
+-> ":CategoryCommand": execute(ui: Ui)
+activate ":CategoryCommand" #FFBBBB
+
+":CategoryCommand" -> ":CategoryCommand": validateInput()
+activate ":CategoryCommand" #FFBBBB
+ref over ":CategoryCommand": validate user's provided inputs
+":CategoryCommand" --> ":CategoryCommand": inputType: String
+deactivate
+
+alt inputType != null
+    alt inputType == "add"
+        ":CategoryCommand" -> ":CategoryCommand": getArg(ADD_COMMAND)
+        activate ":CategoryCommand" #FFBBBB
+        ":CategoryCommand" --> ":CategoryCommand": category: String
+        deactivate
+
+        ":CategoryCommand" -> ":CategoryCommand": addCategory(category)
+        activate ":CategoryCommand" #FFBBBB
+        participant "StateManager" <<class>>
+        ":CategoryCommand" -> "StateManager": getStateManager()
+        activate "StateManager" #FFBBBB
+        "StateManager" --> ":CategoryCommand": stateManager: StateManager
+        deactivate
+        ":CategoryCommand" -> "stateManager:StateManager": getCategoryIndex(category)
+        activate "stateManager:StateManager" #FFBBBB
+        "stateManager:StateManager" --> ":CategoryCommand": index: int
+        deactivate
+        alt index != -1
+            ref over ":CategoryCommand": throw error indicating category already exists
+        else index == -1
+            create ":Category"
+            ":CategoryCommand" -> ":Category": new Category(category)
+            activate ":Category" #FFBBBB
+            ":Category" --> ":CategoryCommand": newCategory: Category
+            deactivate
+            ":CategoryCommand" -> "stateManager:StateManager": addCategory(newCategory)
+            activate "stateManager:StateManager" #FFBBBB
+            "stateManager:StateManager" --> ":CategoryCommand"
+            deactivate
+        end
+
+        ":CategoryCommand" -> ":Ui": print(successMessage)
+        activate ":Ui" #FFBBBB
+        ":Ui" --> ":CategoryCommand"
+        deactivate
+
+        ":CategoryCommand" --> ":CategoryCommand"
+        deactivate
+    else inputType == "remove"
+        ":CategoryCommand" -> ":CategoryCommand": getArg(REMOVE_COMMAND)
+        activate ":CategoryCommand" #FFBBBB
+        ":CategoryCommand" --> ":CategoryCommand": category: String
+        deactivate
+
+        ":CategoryCommand" -> ":CategoryCommand": removeCategory(category)
+        activate ":CategoryCommand" #FFBBBB
+        ":CategoryCommand" -> "StateManager": getStateManager()
+        activate "StateManager" #FFBBBB
+        "StateManager" --> ":CategoryCommand": stateManager: StateManager
+        deactivate
+       ":CategoryCommand" -> "stateManager:StateManager": getCategoryIndex(goalToRemove)
+        activate "stateManager:StateManager" #FFBBBB
+        "stateManager:StateManager" --> ":CategoryCommand": index: int
+        deactivate
+        ":CategoryCommand" -> "stateManager:StateManager": getCategory(index)
+        activate "stateManager:StateManager" #FFBBBB
+        "stateManager:StateManager" --> ":CategoryCommand": categoryToRemove: Category
+        deactivate
+        opt index != -1
+            ":CategoryCommand" -> "stateManager:StateManager": unassignCategoryTransactions(categoryToRemove)
+            activate "stateManager:StateManager" #FFBBBB
+            "stateManager:StateManager" --> ":CategoryCommand"
+            deactivate
+            ":CategoryCommand" -> "stateManager:StateManager": removeCategory(category)
+            activate "stateManager:StateManager" #FFBBBB
+            "stateManager:StateManager" --> ":CategoryCommand": removedClassification: boolean
+            deactivate
+        end
+        opt index == -1 or removedClassification == false
+            ref over ":CategoryCommand": throw error indicating category removal failure
+        end
+        ":CategoryCommand" --> ":CategoryCommand"
+        deactivate
+    end
+else inputType == null
+    ref over ":CategoryCommand": throw error indicating invalid input
+end
+
+<-- ":CategoryCommand"
+deactivate
+@enduml
