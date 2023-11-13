@@ -108,11 +108,13 @@ class ParserTest {
         assertEquals(Parser.parseNonNegativeDouble("0.5"), 0.5);
         assertEquals(Parser.parseNonNegativeDouble(".5"), 0.5);
         assertEquals(Parser.parseNonNegativeDouble("18.5"), 18.5);
+        assertEquals(Parser.parseNonNegativeDouble("9999999.99"), 9_999_999.99);
     }
 
     @Test
     void parseDoublePositiveZero() {
         assertEquals(Parser.parseNonNegativeDouble("0"), 0);
+        assertEquals(Parser.parseNonNegativeDouble("0.00"), 0);
     }
 
     @Test
@@ -125,6 +127,8 @@ class ParserTest {
         assertNull(Parser.parseNonNegativeDouble("-18.5"));
         assertNull(Parser.parseNonNegativeDouble("-18."));
         assertNull(Parser.parseNonNegativeDouble("-.5"));
+        assertNull(Parser.parseNonNegativeDouble("0.000"));
+        assertNull(Parser.parseNonNegativeDouble("10000000"));
     }
 
     /**
