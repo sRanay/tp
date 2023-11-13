@@ -3,7 +3,7 @@
 ## Project: FinText
 
 FinText is a **Command Line Interface (CLI)-based personal finance tracker to make it easy for users to track and manage
-their spending,** and generate daily/weekly/monthly reports to break down how they spend.
+their saving/spending,** and view a summary of their daily/weekly/monthly transactions.
 
 Given below are my contributions to the project.
 
@@ -27,14 +27,19 @@ Based on those, it will create and return the relevant Command object.
 - Enhancements to existing features:
     - Add feature to allow user to list transaction by week and month. (Pull request [#80](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/80))
     - Fixed storage location for files during unit tests overwriting the actual storage files. (Pull request [#91](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/91))
+    - Modify EditTransactionCommand to edit multiple values at once. (Pull request [#167](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/167))
 - Contributions to the UG:
     - Updated `list` command to show filtering by week and month. [#80](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/80)
     - Added examples for `help` command. [#90](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/90)
     - Updated on the program behavior when duplicate arguments are specified. [#134](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/134)
+    - Updated description for Edit Transaction feature to allow multiple arguments. [#168](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/168)
 - Contributions to the DG:
     - Added implementation details of `Parser`. [#54](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/54)
     - Added details of `Income` and `Expense` classes, and their class diagram. [#82](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/82)
     - Added Architecture diagram and sequence diagram for `Parser`. [#82](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/82)
+    - Added Manual tests instruction. [#158](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/158)
+    - Added implementation details for Goal, Category, Delete Transaction and Summary features. [#162](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/162)
+    - Added implementation details of Edit Transaction feature. [#168](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/168)
 - Community:
     - PR reviewed (with non-trivial review comments): [#11](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/11), [#32](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/32), [#81](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/81), [#137](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/137)
     - Reported bugs and suggestions for other teams in the class(examples: [1](https://github.com/AY2324S1-CS2113-T18-3/tp/issues/141), [2](https://github.com/AY2324S1-CS2113-T18-3/tp/issues/156), [3](https://github.com/AY2324S1-CS2113-T18-3/tp/issues/165), [4](https://github.com/AY2324S1-CS2113-T18-3/tp/issues/161), [5](https://github.com/AY2324S1-CS2113-T18-3/tp/issues/148), [6](https://github.com/AY2324S1-CS2113-T18-3/tp/issues/143), [7](https://github.com/AY2324S1-CS2113-T18-3/tp/issues/140))

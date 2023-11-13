@@ -1,0 +1,49 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+class Ui {
+    {static} + COLUMN_WIDTH: int = 10
+    {static} + TYPE_COLUMN_WIDTH: int = 20
+    {static} + LIST_COLUMN_WIDTH: int = 30
+
+    + Ui()
+    + Ui(outputstream: OutputStream)
+    + printTableRow(rowValues: ArrayList<String>): void
+    + printTableRow(rowValues: ArrayList<String>, headers: String[]): void
+    + printTableRow(rowValues: ArrayList<String>, headers: String[], customWidths: Integer[]): void
+    + printTableRows(rows: ArrayList<ArrayList<String>>): void
+    + printTableRows(rows: ArrayList<ArrayList<String>>, headers: String[]): void
+    + printTableRows(rows: ArrayList<ArrayList<String>>, headers: String[], customWidths: Integer[]): void
+    + printTableHeader(headers: String[], customWidths: Integer[])
+    + formatAmount(value: Double): String
+    + print(value: String): String
+    + printGreeting(): String
+    + printBye(): String
+    + readUserInput(): String
+    + listTransactions(list: ArrayList<ArrayList<String>>, headers: String[], headerMessage: String): void
+    + printGoalsStatus(goalsMap: HashMap<Goal, Double>): void
+    + printCategoryStatus(categoryMap: HashMap<Category, Double>): void
+    + close(): void
+}
+
+package "java.io" #DDDDDD {
+    class "{abstract}\nOutputStream" {
+        + <U+007B>abstract<U+007D> write(b: int): void
+        + write(b: byte[]): void
+        + flush(): void
+    }
+}
+
+
+package "java.util" #DDDDDD {
+    class Scanner {
+        + Scanner(i: InputStream)
+        + nextLine(): String
+        + close(): void
+    }
+}
+
+Ui -[dashed]-> "{abstract}\nOutputStream" :> uses
+Ui --> Scanner :> uses
+@enduml

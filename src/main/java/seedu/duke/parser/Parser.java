@@ -29,8 +29,9 @@ public class Parser {
     private static final String ARG_PREFIX = "/";
     private static final String DELIM = " ";
     private static final String EMPTY_STRING = "";
-    private static final Pattern DBL_POS_PATTERN = Pattern.compile("^(\\d*.?\\d+|\\d+.)$");
+    private static final Pattern DBL_POS_PATTERN = Pattern.compile("^\\d*.?\\d{0,2}$");
     private static final Double DBL_POS_ZERO = 0.0;
+    private static final Double DBL_TEN_MILLION = 10_000_000.0;
     private static final int SPLIT_LIMIT = 2;
 
     private static final String DUPLICATE_KEY_MSG = "Duplicate arguments detected. Refer to help for command usage.";
@@ -192,6 +193,11 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a double from string
+     * @param value String to be parsed
+     * @return parsed value if valid otherwise {@code null}
+     */
     public static Double parseDouble(String value) {
         try {
             return Double.parseDouble(value);
@@ -200,11 +206,19 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a double and ensures that the value is not negative and not larger than
+     * or equal to ten million. Additionally, enforces input only has at most 2 decimal
+     * places.
+     * @param value String to be parsed
+     * @return parsed value if valid otherwise {@code null}
+     */
     public static Double parseNonNegativeDouble(String value) {
         Double parsedValue = parseDouble(value);
         if (parsedValue == null
                 || !DBL_POS_PATTERN.matcher(value).matches()
                 || parsedValue.compareTo(DBL_POS_ZERO) < 0
+                || parsedValue.compareTo(DBL_TEN_MILLION) >= 0
         ) {
             return null;
         }
@@ -212,6 +226,11 @@ public class Parser {
         return parsedValue;
     }
 
+    /**
+     * Parses a date (in {@value DATE_INPUT_PATTERN} format) from string
+     * @param value Date string to be parsed
+     * @return LocalDate value if valid otherwise {@code null}
+     */
     public static LocalDate parseDate(String value) {
         if (value == null) {
             return null;

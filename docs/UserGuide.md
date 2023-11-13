@@ -64,7 +64,7 @@ Adds an income towards a goal.
 Format: `in DESCRIPTION /amount AMOUNT [/goal GOAL] [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
-* `AMOUNT` must be more than or equal to 0.
+* `AMOUNT` must be more than or equal to 0 and less than 10 million, it can contain at most 2 decimal points.
 * `DATE` must be in format `DDMMYYYY`
   * If `RECURRENCE` is specified, date must not be earlier than or equal to 1 period in the past (can be in the future).
     * i.e. If `RECURRENCE` is weekly, date specified must not be more than 6 days in the past.
@@ -91,7 +91,7 @@ Adds an expense for a category.
 Format: `out DESCRIPTION /amount AMOUNT [/category CATEGORY] [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
-* `AMOUNT` must be more than or equal to 0.
+* `AMOUNT` must be more than or equal to 0 and less than 10 million, it can contain at most 2 decimal points.
 * `DATE` must be in format `DDMMYYYY`
   * If `RECURRENCE` is specified, date must not be earlier than or equal to 1 period in the past (can be in the future).
     * i.e. If `RECURRENCE` is weekly, date specified must not be more than 6 days in the past.
@@ -188,7 +188,7 @@ Format: `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`
 * Only either `/add` or `/remove` can be provided. They should not be provided together.
 * `GOAL` is case-insensitive
 * `/add GOAL` has to be accompanied with `/amount AMOUNT`
-* `AMOUNT` has to be a positive number
+* `AMOUNT` has to be a positive number that is less than 10 million, it can contain at most 2 decimal points.
 
 ### Add/Remove a category: `category`
 Creates or deletes a user's category (used for expenses)
@@ -221,6 +221,7 @@ Format: `edit INDEX /type (in | out) [/description DESCRIPTION] [/amount AMOUNT]
 - User cannot edit the date field.
 - User cannot edit the recurrence field.
 - In case of editing a goal, it must exist beforehand.
+- The same constraints that apply when adding income/expenses also apply here.
 
 **Usage Example:**
 

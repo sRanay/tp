@@ -21,8 +21,8 @@ public class SummaryCommand extends Command {
     private static final String INVALID_TYPE = "Please indicate either /type in or /type out.";
     private static final String EMPTY_LIST = "It appears that we have come up empty. Why not try adding some" +
             " transactions first?";
-    private static final String STARTING_INCOME_MSG = "Good job! Total income";
-    private static final String STARTING_EXPENSE_MSG = "Wise spending! Total expense";
+    private static final String STARTING_INCOME_MSG = "Good job! Total income so far";
+    private static final String STARTING_EXPENSE_MSG = "Wise spending! Total expense so far";
     private static final String DAY_ARG = "day";
     private static final String WEEK_ARG = "week";
     private static final String MONTH_ARG = "month";
