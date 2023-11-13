@@ -13,6 +13,7 @@ public class GoalCommand extends ClassificationCommand {
     private static final String REMOVE_COMMAND = "remove";
     private static final String AMOUNT = "amount";
     private static final String INVALID_INPUT = "Your goal input is empty/invalid :(";
+    private static final String INVALID_AMOUNT = "Invalid amount! Please ensure it is more than 0";
 
     public GoalCommand(String description, HashMap<String, String> args) {
         super(description, args);
@@ -44,7 +45,9 @@ public class GoalCommand extends ClassificationCommand {
         }
         Double parsedAmt = Parser.parseNonNegativeDouble(amount);
         if (parsedAmt == null) {
-            errorMessage(INVALID_INPUT);
+            errorMessage(INVALID_AMOUNT);
+        } else if (parsedAmt == 0) {
+            errorMessage(INVALID_AMOUNT);
         }
     }
 
