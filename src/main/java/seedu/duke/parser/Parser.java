@@ -29,7 +29,7 @@ public class Parser {
     private static final String ARG_PREFIX = "/";
     private static final String DELIM = " ";
     private static final String EMPTY_STRING = "";
-    private static final Pattern DBL_POS_PATTERN = Pattern.compile("^(\\d*.?\\d{1,2}|\\d+.)$");
+    private static final Pattern DBL_POS_PATTERN = Pattern.compile("^\\d*.?\\d{0,2}$");
     private static final Double DBL_POS_ZERO = 0.0;
     private static final Double DBL_TEN_MILLION = 10_000_000.0;
     private static final int SPLIT_LIMIT = 2;
