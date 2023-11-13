@@ -241,6 +241,14 @@ public class ListCommand extends Command {
         return transactionStrings;
     }
 
+    /**
+     * Returns filtered arraylist of income transactions.
+     * Filters the income transactions based on the filter indicated.
+     *
+     * @param transactionsArrayList arraylist of income transaction.
+     * @param filterByMonth boolean to indicate if filter by month, else filter by week.
+     * @return ArrayList of income transaction.
+     */
     private ArrayList<Income> filterIncome(ArrayList<Income> transactionsArrayList, boolean filterByMonth) {
         ArrayList<Income> filteredArrayList = new ArrayList<>();
         for (Income transaction : transactionsArrayList) {
@@ -254,6 +262,14 @@ public class ListCommand extends Command {
         return filteredArrayList;
     }
 
+    /**
+     * Returns filtered arraylist of expense transactions.
+     * Filters the expense transactions based on the filter indicated.
+     *
+     * @param transactionsArrayList arraylist of expense transaction.
+     * @param filterByMonth boolean to indicate if filter by month, else filter by week.
+     * @return ArrayList of expense transaction.
+     */
     private ArrayList<Expense> filterExpense(ArrayList<Expense> transactionsArrayList, boolean filterByMonth) {
         ArrayList<Expense> filteredArrayList = new ArrayList<>();
         for (Expense transaction : transactionsArrayList) {

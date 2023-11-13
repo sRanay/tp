@@ -56,18 +56,19 @@ class `Command`. The `Command` component is responsible for executing the comman
 All error handling is handled here and any errors/output would be passed to the `UI` component for printing and
 formatting of the output.
 
-| Command                  | Purpose                                    |
-|--------------------------|--------------------------------------------|
-| AddExpenseCommand        | Add a new Expense transaction              |
-| AddIncomeCommand         | Add a new Income transaction               |
-| CategoryCommand          | Add/Remove a Category (used for expense)   |
-| ExitCommand              | Exit the program                           |
-| GoalCommand              | Add/Remove a Goal (used for income)        |
-| HelpCommand              | Gives usage format information to the user |
-| ListCommand              | Lists all incoming/outgoing transactions   |
-| ExportCommand            | Exports transactions data into CSV FIle.   |
-| RemoveTransactionCommand | Deletes a transaction                      |
-| EditTransactionCommand   | Edits an income/expense transaction        |
+| Command Class            | Purpose                                        |
+|--------------------------|------------------------------------------------|
+| AddExpenseCommand        | Add a new Expense transaction                  |
+| AddIncomeCommand         | Add a new Income transaction                   |
+| CategoryCommand          | Add/Remove a Category (used for expense)       |
+| ExitCommand              | Exit the program                               |
+| GoalCommand              | Add/Remove a Goal (used for income)            |
+| HelpCommand              | Gives usage format information to the user     |
+| ListCommand              | Lists all incoming/outgoing transactions       |
+| ExportCommand            | Exports transactions data into CSV FIle        |
+| RemoveTransactionCommand | Deletes a transaction                          |
+| EditTransactionCommand   | Edits an income/expense transaction            |
+| SummaryCommand           | Summarise the total income/expense transaction |
 
 ### Storage component
 The `Storage` functionality is to load data from the storage files (`category-store.csv` , `expense-store.csv`, `goal-store.csv`, `income-store.csv`) into the application. It will also store any data while the application is running.
@@ -233,6 +234,25 @@ the transaction just added by the user.
 
 ### Edit transaction feature
 
+The edit transaction feature is facilitated by `EditTransactionCommand`, which extends `Command`. Based on the `/type` argument value,
+either the income or expense transaction will be edited. User can edit the description, amount, goal (for income transaction) and category (for expense transaction). 
+Date and recurrence of the transaction cannot be edited.
+
+The command will first call `EditTransactionCommand#throwIfInvalidDescOrArgs()` to check that valid arguments and value are supplied by the user. Afterward, `EditTransactionCommand#editTransaction()`
+will get the maximum number of transaction from `EditTransactionCommand#getTransactionMaxSize()`,
+then parse the index supplied by the user and ensure is a valid integer using `EditTransactionCommand#parseIdx()`. This parsed index will then be used to update the
+transaction from the `StateManager`. Afterward, `EditTransactionCommand#printSuccess()` will be called to print a success message
+to inform the user that the transaction has been updated with the new values.
+
+Given below is an example usage scenario and how the edit transaction feature behaves.
+
+Step 1. The user launches the application for the first time. There will be no transaction available.
+
+Step 2. The user input `out dinner /amount 10 /category food` to add expense transaction.
+
+Step 3. The user input `edit 1 /type out /description lunch /amount 12 /category essentials`. This will edit the first expense transaction, which is
+the transaction just added by the user. The new description will be `lunch`, amount `12` and category `essentials`.
+
 ### List feature
 
 ### Summary feature
@@ -263,9 +283,8 @@ Step 4. The total amount will be output.
 
 ### Value proposition
 
-Personal finance tracker to make it easy for users to track and manage their spending, \
-and generate daily/weekly/monthly reports to break down how they spend (e.g. spending categories, \
-whether they spend above their income, etc).
+Personal finance tracker to make it easy for users to track and manage their saving/spending, \
+and view a summary of their daily/weekly/monthly transactions.
 
 ## User Stories
 
@@ -281,16 +300,180 @@ whether they spend above their income, etc).
 
 ## Non-Functional Requirements
 
-- The program supports Java 11
-- The program should be OS-agnostic
-- The program should provide a consistent experience across the different platforms as far as possible
-- The program should be able to work locally without internet connectivity
-- The program should be intuitive to use
+- The program work on any mainstream OS with Java 11.
+- The program should provide a consistent experience across the different platforms as far as possible.
+- The program should be able to work locally without internet connectivity.
+- The program should be intuitive to use.
 
 ## Glossary
 
-* *glossary item* - Definition
+| Terms         | Definition                                   |
+|---------------|----------------------------------------------|
+| Mainstream OS | Windows, Linux, Unix, OS-X                   |
+
 
 ## Instructions for manual testing
 
-{Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
+Listed below are the steps to test the program manually.
+
+### Launching and exiting the program
+1. Launching program
+   1. Download the jar file and store it in a new folder.
+   2. Run the jar file using `java -jar FinText.jar` (Where FinText.jar is the jar file name)
+   3. You will be greeted with a welcome message.
+2. Exiting the program
+   1. Input `bye` to exit the program safely.
+
+### Adding an income transaction
+1. Adding an income transaction.
+   1. Test case: `in angbao /amount 100` <br>
+   Expected: An income transaction is being tracked with the description `angbao`, amount `100.00`, date will be the 
+   current date, goal `Uncategorised` and recurrence `none`.
+2. Adding an income transaction with a specific date.
+   1. Test case: `in angbao /amount 100 /date 10112023` <br>
+      Expected: An income transaction is being tracked with the description `angbao`, amount `100.00`, date
+      `2023-11-10`, goal `Uncategorised` and recurrence `none`.
+3. Adding an income transaction with a specific date and goal.
+   1. Prerequisite: A goal `car` must be added first.
+   2. Test case: `in angbao /amount 100 /date 10112023 /goal car` <br>
+       Expected: An income transaction is being tracked with the description `angbao`, amount `100.00`, date
+       `2023-11-10`, goal `car` and recurrence `none`.
+4. Adding an income transaction with a specific date, goal and recurring monthly.
+   1. Prerequisite: A goal `car` must be added first.
+   2. Test case: `in salary /amount 3000 /date 10112023 /goal car /recurrence monthly` <br>
+      Expected: An income transaction is being tracked with the description `salary`, amount `3000.00`, date
+      `2023-11-10`, goal `car` and recurrence `monthly`.
+
+### Adding an expense transaction
+1. Adding an expense transaction.
+   1. Test case: `out dinner /amount 10` <br>
+      Expected: An expense transaction is being tracked with the description `dinner`, amount `10.00`, date will be the
+      current date, category `Uncategorised` and recurrence `none`.
+2. Adding an expense transaction with a specific date.
+   1. Test case: `out dinner /amount 10 /date 10112023` <br>
+      Expected: An expense transaction is being tracked with the description `dinner`, amount `10.00`, date
+      `2023-11-10`, category `Uncategorised` and recurrence `none`.
+3. Adding an expense transaction with a specific date and category.
+   1. Test case: `out dinner /amount 10 /date 10112023 /category food` <br>
+      Expected: An expense transaction is being tracked with the description `dinner`, amount `10.00`, date
+      `2023-11-10`, category `food` and recurrence `none`.
+4. Adding an expense transaction with a specific date, category and recurring daily.
+   1. Test case: `out dinner /amount 10 /date 10112023 /category food /recurrence daily` <br>
+      Expected: An expense transaction is being tracked with the description `dinner`, amount `10.00`, date
+      `2023-11-10`, category `food` and recurrence `daily`.
+
+### Deleting a transaction
+1. Deleting an income transaction
+   1. Prerequisite: Ensure there is at least 1 income transaction added.
+   2. Test Case: `delete 1 /type in` <br>
+      Expected: The first income shown when listing income transactions is deleted.
+   3. Test Case: `delete x /type in` (Where `x` is a number greater than the total number of income transactions, or
+   less than 1, or is not a number) <br>
+      Expected: A error message will be shown to input valid index.
+   4. Test Case: `delete 1` <br>
+   Expected: A error message will be shown to indicate the transaction type.
+2. Deleting an expense transaction
+   1. Prerequisite: Ensure there is at least 1 expense transaction added.
+   2. Test Case: `delete 1 /type out` <br>
+      Expected: The first expense shown when listing expense transactions is deleted.
+   3. Test Case: `delete x /type in` (Where `x` is a number greater than the total number of expense transactions, or
+      less than 1, or is not a number) <br>
+      Expected: A error message will be shown to input valid index.
+   4. Test Case: `delete 1` <br>
+      Expected: A error message will be shown to indicate the transaction type.
+
+### Listing transactions
+1. Listing income transactions
+   1. Prerequisite: Ensure there is at least 1 income transaction added. A goal `car` is added.
+   2. Test Case: `list /type in` <br>
+      Expected: All income transactions will be listed.
+   3. Test Case: `list /type in /goal car` <br>
+      Expected: Only income transactions with the goal `car` will be listed.
+   4. Test Case: `list /type in /goal car /week` <br>
+      Expected: Only income transactions with the goal `car` and within the current week will be listed.
+
+2. Listing expense transactions
+   1. Prerequisite: Ensure there is at least 1 expense transaction added.
+   2. Test Case: `list /type out` <br>
+      Expected: All expense transactions will be listed.
+   3. Test Case: `list /type out /category food` <br>
+      Expected: Only expense transactions with the category `food` will be listed.
+   4. Test Case: `list /type out /category food /week` <br>
+      Expected: Only expense transactions with the category `food` and within the current week will be listed.
+
+### Adding goal
+1. Adding goal
+   1. Test Case: `goal /add car /amount 1000000` <br>
+   Expected: Goal `car` is added with the amount `1000000`.
+   2. Test Case: `goal /add car` (Missing `/amount`) <br>
+   Expected: Error message is shown with the correct usage of the command.
+
+### Removing goal
+1. Removing goal
+   1. Prerequisite: Ensure that goal `car` is added.
+   2. Test Case: `goal /remove car` <br>
+      Expected: Goal `car` is removed. All income transaction with goal `car`, will be changed to goal `Uncategorised`.
+
+### Adding category
+1. Adding category
+   1. Test Case: `category /food` <br>
+      Expected: Category `food` is added.
+
+
+### Removing category
+1. Removing category
+   1. Prerequisite: Ensure that category `food` is added.
+   2. Test Case: `category /remove food` <br>
+      Expected: Category `food` is removed. All expense transaction with category `food`, will be changed to category `Uncategorised`.
+
+### Editing a transaction
+1. Editing an income transaction
+   1. Prerequisite: Ensure that there is at least one income transaction. `car` goal is added.
+   2. Test Case: `edit 1 /type in /description New Edited Description` <br>
+   Expected: The description of the first income transaction shown when listing income transactions will be changed to 
+   `New Edited Description`.
+   3. Test Case: `edit 1 /type in /amount 1234` <br>
+      Expected: The amount of the first income transaction shown when listing income transactions will be changed to
+      `1234.00`.
+   4. Test Case: `edit 1 /type in /description New Edited Description /amount 1234 /goal car` <br>
+         Expected: The first income transaction will be changed to description `New Edited Description`, amount `1234.00`, goal `car`.
+2. Editing an expense transaction
+   1. The output will be similar to editing income transaction, with type `out`. Instead of `goal`, `category` is edited instead.
+
+### Summarise the transaction total
+1. Summarise income transactions
+   1. Prerequisite: Ensure that there is at least one income transaction.
+   2. Test Case: `summary /type in` <br>
+   Expected: Show the total sum of income transactions.
+   3. Test Case: `summary /type in /day` <br>
+      Expected: Show the total sum of income transactions that are transacted in the current day.
+   4. Test Case: `summary /type in /week` <br>
+      Expected: Show the total sum of income transactions that are transacted in the current week.
+   5. Test Case: `summary /type in /month` <br>
+      Expected: Show the total sum of income transactions that are transacted in the current month.
+2. Summarise expense transactions
+   1. Prerequisite: Ensure that there is at least one expense transaction.
+   2. Test Case: `summary /type out` <br>
+      Expected: Show the total sum of expense transactions.
+   3. Test Case: `summary /type out /day` <br>
+      Expected: Show the total sum of expense transactions that are transacted in the current day.
+   4. Test Case: `summary /type out /week` <br>
+      Expected: Show the total sum of expense transactions that are transacted in the current week.
+   5. Test Case: `summary /type out /month` <br>
+      Expected: Show the total sum of expense transactions that are transacted in the current month.
+
+### Exporting transaction
+1. Exporting transactions
+   1. Test Case: `export` <br>
+   Expected: All transactions will be exported to a file `Transactions.csv`
+   2. Test Case: `export /type in` <br>
+      Expected: Only income transactions will be exported to a file `Transactions.csv`
+   3. Test Case: `export /type out` <br>
+      Expected: Only expense transactions will be exported to a file `Transactions.csv`
+
+### Help
+1. Help
+   1. Test Case: `help` <br>
+   Expected: Show all the available commands and description of each command
+   2. Test Case: `help x` (Where `x` is the command) <br>
+   Expected: Show the usage and options of the command.

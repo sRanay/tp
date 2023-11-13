@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+
 public class Parser {
     public static final String DATE_INPUT_PATTERN = "ddMMyyyy";
     public static final DateTimeFormatter DATE_INPUT_FORMATTER = DateTimeFormatter.ofPattern(DATE_INPUT_PATTERN);
@@ -30,12 +31,21 @@ public class Parser {
     private static final String EMPTY_STRING = "";
     private static final Pattern DBL_POS_PATTERN = Pattern.compile("^(\\d*.?\\d+|\\d+.)$");
     private static final Double DBL_POS_ZERO = 0.0;
+    private static final int SPLIT_LIMIT = 2;
 
     private static final String DUPLICATE_KEY_MSG = "Duplicate arguments detected. Refer to help for command usage.";
 
     public Parser() {
     }
 
+
+    /**
+     * Parses user input into command, description and arguments hashmap.
+     *
+     * @param userInput the user input.
+     * @return Command to be executed.
+     * @throws DukeException if invalid command is supplied.
+     */
     public Command parse(String userInput) throws DukeException {
         String trimmedInput = userInput.trim();
 
@@ -46,6 +56,15 @@ public class Parser {
         return getCommand(commandWord, description, argsMap);
     }
 
+    /**
+     * Instantiates the Command with description and hashmap of arguments.
+     *
+     * @param commandWord the command word
+     * @param description the description
+     * @param argsMap     hashmap of arguments
+     * @return Command object
+     * @throws DukeException if invalid command is supplied.
+     */
     public Command getCommand(String commandWord, String description,
                               HashMap<String, String> argsMap) throws DukeException {
         switch (commandWord) {
@@ -76,24 +95,45 @@ public class Parser {
         }
     }
 
+    /**
+     * Splits the user input and returns the command word.
+     *
+     * @param userInput the user input.
+     * @return String the command word.
+     */
     public String getCommandWord(String userInput) {
-        return userInput.split(DELIM, 2)[0].toLowerCase();
+        return userInput.split(DELIM, SPLIT_LIMIT)[0].toLowerCase();
     }
 
+    /**
+     * Splits the user input and returns the description.
+     * Returns empty string if no description is found.
+     *
+     * @param userInput the user input.
+     * @return String the description.
+     */
     public String getDescription(String userInput) {
-        String[] splitInput = userInput.split(DELIM, 2);
+        String[] splitInput = userInput.split(DELIM, SPLIT_LIMIT);
         if (splitInput.length <= 1) {
             return EMPTY_STRING;
         }
-        String description = splitInput[1].split(SPACE_WITH_ARG_PREFIX, 2)[0].trim();
+        String description = splitInput[1].split(SPACE_WITH_ARG_PREFIX, SPLIT_LIMIT)[0].trim();
         if (description.startsWith(ARG_PREFIX)) {
             return EMPTY_STRING;
         }
         return description;
     }
 
+    /**
+     * Returns a hashmap of arguments from the user input.
+     * If no argument is supplied, empty hashmap will be returned.
+     *
+     * @param userInput the user input.
+     * @return HashMap of arguments.
+     * @throws DukeException if duplicate arguments exist.
+     */
     public HashMap<String, String> getArguments(String userInput) throws DukeException {
-        String[] splitInput = userInput.split(SPACE_WITH_ARG_PREFIX, 2);
+        String[] splitInput = userInput.split(SPACE_WITH_ARG_PREFIX, SPLIT_LIMIT);
         HashMap<String, String> argsMap = new HashMap<>();
         if (splitInput.length <= 1) {
             return argsMap;
@@ -125,6 +165,13 @@ public class Parser {
         return argsMap;
     }
 
+    /**
+     * Converts arraylist of argument values to String separated
+     * by whitespace.
+     *
+     * @param argValues arraylist of argument values.
+     * @return String value.
+     */
     public String convertArgValueListToString(ArrayList<String> argValues) {
         if (argValues.isEmpty()) {
             return EMPTY_STRING;
@@ -132,6 +179,13 @@ public class Parser {
         return String.join(DELIM, argValues).trim();
     }
 
+    /**
+     * Checks if argument already exist.
+     *
+     * @param argName argument name.
+     * @param argsMap hashmap of arguments.
+     * @throws DukeException if the argument exists.
+     */
     public static void checkIfKeyExist(String argName, HashMap<String, String> argsMap) throws DukeException {
         if (argsMap.containsKey(argName)) {
             throw new DukeException(DUPLICATE_KEY_MSG);

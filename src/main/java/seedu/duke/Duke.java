@@ -9,6 +9,9 @@ import seedu.duke.parser.Parser;
 import seedu.duke.storage.Storage;
 import seedu.duke.ui.Ui;
 
+/**
+ * The type Duke.
+ */
 public class Duke {
 
     private static Ui ui;
@@ -40,6 +43,10 @@ public class Duke {
         );
     }
 
+
+    /**
+     * Gets the user input and execute the command based on the input.
+     */
     public void run() {
         ui.printGreeting();
         String userInput;

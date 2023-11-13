@@ -214,6 +214,10 @@ public class StorageTest {
         }
     }
 
+    /**
+     * Test for loading storage files with empty columns
+     * Tests is split depending on the OS.
+     */
     @Nested
     class WithEmptyColumns {
         @BeforeEach
@@ -291,6 +295,10 @@ public class StorageTest {
         }
     }
 
+    /**
+     * Test for loading storage files with errors in some rows
+     * Tests is split depending on the OS.
+     */
     @Nested
     class WithErrorColumns {
         @BeforeEach
@@ -368,6 +376,10 @@ public class StorageTest {
         }
     }
 
+    /**
+     * Test for saving to storage file.
+     * Tests is split depending on the OS.
+     */
     @Nested
     class SaveToFile {
         @BeforeEach
