@@ -47,4 +47,5 @@ Given below are my contributions to the project.
 
 * **Community**:
     * PR reviewed (with non-trivial review comments): [\#78](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/78), [\#85](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/85)
+    * All PRs reviewed: [PRs Reviewed](https://github.com/AY2324S1-CS2113-W12-3/tp/pulls?q=is%3Apr+reviewed-by%3AJonoans)
     * Reported bugs and suggestions for other teams in the class (examples: [1](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/86), [2](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/92), [3](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/116), [4](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/122), [5](https://github.com/AY2324S1-CS2113-T18-4/tp/issues/97))
