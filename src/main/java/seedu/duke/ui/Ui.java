@@ -31,10 +31,12 @@ public class Ui {
     private static final int ID_COLUMN_PADDING = 2;
 
     private static final int SPACE_BETWEEN_COLS = 3;
+    private static final int PROGRESS_WIDTH = 35;
 
     private static final String AMOUNT_FORMAT = "%.2f";
     private static final char LINE_DELIMITER = '\n';
-    private static final Integer[] TYPE_COLUMN_WIDTHS = {TYPE_WIDTH, TYPE_WIDTH};
+    private static final Integer[] TYPE_COLUMN_WIDTHS_WITH_PROGRESS = {TYPE_WIDTH, TYPE_WIDTH, PROGRESS_WIDTH};
+    private static final Integer[] TYPE_COLUMN_WIDTHS_WO_PROGRESS = {TYPE_WIDTH, TYPE_WIDTH};
     private static final String EMPTY_STRING = "";
 
     private final Scanner scanner;
@@ -269,33 +271,40 @@ public class Ui {
             goalsToPrint.add(uncategorised);
         }
         String headerMessage = "Goals Status";
-        String wrapper = createWrapper(TYPE_COLUMN_WIDTHS, headerMessage);
+        String wrapper = createWrapper(TYPE_COLUMN_WIDTHS_WITH_PROGRESS, headerMessage);
         print(wrapper);
-        printStatus(goalsToPrint);
+        printStatus(goalsToPrint, true);
         printUnusedGoals(goalsMap);
         print(wrapper);
     }
 
-    private void printStatus(ArrayList<TypePrint> arrayToPrint) {
+    private void printStatus(ArrayList<TypePrint> arrayToPrint, boolean showProgress) {
         if (arrayToPrint.isEmpty()) {
             String message = "No existing transactions";
             print(message);
             return;
         }
-        String[] headers = {"Name", "Amount"};
-        printTableHeader(headers, TYPE_COLUMN_WIDTHS);
-        for (TypePrint c : arrayToPrint) {
-            ArrayList<String> entry = new ArrayList<>();
-            entry.add(c.getDescription());
-            entry.add(c.getAmount());
-            printTableRow(entry, TYPE_COLUMN_WIDTHS);
-            if (c.targetAmountExists()) {
-                progressBar(c.getPercentage());
+        if (showProgress) {
+            String[] headers = {"Name", "Amount", "Progress"};
+            printTableHeader(headers, TYPE_COLUMN_WIDTHS_WITH_PROGRESS);
+        } else {
+            String[] headers = {"Name", "Amount"};
+            printTableHeader(headers, TYPE_COLUMN_WIDTHS_WO_PROGRESS);
+        }
+        for (TypePrint entry : arrayToPrint) {
+            ArrayList<String> printEntry = new ArrayList<>();
+            printEntry.add(entry.getDescription());
+            printEntry.add(entry.getAmount());
+            if (entry.targetAmountExists()) {
+                printEntry.add(progressBar(entry.getPercentage()));
+                printTableRow(printEntry, TYPE_COLUMN_WIDTHS_WITH_PROGRESS);
+            } else {
+                printTableRow(printEntry, TYPE_COLUMN_WIDTHS_WO_PROGRESS);
             }
         }
     }
 
-    public void progressBar(Double percentage) {
+    public String progressBar(Double percentage) {
         int maxBars = 20;
         int steps = 5;
         double barCalculation = percentage / steps;
@@ -307,9 +316,9 @@ public class Ui {
         String closingSeparator = "]";
         String progressBar = new String(new char[barsToPrint]).replace('\0', '=');
         String filler = new String(new char[maxBars - barsToPrint]).replace('\0', ' ');
-        String progress = "Progress: " + openingSeparator + progressBar + filler
+        String progress = openingSeparator + progressBar + filler
                 + closingSeparator + " " + formatAmount(percentage) + "%";
-        print(progress);
+        return progress;
     }
 
     private void printUnusedGoals(HashMap<Goal, Double> goals) {
@@ -330,7 +339,7 @@ public class Ui {
         String unusedHeader = LINE_DELIMITER + "Unused Goals:";
         print(unusedHeader);
         String[] header = {"Goal", "Target Amount"};
-        printTableRows(unusedGoals, header, TYPE_COLUMN_WIDTHS);
+        printTableRows(unusedGoals, header, TYPE_COLUMN_WIDTHS_WO_PROGRESS);
     }
 
     public void printCategoryStatus(HashMap<Category, Double> categoryMap) {
@@ -356,12 +365,11 @@ public class Ui {
             categoriesToPrint.add(uncategorised);
         }
         String headerMessage = "Categories Status";
-        String wrapper = createWrapper(TYPE_COLUMN_WIDTHS, headerMessage);
+        String wrapper = createWrapper(TYPE_COLUMN_WIDTHS_WO_PROGRESS, headerMessage);
         print(wrapper);
-        printStatus(categoriesToPrint);
+        printStatus(categoriesToPrint, false);
         printUnusedCategories(categoryMap);
         print(wrapper);
-
     }
 
     private void printUnusedCategories(HashMap<Category, Double> categories) {
