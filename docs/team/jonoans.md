@@ -7,7 +7,7 @@ title: Jonathan's Project Portfolio Page
 ### Project: FinText
 
 FinText is a **Command Line Interface (CLI)-based personal finance tracker to make it easy for users to track and manage
-their spending,** and generate daily/weekly/monthly reports to break down how they spend.
+their saving/spending,** and view a summary of their daily/weekly/monthly transactions.
 
 Given below are my contributions to the project.
 
@@ -31,6 +31,7 @@ Given below are my contributions to the project.
     * Fixed test cases for list command ([\#38](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/38))
     * Fixed failing tests due to inter-test dependencies ([\#59](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/59/files))
         * Tests were indirectly dependent on one another because state program state was not properly cleared after tests ran for different components.
+    * Fixed edge case for edit command ([\#177](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/177))
 
 * **Documentation**:
     * User Guide:
