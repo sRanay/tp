@@ -37,6 +37,9 @@ public class StorageTest {
 
     private Storage storage;
 
+    /**
+     * Before each test, initialise the storage object;
+     */
     @BeforeEach
     void initialise() {
         File directory = new File(TEST_DIR);
@@ -47,6 +50,9 @@ public class StorageTest {
                 EXPENSE_STORAGE_FILENAME, EXPORT_STORAGE_FILENAME);
     }
 
+    /**
+     * Test for validRow function if there is empty value, it will return false.
+     */
     @Test
     void validRowWithEmptyValues() {
         String[] row = {"TEST1", ""};
@@ -56,6 +62,9 @@ public class StorageTest {
         assertEquals(false, storage.validRow(row));
     }
 
+    /**
+     * Test for validRow function if there is blank value, it will return false.
+     */
     @Test
     void validRowWithBlankValues() {
         String[] row = {"TEST1", " "};
@@ -65,12 +74,18 @@ public class StorageTest {
         assertEquals(false, storage.validRow(row));
     }
 
+    /**
+     * Test for validRow function if value is valid, it will return true.
+     */
     @Test
     void validRowWithCorrectValues() {
         String[] row = {"TEST1", "TEST2"};
         assertEquals(true, storage.validRow(row));
     }
 
+    /**
+     * Test for validDate function if value is in wrong format, it will return an error.
+     */
     @Test
     void validDateWithWrongFormat() {
         String dateStr = "25-10-2023";
@@ -80,6 +95,9 @@ public class StorageTest {
         });
     }
 
+    /**
+     * Test for validDate function if value is not a date format, it will return an error.
+     */
     @Test
     void validDateWithNotDateString() {
         String dateStr = "TEST";
@@ -89,6 +107,9 @@ public class StorageTest {
         });
     }
 
+    /**
+     * Test for validDate function if value is in correct format, it will return the date.
+     */
     @Test
     void validDateWithCorrectDateString() throws DukeException {
         String dateStr = "25/10/2023";
@@ -97,6 +118,9 @@ public class StorageTest {
         assertEquals(date, storage.validDate(dateStr, testFileName));
     }
 
+    /**
+     * Test for validBoolean function if value is a correct boolean string, it will return true.
+     */
     @Test
     void validBooleanWithCorrectBoolString() {
         String input = "True";
@@ -113,12 +137,18 @@ public class StorageTest {
         assertEquals(true, storage.validBoolean(input));
     }
 
+    /**
+     * Test for validBoolean function if value is a wrong boolean string, it will return false.
+     */
     @Test
     void validBooleanWithWrongBoolString() {
         String input = "test";
         assertEquals(false, storage.validBoolean(input));
     }
 
+    /**
+     * Test if loading of storage file will throw an error if files cannot be found.
+     */
     @Test
     void loadWithNoStorageFile() {
         assertThrows(DukeException.class, () -> {
@@ -137,6 +167,11 @@ public class StorageTest {
 
     @Nested
     class WithValidStorage {
+
+        /**
+         * Before each test, copy file to TestFiles Directory.
+         * @throws IOException if the files cannot be found.
+         */
         @BeforeEach
         void copyFiles() throws IOException {
             File src = new File("./TestCSV/Windows/valid/category-store.csv");
@@ -153,6 +188,9 @@ public class StorageTest {
             Files.copy(src.toPath(), dst.toPath());
         }
 
+        /**
+         * Restore the state back to the original after each test.
+         */
         @AfterEach
         void clearStateManager() {
             File file = new File(CATEGORY_STORAGE_FILENAME);
@@ -166,6 +204,10 @@ public class StorageTest {
             StateManager.clearStateManager();
         }
 
+        /**
+         * Test if the application can load back the information given valid storage files.
+         * @throws DukeException if the command cannot be executed.
+         */
         @Test
         void loadWithValidStorageFile() throws DukeException {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -220,6 +262,11 @@ public class StorageTest {
      */
     @Nested
     class WithEmptyColumns {
+
+        /**
+         * Before each test, copy file to TestFiles Directory.
+         * @throws IOException if the files cannot be found.
+         */
         @BeforeEach
         void copyFiles() throws IOException {
             File src = new File("./TestCSV/Windows/empty/category-store.csv");
@@ -236,6 +283,9 @@ public class StorageTest {
             Files.copy(src.toPath(), dst.toPath());
         }
 
+        /**
+         * Restore the state back to the original after each test.
+         */
         @AfterEach
         void clearStateManager() {
             File file = new File(CATEGORY_STORAGE_FILENAME);
@@ -249,6 +299,10 @@ public class StorageTest {
             StateManager.clearStateManager();
         }
 
+        /**
+         * Test if the application can load back the information given storage files with empty column.
+         * @throws DukeException if the command cannot be executed.
+         */
         @Test
         void loadWithEmptyColumns() throws DukeException {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -295,12 +349,13 @@ public class StorageTest {
         }
     }
 
-    /**
-     * Test for loading storage files with errors in some rows
-     * Tests is split depending on the OS.
-     */
     @Nested
     class WithErrorColumns {
+
+        /**
+         * Before each test, copy file to TestFiles Directory.
+         * @throws IOException if the files cannot be found.
+         */
         @BeforeEach
         void copyFiles() throws IOException {
             File src = new File("./TestCSV/Windows/error/category-store.csv");
@@ -317,6 +372,9 @@ public class StorageTest {
             Files.copy(src.toPath(), dst.toPath());
         }
 
+        /**
+         * Restore the state back to the original after each test.
+         */
         @AfterEach
         void clearStateManager() {
             File file = new File(CATEGORY_STORAGE_FILENAME);
@@ -330,8 +388,12 @@ public class StorageTest {
             StateManager.clearStateManager();
         }
 
+        /**
+         * Test if the application can load back the information given storage files with error columns.
+         * @throws DukeException if the command cannot be executed.
+         */
         @Test
-        void loadWithEmptyColumns() throws DukeException {
+        void loadWithErrorColumns() throws DukeException {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             storage.load();
             Parser parser = new Parser();
@@ -376,12 +438,12 @@ public class StorageTest {
         }
     }
 
-    /**
-     * Test for saving to storage file.
-     * Tests is split depending on the OS.
-     */
     @Nested
     class SaveToFile {
+
+        /**
+         * Before each test, populate the state manager.
+         */
         @BeforeEach
         void populateStateManager() {
             try {
@@ -403,6 +465,9 @@ public class StorageTest {
             }
         }
 
+        /**
+         * Restore the state back to the original.
+         */
         @AfterEach
         void clearStateManager() {
             File file = new File(CATEGORY_STORAGE_FILENAME);
@@ -416,6 +481,12 @@ public class StorageTest {
             StateManager.clearStateManager();
         }
 
+        /**
+         * Test if data saved is saved correctly.
+         * This test is for Windows OS.
+         * @throws DukeException if command cannot execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.WINDOWS})
         void saveDataWorkingWindows() throws DukeException, IOException {
@@ -434,6 +505,12 @@ public class StorageTest {
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
 
+        /**
+         * Test if data saved is saved correctly.
+         * This test is for MacOS.
+         * @throws DukeException if command cannot execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.MAC})
         void saveDataWorkingMac() throws DukeException, IOException {
@@ -452,6 +529,12 @@ public class StorageTest {
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
 
+        /**
+         * Test if data saved is saved correctly.
+         * This test is for Linux.
+         * @throws DukeException if command cannot execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.LINUX})
         void saveDataWorkingLinux() throws DukeException, IOException {
