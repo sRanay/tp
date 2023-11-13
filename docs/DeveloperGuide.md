@@ -21,7 +21,7 @@ The bulk of the app's work is done by the following four components:
 ### UI component
 
 ![UI Sequence Diagram](./images/cs2113-ui-sequence.png "UI Sequence Diagram")
-![UI Class Diagram](./images/ui-class-diagram.png "UI Class Diagram")
+![UI Class Diagram](./images/ui-class-diagramv2.png "UI Class Diagram")
 
 The `UI` consists of a `Scanner` and an `OutputStream` object. Together, these objects abstract the functionalities of
 obtaining user input and providing feedback (output printed in terminal UI). The `UI` component provides a simple
@@ -229,7 +229,7 @@ the transaction just added by the user.
 ### Edit transaction feature
 
 ### List feature
-The summary feature is facilitated by `ListCommand`, which extends `Command`. Depending on user input, the user would
+The list feature is facilitated by `ListCommand`, which extends `Command`. Depending on user input, the user would
 be able to either view a summary of all current goals/categories and the progress towards a goal, or a list of all 
 income or expense transactions, with options to filter the list to obtain a more specific view.
 
@@ -261,6 +261,9 @@ Step 3. The program would calculate how much does each goal current have.
 
 Step 4. The program would then return a list of all goals that has some progress towards it, followed by uncategorised goals,
 where transactions were added without a goal listed, and a list of unused goals.
+
+Below is the ListCommand sequence diagram:
+![List Sequence Diagram](./images/ListSequenceDiagram.png "List Sequence Diagram")
 
 ### Summary feature
 
