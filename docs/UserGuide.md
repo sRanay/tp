@@ -221,6 +221,7 @@ Format: `edit INDEX /type (in | out) [/description DESCRIPTION] [/amount AMOUNT]
 - User cannot edit the date field.
 - User cannot edit the recurrence field.
 - In case of editing a goal, it must exist beforehand.
+- The same constraints that apply when adding income/expenses also apply here.
 
 **Usage Example:**
 
