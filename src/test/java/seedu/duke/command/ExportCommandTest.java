@@ -24,15 +24,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ExportCommandTest {
 
     private static final String TEST_DIR = "./TestFiles";
-    private static final String GOAL_STORAGE_FILENAME = "./TestFiles/goal-store.csv";
-    private static final String CATEGORY_STORAGE_FILENAME = "./TestFiles/category-store.csv";
-    private static final String INCOME_STORAGE_FILENAME = "./TestFiles/income-store.csv";
-    private static final String EXPENSE_STORAGE_FILENAME = "./TestFiles/expense-store.csv";
-    private static final String EXPORT_STORAGE_FILENAME = "./TestFiles/Transactions.csv";
+    private static final String GOAL_STORAGE_FILENAME = TEST_DIR + "/goal-store.csv";
+    private static final String CATEGORY_STORAGE_FILENAME = TEST_DIR + "/category-store.csv";
+    private static final String INCOME_STORAGE_FILENAME = TEST_DIR + "/income-store.csv";
+    private static final String EXPENSE_STORAGE_FILENAME = TEST_DIR + "/expense-store.csv";
+    private static final String EXPORT_STORAGE_FILENAME = TEST_DIR + "/Transactions.csv";
     private static Parser parser = new Parser();
     private ByteArrayOutputStream outputStream;
     private Storage storage;
 
+    /**
+     * Initialise the storage object before each test.
+     */
     @BeforeEach
     void initialise() {
         File directory = new File(TEST_DIR);
@@ -43,6 +46,9 @@ public class ExportCommandTest {
                 EXPENSE_STORAGE_FILENAME, EXPORT_STORAGE_FILENAME);
     }
 
+    /**
+     * Remove the Transaction file after each test
+     */
     @AfterEach
     void removeFile() {
         File file = new File(EXPORT_STORAGE_FILENAME);
@@ -51,6 +57,9 @@ public class ExportCommandTest {
 
     @Nested
     class ExportCommandOutput {
+        /**
+         * Reset the state to original after each test.
+         */
         @AfterEach
         void clearStateManager() {
             File file = new File(EXPORT_STORAGE_FILENAME);
@@ -58,6 +67,9 @@ public class ExportCommandTest {
             StateManager.clearStateManager();
         }
 
+        /**
+         * Populate the state manager with values before the test.
+         */
         @BeforeEach
         void populateStateManager() {
             try {
@@ -77,6 +89,10 @@ public class ExportCommandTest {
             }
         }
 
+        /**
+         * Test if it prints the export sucessful message after finish exporting without error.
+         * @throws DukeException if command cannot be executed.
+         */
         @Test
         public void exportSuccessful() throws DukeException {
             outputStream = new ByteArrayOutputStream();
@@ -89,6 +105,10 @@ public class ExportCommandTest {
             assertEquals("Transaction Data extracted\n", outputStream.toString());
         }
 
+        /**
+         * Test if export command still work if there is an existing export file.
+         * @throws DukeException if command fails to execute.
+         */
         @Test
         public void exportFileWhenExist() throws DukeException {
             outputStream = new ByteArrayOutputStream();
@@ -104,6 +124,10 @@ public class ExportCommandTest {
 
     @Nested
     class TypeIn {
+
+        /**
+         * Populate the state manager with values before the test.
+         */
         @BeforeEach
         void populateStateManager() {
             try {
@@ -123,6 +147,9 @@ public class ExportCommandTest {
             }
         }
 
+        /**
+         * Reset the state to original after each test.
+         */
         @AfterEach
         void clearStateManager() {
             File file = new File(EXPORT_STORAGE_FILENAME);
@@ -130,6 +157,12 @@ public class ExportCommandTest {
             StateManager.clearStateManager();
         }
 
+        /**
+         * Test if the export command successfully export all income transactions.
+         * This test is for Windows OS.
+         * @throws DukeException if command fails to execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.WINDOWS})
         public void exportFileInTransactionsWindows() throws DukeException, IOException {
@@ -145,6 +178,12 @@ public class ExportCommandTest {
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
 
+        /**
+         * Test if the export command successfully export all income transactions.
+         * This test is for MacOS.
+         * @throws DukeException if command fails to execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.MAC})
         public void exportFileInTransactionsMac() throws DukeException, IOException {
@@ -160,6 +199,12 @@ public class ExportCommandTest {
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
 
+        /**
+         * Test if the export command successfully export all income transactions.
+         * This test is for Linux.
+         * @throws DukeException if command fails to execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.LINUX})
         public void exportFileInTransactionsLinux() throws DukeException, IOException {
@@ -178,6 +223,10 @@ public class ExportCommandTest {
 
     @Nested
     class TypeAll {
+
+        /**
+         * Populate the state manager with values before the test.
+         */
         @BeforeEach
         void populateStateManager() {
             try {
@@ -197,6 +246,9 @@ public class ExportCommandTest {
             }
         }
 
+        /**
+         * Reset the state to original after each test.
+         */
         @AfterEach
         void clearStateManager() {
             File file = new File(EXPORT_STORAGE_FILENAME);
@@ -204,6 +256,12 @@ public class ExportCommandTest {
             StateManager.clearStateManager();
         }
 
+        /**
+         * Test if the export command successfully export all transactions.
+         * This test is for Windows OS.
+         * @throws DukeException if command fails to execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.WINDOWS})
         public void exportFileAllTransactionsWindows() throws DukeException, IOException {
@@ -219,6 +277,12 @@ public class ExportCommandTest {
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
 
+        /**
+         * Test if the export command successfully export all transactions.
+         * This test is for MacOS.
+         * @throws DukeException if command fails to execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.MAC})
         public void exportFileAllTransactionsMac() throws DukeException, IOException {
@@ -234,6 +298,12 @@ public class ExportCommandTest {
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
 
+        /**
+         * Test if the export command successfully export all transactions.
+         * This test is for Linux.
+         * @throws DukeException if command fails to execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.LINUX})
         public void exportFileAllTransactionsLinux() throws DukeException, IOException {
@@ -252,6 +322,10 @@ public class ExportCommandTest {
 
     @Nested
     class TypeOut {
+
+        /**
+         * Populate the state manager with values before the test.
+         */
         @BeforeEach
         void populateStateManager() {
             try {
@@ -271,6 +345,9 @@ public class ExportCommandTest {
             }
         }
 
+        /**
+         * Reset the state to original after each test.
+         */
         @AfterEach
         void clearStateManager() {
             File file = new File(EXPORT_STORAGE_FILENAME);
@@ -278,6 +355,12 @@ public class ExportCommandTest {
             StateManager.clearStateManager();
         }
 
+        /**
+         * Test if the export command successfully export expense transactions.
+         * This test is for Windows OS.
+         * @throws DukeException if command fails to execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.WINDOWS})
         public void exportFileOutTransactionsWindows() throws DukeException, IOException {
@@ -293,6 +376,12 @@ public class ExportCommandTest {
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
 
+        /**
+         * Test if the export command successfully export expense transactions.
+         * This test is for MacOS.
+         * @throws DukeException if command fails to execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.MAC})
         public void exportFileOutTransactionsMac() throws DukeException, IOException {
@@ -308,6 +397,12 @@ public class ExportCommandTest {
             assertEquals(true, FileUtils.contentEquals(output, testFile));
         }
 
+        /**
+         * Test if the export command successfully export expense transactions.
+         * This test is for Linux.
+         * @throws DukeException if command fails to execute.
+         * @throws IOException if file cannot be found.
+         */
         @Test
         @EnabledOnOs({OS.LINUX})
         public void exportFileOutTransactionsLinux() throws DukeException, IOException {
@@ -326,6 +421,9 @@ public class ExportCommandTest {
 
     @Nested
     class TypeError {
+        /**
+         * Populate the state manager with values before the test.
+         */
         @BeforeEach
         void populateStateManager() {
             try {
@@ -344,11 +442,18 @@ public class ExportCommandTest {
             }
         }
 
+        /**
+         * Reset the state to original after each test.
+         */
         @AfterEach
         void clearStateManager() {
             StateManager.clearStateManager();
         }
 
+        /**
+         * Test if the error message is thrown if the type enter is a wrong format.
+         * @throws DukeException if the type is not correctly specified.
+         */
         @Test
         public void exportWrongType() throws DukeException {
             outputStream = new ByteArrayOutputStream();
