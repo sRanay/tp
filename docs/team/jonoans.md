@@ -39,6 +39,7 @@ Given below are my contributions to the project.
         * Added information about `UI` class of program ([\#46](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/46), [\#79](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/79), [\#92](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/92)).
         * Added section for `StateManager` and `in` and `out` commands ([\#154](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/154), [\#164](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/164))
         * Added non-functional requirements ([\#154](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/154))
+        * Added sequence diagrams for DG ([\#173](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/173))
 
 * **Contribution to team-based tasks**:
     * Participate in tutorial activities, working with teammates to complete tutorial tasks.
