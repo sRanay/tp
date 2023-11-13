@@ -18,14 +18,14 @@ alt inputType != null
         activate ":GoalCommand" #FFBBBB
         ":GoalCommand" --> ":GoalCommand": goalName: String
         deactivate
-        participant ":Parser" <<class>>
+        participant "Parser" <<class>>
         ":GoalCommand" -> ":GoalCommand": getArg(AMOUNT)
         activate ":GoalCommand" #FFBBBB
         ":GoalCommand" --> ":GoalCommand": amountStr: String
         deactivate
-        ":GoalCommand" -> ":Parser": parseNonNegativeDouble(amountStr)
-        activate ":Parser" #FFBBBB
-        ":Parser" --> ":GoalCommand": amount: Double
+        ":GoalCommand" -> "Parser": parseNonNegativeDouble(amountStr)
+        activate "Parser" #FFBBBB
+        "Parser" --> ":GoalCommand": amount: Double
         deactivate
 
         ":GoalCommand" -> ":GoalCommand": addGoal(goalName, amount)
