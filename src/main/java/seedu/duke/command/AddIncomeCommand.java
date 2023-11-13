@@ -21,6 +21,11 @@ public class AddIncomeCommand extends AddTransactionCommand {
         super(description, args);
     }
 
+    /**
+     * Executes the command
+     * @param ui Ui class that is used to format output
+     * @throws DukeException if user input is invalid
+     */
     @Override
     public void execute(Ui ui) throws DukeException {
         throwIfInvalidDescOrArgs();
@@ -30,6 +35,12 @@ public class AddIncomeCommand extends AddTransactionCommand {
         StateManager.getStateManager().sortIncomes();
     }
 
+    /**
+     * Adds a new Income to the Income arraylist in StateManager
+     * @param transaction transaction to add to Income object
+     * @return Income object to be used for printing in printSuccess
+     * @throws DukeException if income is invalid, or any issue is encountered when adding income
+     */
     private Income addNewIncome(Transaction transaction) throws DukeException {
         Goal goal = handleGoal();
         Income income = new Income(transaction, goal);
@@ -37,6 +48,11 @@ public class AddIncomeCommand extends AddTransactionCommand {
         return income;
     }
 
+    /**
+     * Print successful addition of income transaction message
+     * @param ui Ui class for printing
+     * @param income income transaction to print
+     */
     private void printSuccess(Ui ui, Income income) {
         Transaction transaction = income.getTransaction();
         ArrayList<String> printValues = new ArrayList<>();
@@ -49,6 +65,11 @@ public class AddIncomeCommand extends AddTransactionCommand {
         ui.printTableRow(printValues, HEADERS, HEADERS_WIDTH);
     }
 
+    /**
+     * Validates user input for the /category argument and retrieves an income object
+     * @return goal of the transaction
+     * @throws DukeException if goal user input is invalid
+     */
     private Goal handleGoal() throws DukeException {
         StateManager state = StateManager.getStateManager();
         String goal = getArg(GOAL_ARG);

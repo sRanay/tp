@@ -39,7 +39,12 @@ public class ListCommand extends Command {
     public ListCommand(String description, HashMap<String, String> args) {
         super(description, args);
     }
-
+    /**
+     * Executes the command.
+     *
+     * @param ui Ui class that is used to format output.
+     * @throws DukeException if user input is invalid.
+     */
     @Override
     public void execute(Ui ui) throws DukeException {
         this.ui = ui;
@@ -47,6 +52,10 @@ public class ListCommand extends Command {
         listTypeHandler();
     }
 
+    /**
+     * Entry point for input validation
+     * @throws DukeException if user input is invalid
+     */
     private void validateInput() throws DukeException {
         if (validateDescriptionInput()) {
             return;
@@ -54,6 +63,10 @@ public class ListCommand extends Command {
         checkArgs();
     }
 
+    /**
+     * Checks if the user has specified the program arguments correctly
+     * @throws DukeException if arguments specified is invalid
+     */
     private void checkArgs() throws DukeException {
         if (getArgs().isEmpty()) {
             errorMessage(INVALID_TYPE_FORMAT);
@@ -77,6 +90,11 @@ public class ListCommand extends Command {
 
     }
 
+    /**
+     * Checks if user has entered the correct input in the description field
+     * @return true if user has specified the 'goal' or 'category' in description
+     * @throws DukeException if user enters an invalid input
+     */
     private boolean validateDescriptionInput() throws DukeException {
         if (getDescription() == null && getArgs().isEmpty()) {
             String emptyListCommandError = "The list command must be accompanied with additional parameters";
@@ -99,10 +117,21 @@ public class ListCommand extends Command {
         return true;
     }
 
+    /**
+     * Creates a standardised error message
+     * @param message the intended message to add on
+     * @throws DukeException to print the error message and not proceed further
+     */
+
     private void errorMessage(String message) throws DukeException {
         String commonMessage = "\nFor correct usage, please refer to the UG or 'help list'";
         throw new DukeException(message + commonMessage);
     }
+
+    /**
+     * Identify what type of list the user wants
+     * @throws DukeException if any of the called functions throws an exception
+     */
 
     private void listTypeHandler() throws DukeException {
         String description = getDescription();
@@ -121,6 +150,10 @@ public class ListCommand extends Command {
         }
     }
 
+    /**
+     * Validate input when user enters 'list /type in' as input
+     * @throws DukeException when subsequent arguments are incorrect
+     */
     private void checkInArgs() throws DukeException {
         if (getArgs().containsKey(CATEGORY)) {
             errorMessage("'list /type in' should be used with /goal, not /category");
@@ -140,6 +173,10 @@ public class ListCommand extends Command {
         }
     }
 
+    /**
+     * Validate input when user enters 'list /type out' as input
+     * @throws DukeException when subsequent arguments are incorrect
+     */
     private void checkOutArgs() throws DukeException {
         if (getArgs().containsKey(GOAL)) {
             errorMessage("'list /type out' should be used with /category, not /goal");
@@ -158,6 +195,10 @@ public class ListCommand extends Command {
         }
     }
 
+    /**
+     * Determines whether to print a list of goals or categories
+     * @param description user's input in the description field
+     */
     private void printTypeStatus(String description) {
         if (description.equalsIgnoreCase(GOAL)) {
             HashMap<Goal, Double> map = StateManager.getStateManager().getGoalsStatus();
@@ -168,6 +209,11 @@ public class ListCommand extends Command {
         }
     }
 
+    /**
+     * Prints list of transactions
+     * @param listArray list of transactions to print
+     * @param headerMessage message to print for the header
+     */
     private void printList(ArrayList<ArrayList<String>> listArray, String headerMessage) {
         if (headerMessage.equals(IN)) {
             ui.listTransactions(listArray, IN_HEADERS, headerMessage);
@@ -177,6 +223,10 @@ public class ListCommand extends Command {
 
     }
 
+    /**
+     * Retrieves list of income transactions
+     * @throws DukeException when list of income transactions is empty
+     */
     private void listIncome() throws DukeException {
         String filterGoal = null;
         if (getArgs().containsKey(GOAL)) {
@@ -207,6 +257,10 @@ public class ListCommand extends Command {
 
     }
 
+    /**
+     * Prints list of expenses
+     * @throws DukeException when expense transaction list is empty
+     */
     private void listExpenses() throws DukeException {
         String filterCategory = null;
         if (getArgs().containsKey(CATEGORY)) {
@@ -236,6 +290,13 @@ public class ListCommand extends Command {
         printList(printExpenses, OUT);
     }
 
+    /**
+     * Formats transactions into the proper format to print
+     * @param transaction transaction to format
+     * @param index index of transaction in the list
+     * @param typeName goal/category of the transaction
+     * @return The formatted transaction to print
+     */
     private ArrayList<String> formatTransaction(Transaction transaction, int index, String typeName) {
         ArrayList<String> transactionStrings = new ArrayList<>();
         transactionStrings.add(String.valueOf(index));
@@ -289,6 +350,11 @@ public class ListCommand extends Command {
         return filteredArrayList;
     }
 
+    /**
+     * Checks if the transaction date is in the current week
+     * @param transactionDate date of the transaction
+     * @return true if transaction date is within the current week, else false
+     */
     private boolean isThisWeek(LocalDate transactionDate) {
         LocalDate currentDate = LocalDate.now();
         LocalDate startOfWeek = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -299,6 +365,11 @@ public class ListCommand extends Command {
         return true;
     }
 
+    /**
+     * Checks if the transaction date is in the current month
+     * @param transactionDate date of the transaction
+     * @return true if transaction date is within the current month, else false
+     */
     private boolean isThisMonth(LocalDate transactionDate) {
         LocalDate currentDate = LocalDate.now();
         LocalDate startOfMonth = currentDate.withDayOfMonth(1);

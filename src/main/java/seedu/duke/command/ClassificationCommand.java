@@ -13,6 +13,11 @@ public abstract class ClassificationCommand extends Command {
         super(description, args);
     }
 
+    /**
+     * Validates user input
+     * @return type of command (add or remove)
+     * @throws DukeException if user input is invalid
+     */
     protected String validateInput() throws DukeException {
         String invalidInput = "";
         if (getClass() == CategoryCommand.class) {
@@ -39,6 +44,13 @@ public abstract class ClassificationCommand extends Command {
         return null;
     }
 
+    /**
+     * Validates arguments
+     * @param arg argument to validate
+     * @param invalidInput error message to print
+     * @param type whether argument is used for add or remove
+     * @throws DukeException if arg is either null, blank or called 'Uncategorised'
+     */
     private void checkArg(String arg, String invalidInput, String type) throws DukeException {
         if (arg == null) {
             errorMessage(invalidInput);
@@ -51,6 +63,11 @@ public abstract class ClassificationCommand extends Command {
         }
     }
 
+    /**
+     * Prints error message depending on whether GoalCommand or CategoryCommand called it
+     * @param message Error message to print
+     * @throws DukeException To display error to user
+     */
     protected void errorMessage(String message) throws DukeException {
         String commonMessage = "Invalid input! Please refer to UG for correct usage";
         if (getClass() == CategoryCommand.class) {

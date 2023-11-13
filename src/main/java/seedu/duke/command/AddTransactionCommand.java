@@ -29,6 +29,10 @@ public abstract class AddTransactionCommand extends Command {
         super(description, args);
     }
 
+    /**
+     * Prepares a transaction object based on user input.
+     * @return Transaction object to be added to either Expense or Income
+     */
     protected Transaction prepareTransaction() {
         assert isValidated;
 
@@ -45,6 +49,10 @@ public abstract class AddTransactionCommand extends Command {
         return transaction;
     }
 
+    /**
+     * Validates user input
+     * @throws DukeException if user input is invalid
+     */
     protected void throwIfInvalidDescOrArgs()
             throws DukeException {
         assert getDescription() != null;
@@ -56,11 +64,20 @@ public abstract class AddTransactionCommand extends Command {
         isValidated = true;
     }
 
+    /**
+     * Throws error if user does not enter input in description field
+     * @throws DukeException if user does not enter any input in description
+     */
     private void throwIfEmptyDesc() throws DukeException {
         if (getDescription().isBlank()) {
             throw new DukeException(MISSING_DESC);
         }
     }
+
+    /**
+     * Throws an exception if /amount is invalid
+     * @throws DukeException when no amount is entered or invalid amount
+     */
 
     private void throwIfInvalidAmount() throws DukeException {
         String amountArg = getArg(AMOUNT_ARG);
@@ -74,6 +91,10 @@ public abstract class AddTransactionCommand extends Command {
         }
     }
 
+    /**
+     * Throws exception if date is in an invalid format
+     * @throws DukeException if user input for date is invalid
+     */
     private void throwIfInvalidDate() throws DukeException {
         String date = getArg(DATE_ARG);
         LocalDate parsedDate = Parser.parseDate(date);
@@ -82,6 +103,10 @@ public abstract class AddTransactionCommand extends Command {
         }
     }
 
+    /**
+     * Validate if user has entered correct input for recurrence
+     * @throws DukeException if user input is incorrect
+     */
     private void throwIfInvalidRecurrence() throws DukeException {
         String recurrence = getArg(RECURRENCE_ARG);
         if (recurrence == null) {

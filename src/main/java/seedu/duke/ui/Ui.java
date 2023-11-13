@@ -56,10 +56,6 @@ public class Ui {
         printTableRow(rowValues, null, customWidths);
     }
 
-    public void printTableRow(ArrayList<String> rowValues, String[] headers) {
-        printTableRow(rowValues, headers, null);
-    }
-
     public void printTableRow(ArrayList<String> rowValues, String[] headers, Integer[] customWidths) {
         assert rowValues != null;
         ArrayList<Integer> colWidths = printTableHeader(headers, customWidths);
@@ -192,6 +188,12 @@ public class Ui {
         return colWidths;
     }
 
+    /**
+     * Formats column values by truncating them if exceeds width
+     * @param colWidths width of columns
+     * @param colValues column values
+     * @return formatted column values
+     */
     private String formatColumnValues(ArrayList<Integer> colWidths, ArrayList<String> colValues) {
         assert colWidths != null;
         assert colValues != null;
@@ -217,6 +219,12 @@ public class Ui {
         return String.join(new String(spacer), finalValues);
     }
 
+    /**
+     * Prints all transactions in the list
+     * @param list list of transaction to print
+     * @param headers array of header widths
+     * @param headerMessage header message to print
+     */
     public void listTransactions(ArrayList<ArrayList<String>> list, String[] headers, String headerMessage) {
         String end = " transactions.";
         if (list.size() == 1) {
@@ -232,6 +240,12 @@ public class Ui {
 
     }
 
+    /**
+     * Creates border around output
+     * @param columnWidths width of each column
+     * @param headerMessage header message
+     * @return returns formatted border
+     */
     private String createWrapper(Integer[] columnWidths, String headerMessage) {
         int totalSpace = Arrays.stream(columnWidths)
                 .mapToInt(Integer::intValue)
@@ -248,6 +262,10 @@ public class Ui {
         return (wrapper.toString());
     }
 
+    /**
+     * Prints list of active goals
+     * @param goalsMap list of goals
+     */
     public void printGoalsStatus(HashMap<Goal, Double> goalsMap) {
         ArrayList<TypePrint> goalsToPrint = new ArrayList<>();
         TypePrint uncategorised = null;
@@ -278,6 +296,10 @@ public class Ui {
         print(wrapper);
     }
 
+    /**
+     * Prints goal/category and their amounts
+     * @param arrayToPrint array of the type (goal/category) to print
+     */
     private void printStatus(ArrayList<TypePrint> arrayToPrint, boolean showProgress) {
         if (arrayToPrint.isEmpty()) {
             String message = "No existing transactions";
@@ -304,6 +326,10 @@ public class Ui {
         }
     }
 
+    /**
+     * Formats a progress bar
+     * @param percentage percentage to convert into a bar
+     */
     public String progressBar(Double percentage) {
         int maxBars = 20;
         int steps = 5;
@@ -321,6 +347,10 @@ public class Ui {
         return progress;
     }
 
+    /**
+     * Prints list of unused goals
+     * @param goals list of goals
+     */
     private void printUnusedGoals(HashMap<Goal, Double> goals) {
         HashSet<Goal> keySet = new HashSet<>(goals.keySet());
         ArrayList<ArrayList<String>> unusedGoals = new ArrayList<>();
@@ -342,6 +372,10 @@ public class Ui {
         printTableRows(unusedGoals, header, TYPE_COLUMN_WIDTHS_WO_PROGRESS);
     }
 
+    /**
+     * Prints list of all categories
+     * @param categoryMap hashmap of each category and the amount linked to each category
+     */
     public void printCategoryStatus(HashMap<Category, Double> categoryMap) {
         ArrayList<TypePrint> categoriesToPrint = new ArrayList<>();
         Category uncategorisedCategory = StateManager.getStateManager().getUncategorisedCategory();
@@ -372,6 +406,10 @@ public class Ui {
         print(wrapper);
     }
 
+    /**
+     * Prints list of unused categories
+     * @param categories list of categories
+     */
     private void printUnusedCategories(HashMap<Category, Double> categories) {
         HashSet<Category> keySet = new HashSet<>(categories.keySet());
         List<String> unusedCategories = new ArrayList<>();
