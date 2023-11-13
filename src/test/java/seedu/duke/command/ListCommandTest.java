@@ -308,7 +308,7 @@ class ListCommandTest {
         addInEntriesWithDates();
         Command command = parser.parse("list /type in /month");
         command.execute(ui);
-        if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
+        if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) { // when current and previous week is in same month
             assertEquals("Alright! Displaying 2 transactions.\n" +
                             "=========================================== IN TRANSACTIONS ============================" +
                             "===============\n" +
@@ -321,7 +321,7 @@ class ListCommandTest {
                             "=========================================== IN TRANSACTIONS ===========================" +
                             "================\n"
                     , outputStream.toString());
-        } else {
+        } else { // when current and previous week date is in different month
             assertEquals("Alright! Displaying 1 transaction.\n" +
                             "=========================================== IN TRANSACTIONS ============================" +
                             "===============\n" +
@@ -340,7 +340,7 @@ class ListCommandTest {
         addOutEntriesWithDates();
         Command command = parser.parse("list /type out /month");
         command.execute(ui);
-        if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) {
+        if (isInSameMonth(getCurrentDate(), getPrevWeekDate())) { // when current and previous week is in same month
             assertEquals("Alright! Displaying 2 transactions.\n" +
                             "========================================== OUT TRANSACTIONS ============================" +
                             "===============\n" +
@@ -354,7 +354,7 @@ class ListCommandTest {
                             "========================================== OUT TRANSACTIONS ============================" +
                             "===============\n"
                     , outputStream.toString());
-        } else {
+        } else { // when current and previous week date is in different month
             assertEquals("Alright! Displaying 1 transaction.\n" +
                             "========================================== OUT TRANSACTIONS ===========================" +
                             "================\n" +
