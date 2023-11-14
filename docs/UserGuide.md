@@ -64,7 +64,7 @@ Adds an income towards a goal.
 Format: `in DESCRIPTION /amount AMOUNT [/goal GOAL] [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
-* `AMOUNT` must be more than or equal to 0 and less than 10 million, it can contain at most 2 decimal points.
+* `AMOUNT` must have a minimum amount of 0.01 and less than 10 million, and it can contain at most 2 decimal points.
 * `DATE` must be in format `DDMMYYYY`
   * If `RECURRENCE` is specified, date must not be earlier than or equal to 1 period in the past (can be in the future).
     * i.e. If `RECURRENCE` is weekly, date specified must not be more than 6 days in the past.
