@@ -30,6 +30,7 @@ Given below are my contributions to the project.
   * User Guide:
     * Created initial UG v1.0 file in Markdown from previously created UG in docx format [\#32](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/32)
     * Updated documentation for features 'list', 'goal' and 'category' [\#84](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/84)
+    * Added sample output for features [\#184](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/184)
   * Developer Guide:
     * Added information about 'Command' component of DG [\#55](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/55/)
     * Added implementation details about ListCommand and sequence diagram for ListCommand [\#166](https://github.com/AY2324S1-CS2113-W12-3/tp/pull/166)
