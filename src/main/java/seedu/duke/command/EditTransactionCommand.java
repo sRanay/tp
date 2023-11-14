@@ -149,6 +149,12 @@ public class EditTransactionCommand extends Command {
         boolean hasAmountArg = getArgs().containsKey(AMOUNT_ARG);
         boolean isInType = getArg(TYPE_ARG).equalsIgnoreCase(TYPE_IN);
         boolean isOutType = getArg(TYPE_ARG).equalsIgnoreCase(TYPE_OUT);
+        if (!getArgs().containsKey(DESCRIPTION_ARG)) {
+            return;
+        }
+        if (getArg(DESCRIPTION_ARG).isBlank()) {
+            throw new DukeException(MISSING_DESCRIPTION);
+        }
 
         if (isInType && !(hasDescArg || hasAmountArg || hasGoalArg)) {
             throw new DukeException(MISSING_EDIT);
