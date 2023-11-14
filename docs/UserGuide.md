@@ -85,6 +85,13 @@ a goal called 'PS5'.
 Adds an income entry for 'pocket money saved' for an amount of 25 towards
 a goal called 'savings' which recurs weekly.
 
+**Sample Output**
+```
+Nice! The following income has been tracked:
+Description                      Date          Amount        Goal                   Recurrence
+Salary                           2023-11-14    300.00        Holiday                none
+```
+
 ### Adding an expense entry: `out`
 Adds an expense for a category.
 
@@ -111,6 +118,13 @@ the 'game' category.
 `out spotify /amount 9 /category entertainment /recurrence monthly`<br>
 Adds an expense entry for 'pokemon card pack' for an amount of 9 towards
 the 'entertainment' category which recurs monthly.
+
+**Sample Output**
+```
+Nice! The following expense has been tracked:
+Description                      Date          Amount        Category               Recurrence
+11/11 Purchase                   2023-11-14    500.00        Uncategorised          none
+```
 
 ### Delete Transaction: `delete`
 Delete a specific transaction based on the index in the list.
@@ -141,6 +155,7 @@ Formats:
 * The list that would be printed will be sorted in descending order by date.
 * If `list goal` or `list category` is used, there must not be any other arguments that come after that.
 * If arguments are specified, such as `list /type in`, there should not be anything before the argument. (`list goal /type in` would be considered an invalid command)
+* The maximum supported goal progress percentage is `99999999.99%`, if exceeded, the goal progress percentage will be truncated 
 
 **Usage Example:**
 
@@ -233,6 +248,23 @@ Format: `edit INDEX /type (in | out) [/description DESCRIPTION] [/amount AMOUNT]
 
 `edit 2 /type out /description grab /amount 10 /category transport` - Edits the second expense transaction description to `grab`, amount to `10`, category to `transport`.
 
+**Sample Output**
+```
+> User: list /type in
+Alright! Displaying 1 transaction.
+=========================================== IN TRANSACTIONS ===========================================
+ID    Description                      Date         Amount       Goal                   Recurrence
+1     Salary                           2023-11-14   300.00       Holiday                none
+=========================================== IN TRANSACTIONS ===========================================
+> User: edit 1 /type in /goal Uncategorised
+Successfully edited income no.1 Salary
+> User: list /type in
+Alright! Displaying 1 transaction.
+=========================================== IN TRANSACTIONS ===========================================
+ID    Description                      Date         Amount       Goal                   Recurrence
+1     Salary                           2023-11-14   300.00       Uncategorised          none
+=========================================== IN TRANSACTIONS ===========================================
+```
 
 ### Transaction Summary: `summary`
 Shows the summarised total of transactions.
@@ -259,6 +291,13 @@ Format: `summary /type (in | out) [/day] [/week] [/month]`
 `summary /type out /week` - Shows the summarised total for expense in the current week.
 
 `summary /type out /month` - Shows the summarised total for expense in the current month.
+
+```
+> User: summary /type in
+Good job! Total income so far: $300.00
+> User: summary /type out
+Wise spending! Total expense so far: $500.00
+```
 
 
 ### End Program: `bye`
