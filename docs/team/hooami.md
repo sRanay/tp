@@ -46,4 +46,3 @@ Given below are my contributions to the project.
   * PRs Reviewed: [List](https://github.com/AY2324S1-CS2113-W12-3/tp/pulls?q=is%3Apr+reviewed-by%3Ahooami) 
 * **Community:**
   * Reported bugs and suggestions for other teams in the class (examples: [1](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/141), [2](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/149), [3](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/171), [4](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/157), [5](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/205), [6](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/199), [7](https://github.com/AY2324S1-CS2113-T17-3/tp/issues/164))
-  * 

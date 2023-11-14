@@ -64,7 +64,7 @@ Adds an income towards a goal.
 Format: `in DESCRIPTION /amount AMOUNT [/goal GOAL] [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
-* `AMOUNT` must have a minimum amount of 0.01 and less than 10 million, and it can contain at most 2 decimal points.
+* `AMOUNT` must be more than or equal to 0 and less than 10 million, it can contain at most 2 decimal points.
 * `DATE` must be in format `DDMMYYYY`
   * If `RECURRENCE` is specified, date must not be earlier than or equal to 1 period in the past (can be in the future).
     * i.e. If `RECURRENCE` is weekly, date specified must not be more than 6 days in the past.
@@ -204,7 +204,7 @@ Format: `goal [/add GOAL /amount AMOUNT] [/remove GOAL]`
 * Only either `/add` or `/remove` can be provided. They should not be provided together.
 * `GOAL` is case-insensitive
 * `/add GOAL` has to be accompanied with `/amount AMOUNT`
-* `AMOUNT` has to be a positive number that is less than 10 million, it can contain at most 2 decimal points.
+* `AMOUNT` has to be a value of at least 0.01 and less than 10 million, and it can contain at most 2 decimal points.
 
 ### Add/Remove a category: `category`
 Creates or deletes a user's category (used for expenses)
