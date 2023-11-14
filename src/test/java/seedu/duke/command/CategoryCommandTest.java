@@ -1,3 +1,10 @@
+/**
+ * The CategoryCommandTest class contains JUnit tests for the CategoryCommand class,
+ * which is responsible for handling category-related commands.
+ * It tests various scenarios such as invalid categories, empty category names, adding and removing categories,
+ * and ensures proper handling of exceptions.
+ */
+
 package seedu.duke.command;
 
 import org.junit.jupiter.api.Test;
@@ -14,6 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CategoryCommandTest {
+
+    /**
+     * Tests whether an exception is thrown for an invalid category command.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void invalidCategory() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -28,6 +41,11 @@ class CategoryCommandTest {
         });
     }
 
+    /**
+     * Tests whether an exception is thrown for an empty category name during addition.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void emptyCategoryAdd() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -42,6 +60,11 @@ class CategoryCommandTest {
         });
     }
 
+    /**
+     * Tests whether a valid category is successfully added.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void validCategory() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -55,6 +78,11 @@ class CategoryCommandTest {
         assertEquals("Successfully added test!\n", outputStream.toString());
     }
 
+    /**
+     * Tests whether an exception is thrown for an invalid category during removal.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void invalidRemoveCategory() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -69,6 +97,11 @@ class CategoryCommandTest {
         });
     }
 
+    /**
+     * Tests whether a valid category is successfully removed.
+     *
+     * @throws DukeException if the test fails.
+     */
     @Test
     void validRemoveCategory() throws DukeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

@@ -1,3 +1,10 @@
+/**
+ * The ListCommandTest class contains JUnit tests for the ListCommand class,
+ * which is responsible for displaying lists of transactions based on specified criteria.
+ * It tests various scenarios, including invalid input, filtering by type, goal, and category,
+ * and listing transactions for specific time periods (week and month).
+ */
+
 package seedu.duke.command;
 
 import org.junit.jupiter.api.AfterEach;
@@ -21,11 +28,19 @@ class ListCommandTest {
     private static Ui ui = new Ui(outputStream);
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("ddMMyyyy");
 
+    /**
+     * Clears the state manager after each test to ensure a clean state for the next test.
+     */
     @AfterEach
     void clearStateManager() {
         StateManager.clearStateManager();
     }
 
+    /**
+     * Tests the scenario where an invalid list command is provided, and a DukeException is expected.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void invalidList() throws DukeException {
         String userInput = "list";
@@ -37,6 +52,11 @@ class ListCommandTest {
         });
     }
 
+    /**
+     * Tests the scenario where an invalid list type is provided, and a DukeException is expected.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void emptyListDescription() throws DukeException {
         String userInput = "list ";
@@ -44,6 +64,12 @@ class ListCommandTest {
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
+    /**
+     * Tests the scenario where an invalid goal is provided for the list command,
+     * and a DukeException is expected.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void invalidListDescription_argumentExists() throws DukeException {
         String userInput = "list goal /type in";
@@ -90,6 +116,12 @@ class ListCommandTest {
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
+    /**
+     * Tests the scenario where both an invalid goal and category are provided for the list command,
+     * and a DukeException is expected.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void invalidCategoryGoal() throws DukeException {
         String userInput = "list /type in /goal ABC /category DEF";
@@ -97,6 +129,9 @@ class ListCommandTest {
         assertThrows(DukeException.class, () -> command.execute(ui));
     }
 
+    /**
+     * Adds sample income entries for testing list commands with goals.
+     */
     private static void addInEntries() {
         try {
             parser.parse("goal /add car /amount 5000").execute(ui);
@@ -110,6 +145,9 @@ class ListCommandTest {
 
     }
 
+    /**
+     * Adds sample expense entries for testing list commands with categories.
+     */
     private static void addOutEntries() {
         try {
             parser.parse("out dinner /amount 10.50 /category food").execute(ui);
@@ -121,6 +159,9 @@ class ListCommandTest {
 
     }
 
+    /**
+     * Adds sample income entries with dates for testing list commands with date filtering.
+     */
     private static void addInEntriesWithDates() {
         try {
             parser.parse("goal /add car /amount 5000").execute(ui);
@@ -136,7 +177,9 @@ class ListCommandTest {
         }
     }
 
-
+    /**
+     * Adds sample expense entries with dates for testing list commands with date filtering.
+     */
     private static void addOutEntriesWithDates() {
         try {
             parser.parse("out lunch /amount 7.50 /category food /date " +
@@ -151,40 +194,75 @@ class ListCommandTest {
         }
     }
 
+    /**
+     * Retrieves the formatted current date as a string.
+     *
+     * @return The formatted current date.
+     */
     private static String getFormattedCurrentDate() {
         LocalDate currentDate = LocalDate.now();
         return currentDate.format(DATE_FORMATTER);
     }
 
+    /**
+     * Retrieves the formatted date for the previous week as a string.
+     *
+     * @return The formatted date for the previous week.
+     */
     private static String getFormattedPrevWeekDate() {
         LocalDate currentDate = LocalDate.now();
         LocalDate prevWeek = currentDate.minusDays(7);
         return prevWeek.format(DATE_FORMATTER);
     }
 
+    /**
+     * Retrieves the formatted date for the previous month as a string.
+     *
+     * @return The formatted date for the previous month.
+     */
     private static String getFormattedPrevMonthDate() {
         LocalDate currentDate = LocalDate.now();
         LocalDate prevMonth = currentDate.minusMonths(1);
         return prevMonth.format(DATE_FORMATTER);
     }
 
+    /**
+     * Retrieves the current date as a LocalDate object.
+     *
+     * @return The current date.
+     */
     private static LocalDate getCurrentDate() {
         LocalDate currentDate = LocalDate.now();
         return currentDate;
     }
 
+    /**
+     * Retrieves the date for the previous week as a LocalDate object.
+     *
+     * @return The date for the previous week.
+     */
     private static LocalDate getPrevWeekDate() {
         LocalDate currentDate = LocalDate.now();
         LocalDate prevWeek = currentDate.minusDays(7);
         return prevWeek;
     }
 
-
+    /**
+     * Checks if two LocalDate objects fall in the same month.
+     *
+     * @param date1 The first LocalDate object.
+     * @param date2 The second LocalDate object.
+     * @return True if the two dates are in the same month, false otherwise.
+     */
     public static boolean isInSameMonth(LocalDate date1, LocalDate date2) {
         return date1.getYear() == date2.getYear() && date1.getMonthValue() == date2.getMonthValue();
     }
 
-
+    /**
+     * Tests the scenario where valid income transactions are listed, and the output is verified.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void validInList() throws DukeException {
         addInEntries();
@@ -207,6 +285,11 @@ class ListCommandTest {
 
     }
 
+    /**
+     * Tests the scenario where filtered valid income transactions are listed, and the output is verified.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void validFilteredInList() throws DukeException {
         addInEntries();
@@ -227,6 +310,11 @@ class ListCommandTest {
 
     }
 
+    /**
+     * Tests the scenario where valid expense transactions are listed, and the output is verified.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void validOutList() throws DukeException {
         addOutEntries();
@@ -249,6 +337,11 @@ class ListCommandTest {
 
     }
 
+    /**
+     * Tests the scenario where filtered valid expense transactions are listed, and the output is verified.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void validFilteredOutList() throws DukeException {
         addOutEntries();
@@ -267,6 +360,11 @@ class ListCommandTest {
 
     }
 
+    /**
+     * Tests the scenario where income transactions for the current week are listed, and the output is verified.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void execute_listIncomeByWeek_printCurrentWeekTransactions() throws DukeException {
         addInEntriesWithDates();
@@ -335,6 +433,11 @@ class ListCommandTest {
         }
     }
 
+    /**
+     * Tests the scenario where expense transactions for the current month are listed, and the output is verified.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void execute_listExpenseByMonth_printCurrentMonthTransactions() throws DukeException {
         addOutEntriesWithDates();
@@ -368,6 +471,12 @@ class ListCommandTest {
         }
     }
 
+    /**
+     * Tests the scenario where income transactions for the current week and month are listed,
+     * and the output is verified.
+     *
+     * @throws DukeException If an error occurs while executing the command.
+     */
     @Test
     void execute_listIncomeByWeekAndMonth_printCurrentWeekTransactions() throws DukeException {
         addInEntriesWithDates();

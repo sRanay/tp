@@ -1,3 +1,10 @@
+/**
+ * The HelpCommandTest class contains JUnit tests for the HelpCommand class,
+ * which is responsible for displaying information about various commands.
+ * It tests different scenarios, including displaying general help, command-specific help,
+ * and handling invalid commands.
+ */
+
 package seedu.duke.command;
 
 import org.junit.jupiter.api.Test;

@@ -1,3 +1,10 @@
+/**
+ * The AddExpenseCommandTest class contains JUnit tests for the AddExpenseCommand class,
+ * which is responsible for adding expense transactions.
+ * It tests various scenarios such as valid inputs, missing or invalid descriptions, amounts, categories,
+ * and ensures proper handling of exceptions.
+ */
+
 package seedu.duke.command;
 
 import org.junit.jupiter.api.AfterEach;
@@ -14,11 +21,17 @@ class AddExpenseCommandTest {
     private static final DukeException MISSING_CAT_EXCEPTION = new DukeException("Category cannot be empty...");
     private static final DukeException BAD_RECURRENCE = new DukeException("Invalid recurrence period specified...");
 
+    /**
+     * Clears the StateManager after each test to ensure a clean slate for the next test.
+     */
     @AfterEach
     void clearStateManager() {
         StateManager.clearStateManager();
     }
 
+    /**
+     * Tests valid inputs for adding expense transactions.
+     */
     @Test
     void validInputs() {
         LocalDate date = LocalDate.now();
@@ -50,6 +63,9 @@ class AddExpenseCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
+    /**
+     * Tests cases with missing or invalid descriptions.
+     */
     @Test
     void missingDescription() {
         CommandTestCase[] testCases = new CommandTestCase[]{
@@ -77,6 +93,9 @@ class AddExpenseCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
+    /**
+     * Tests cases with missing or invalid amounts.
+     */
     @Test
     void missingAmount() {
         CommandTestCase[] testCases = new CommandTestCase[]{
@@ -111,6 +130,9 @@ class AddExpenseCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
+    /**
+     * Tests cases with missing or invalid categories.
+     */
     @Test
     void missingClassification() {
         LocalDate date = LocalDate.now();
@@ -132,6 +154,9 @@ class AddExpenseCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
+    /**
+     * Tests cases with invalid recurrence.
+     */
     @Test
     void badRecurrence() {
         CommandTestCase[] testCases = new CommandTestCase[]{

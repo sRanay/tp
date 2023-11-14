@@ -1,3 +1,10 @@
+/**
+ * The AddIncomeCommandTest class contains JUnit tests for the AddIncomeCommand class,
+ * which is responsible for adding income transactions.
+ * It tests various scenarios such as valid inputs, missing or invalid descriptions, amounts, dates, goals,
+ * recurrences, and ensures proper handling of exceptions.
+ */
+
 package seedu.duke.command;
 
 import org.junit.jupiter.api.AfterEach;
@@ -27,6 +34,9 @@ class AddIncomeCommandTest {
                     " to be larger than 1 period in the past..."
     );
 
+    /**
+     * Adds sample categories before each test.
+     */
     @BeforeEach
     void addCategories() {
         assertDoesNotThrow(() -> {
@@ -35,11 +45,17 @@ class AddIncomeCommandTest {
         });
     }
 
+    /**
+     * Clears the StateManager after each test to ensure a clean slate for the next test.
+     */
     @AfterEach
     void clearStateManager() {
         StateManager.clearStateManager();
     }
 
+    /**
+     * Tests valid inputs for adding income transactions.
+     */
     @Test
     void validInputs() {
         LocalDate date = LocalDate.now();
@@ -95,6 +111,9 @@ class AddIncomeCommandTest {
         tc.evaluate();
     }
 
+    /**
+     * Tests cases with missing or invalid descriptions.
+     */
     @Test
     void missingDescription() {
         CommandTestCase[] testCases = new CommandTestCase[]{
@@ -122,6 +141,9 @@ class AddIncomeCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
+    /**
+     * Tests cases with missing or invalid amounts.
+     */
     @Test
     void missingAmount() {
         CommandTestCase[] testCases = new CommandTestCase[]{
@@ -156,6 +178,9 @@ class AddIncomeCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
+    /**
+     * Tests cases with invalid dates.
+     */
     @Test
     void badDate() {
         CommandTestCase[] testCases = new CommandTestCase[]{
@@ -183,6 +208,9 @@ class AddIncomeCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
+    /**
+     * Tests cases with missing or invalid goals.
+     */
     @Test
     void missingClassification() {
         CommandTestCase[] testCases = new CommandTestCase[]{
@@ -202,6 +230,9 @@ class AddIncomeCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
+    /**
+     * Tests cases with invalid recurrences.
+     */
     @Test
     void badRecurrence() {
         CommandTestCase[] testCases = new CommandTestCase[]{
@@ -217,6 +248,9 @@ class AddIncomeCommandTest {
         CommandTestCase.runTestCases(testCases);
     }
 
+    /**
+     * Tests cases with invalid recurrence dates.
+     */
     @Test
     void badRecurrenceDate() {
         LocalDate date = LocalDate.now();
