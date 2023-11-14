@@ -219,6 +219,7 @@ Exports all transaction data into a CSV file called `Transactions.csv`
 
 Format: `export [/type (in | out)]`
 * If `/type` is not specified, by default it will extract **ALL** transactions.
+* In any scenario where any error is encountered when exporting the transactions, the message displayed will be `Cannot create file`.
 
 **Usage Example:**
 
