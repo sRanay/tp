@@ -64,7 +64,7 @@ Adds an income towards a goal.
 Format: `in DESCRIPTION /amount AMOUNT [/goal GOAL] [/date DATE in DDMMYYYY] [/recurrence RECURRENCE]`
 
 * `DESCRIPTION` is case-sensitive, while the arguments are not.
-* `AMOUNT` must be more than or equal to 0 and less than 10 million, it can contain at most 2 decimal points.
+* `AMOUNT` must have a minimum amount of 0.01 and less than 10 million, and it can contain at most 2 decimal points.
 * `DATE` must be in format `DDMMYYYY`
   * If `RECURRENCE` is specified, date must not be earlier than or equal to 1 period in the past (can be in the future).
     * i.e. If `RECURRENCE` is weekly, date specified must not be more than 6 days in the past.
@@ -84,6 +84,13 @@ a goal called 'PS5'.
 `in pocket money saved /amount 25 /goal savings /recurrence weekly`<br>
 Adds an income entry for 'pocket money saved' for an amount of 25 towards
 a goal called 'savings' which recurs weekly.
+
+**Sample Output**
+```
+Nice! The following income has been tracked:
+Description                      Date          Amount        Goal                   Recurrence
+Salary                           2023-11-14    300.00        Holiday                none
+```
 
 ### Adding an expense entry: `out`
 Adds an expense for a category.
@@ -111,6 +118,13 @@ the 'game' category.
 `out spotify /amount 9 /category entertainment /recurrence monthly`<br>
 Adds an expense entry for 'pokemon card pack' for an amount of 9 towards
 the 'entertainment' category which recurs monthly.
+
+**Sample Output**
+```
+Nice! The following expense has been tracked:
+Description                      Date          Amount        Category               Recurrence
+11/11 Purchase                   2023-11-14    500.00        Uncategorised          none
+```
 
 ### Delete Transaction: `delete`
 Delete a specific transaction based on the index in the list.
@@ -141,6 +155,8 @@ Formats:
 * The list that would be printed will be sorted in descending order by date.
 * If `list goal` or `list category` is used, there must not be any other arguments that come after that.
 * If arguments are specified, such as `list /type in`, there should not be anything before the argument. (`list goal /type in` would be considered an invalid command)
+* The maximum supported goal progress percentage is `99999999.99%`, if exceeded, the goal progress percentage will be truncated 
+* For 'Uncategorised' goal, there would not be any progress shown as there is no target amount allowed.
 
 **Usage Example:**
 
@@ -203,6 +219,7 @@ Exports all transaction data into a CSV file called `Transactions.csv`
 
 Format: `export [/type (in | out)]`
 * If `/type` is not specified, by default it will extract **ALL** transactions.
+* In any scenario where any error is encountered when exporting the transactions, the message displayed will be `Cannot create file`.
 
 **Usage Example:**
 
@@ -233,6 +250,23 @@ Format: `edit INDEX /type (in | out) [/description DESCRIPTION] [/amount AMOUNT]
 
 `edit 2 /type out /description grab /amount 10 /category transport` - Edits the second expense transaction description to `grab`, amount to `10`, category to `transport`.
 
+**Sample Output**
+```
+> User: list /type in
+Alright! Displaying 1 transaction.
+=========================================== IN TRANSACTIONS ===========================================
+ID    Description                      Date         Amount       Goal                   Recurrence
+1     Salary                           2023-11-14   300.00       Holiday                none
+=========================================== IN TRANSACTIONS ===========================================
+> User: edit 1 /type in /goal Uncategorised
+Successfully edited income no.1 Salary
+> User: list /type in
+Alright! Displaying 1 transaction.
+=========================================== IN TRANSACTIONS ===========================================
+ID    Description                      Date         Amount       Goal                   Recurrence
+1     Salary                           2023-11-14   300.00       Uncategorised          none
+=========================================== IN TRANSACTIONS ===========================================
+```
 
 ### Transaction Summary: `summary`
 Shows the summarised total of transactions.
@@ -259,6 +293,13 @@ Format: `summary /type (in | out) [/day] [/week] [/month]`
 `summary /type out /week` - Shows the summarised total for expense in the current week.
 
 `summary /type out /month` - Shows the summarised total for expense in the current month.
+
+```
+> User: summary /type in
+Good job! Total income so far: $300.00
+> User: summary /type out
+Wise spending! Total expense so far: $500.00
+```
 
 
 ### End Program: `bye`
