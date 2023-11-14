@@ -76,11 +76,11 @@ The `Storage` functionality is to load data from the storage files (`category-st
 ![Storage Class Diagram](./images/cs2113-storage-class.png "Storage Class Diagram")
 
 The `Storage` component:
-- Ensures that all the data that is loaded is able to be parsed properly and stored in the application when booting up
-- Skips any rows that have issue during the validation phase
-- Saves to storage file after each command completed
+- Loads previous state of application when the program is booted up
+- Skips any rows that are invalid during the validation phase
+- Saves to storage file after each command is completed
 - Uses `CsvWriter` and `CsvReader` class to read and write to the storage files.
-- `CsvWriter` and `CsvReader` will use `CSVWriter` and `CSVReader` respectively from OpenCSV library to write and read from CSV Files 
+- `CsvWriter` and `CsvReader` uses `CSVWriter` and `CSVReader` respectively from OpenCSV library to write and read from CSV Files 
 
 ### StateManager component
 The `StateManager` component provides the program with a single source of truth. `StateManager`'s design follows the singleton design pattern, allowing
@@ -103,16 +103,16 @@ more application-specific methods in this section.
 
 ## Common Classes
 ### Income Class
-Income class is used to store information of the savings of the user. It is implemented by the aggregation of 
-Transaction and Goal classes. Each income is linked to one transaction and goal. The goal is a target set by 
-the user for which the money is saved for.
+Income class is used to store information about the savings of the user. It is implemented by aggregating 
+Transaction and Goal classes. Each income is linked to one transaction and goal. The goal specifies a target to which the user 
+is saving towards.
 
 ![Income Class Diagram](./images/IncomeClassDiagram.png "Income Class Diagram")
 
 ### Expense Class
-Expense class is used to store information of the spending of the user. It is implemented by the aggregation of 
+Expense class is used to store information about the spending of the user. It is implemented by aggregating  
 Transaction and Category classes. Each expense is linked to one transaction and category. The category is used for 
-grouping of related spending such as Food, Transport, School Fees, etc.
+grouping related expenditures such as Food, Transport, School Fees, etc.
 
 ![Expense Class Diagram](./images/ExpenseClassDiagram.png "Expense Class Diagram")
 
@@ -121,7 +121,7 @@ grouping of related spending such as Food, Transport, School Fees, etc.
 ### Transaction tracking feature
 
 Transaction tracking is a core functionality in the program. This feature includes two commands `in` and `out` which gives users
-the ability to add/remove income or expenses respectively. Also, the user is able to associate an income entry with a goal or have an expense
+the ability to add income or expenses respectively. Also, the user is able to associate an income entry with a goal or have an expense
 entry be associated to a category of expenditure.
 
 The following functionalities are implemented in `AddIncomeCommand` and `AddExpenseCommand` and its' parent class `AddTransactionCommand`.
@@ -354,15 +354,18 @@ and view a summary of their daily/weekly/monthly transactions.
 
 ## User Stories
 
-|Version| As a ... | I want to ... | So that I can ...|
-|--------|----------|---------------|------------------|
-|v1.0|user|add a new income source|can keep track of my allowances and part-time job earnings|
-|v1.0|user|add an expense|can monitor my purchases and stay within my budget|
-|v1.0|user|delete a transaction|remove any duplicate or unwanted entries from my expenses|
-|v1.0|user|view a list of all my transactions|review my income and expenses|
-|v2.0|user|export financial data to a CSV file|use it for client presentations and analysis|
-|v2.0|user|set up recurring transactions for mortgage payments and utility bulls|easily track and budget for regular home expenses|
-|v2.0|user|set financial goals, such as saving for a down payment on a house|stay motivated and track my progress towards home ownership.|
+|Version| As a ... | I want to ...                                                         | So that I can ...                                                   |
+|--------|----------|-----------------------------------------------------------------------|---------------------------------------------------------------------|
+|v1.0|user| add a new income source                                               | can keep track of my allowances and part-time job earnings          |
+|v1.0|user| add an expense                                                        | can monitor my purchases and stay within my budget                  |
+|v1.0|user| delete a transaction                                                  | remove any duplicate or unwanted entries from my expenses           |
+|v1.0|user| view a list of all my transactions                                    | review my income and expenses                                       |
+|v2.0|user| export financial data to a CSV file                                   | use it for client presentations and analysis                        |
+|v2.0|user| set up recurring transactions for mortgage payments and utility bulls | easily track and budget for regular home expenses                   |
+|v2.0|user| set financial goals, such as saving for a down payment on a house     | stay motivated and track my progress towards home ownership.        |
+|v2.0|user| categorise my spending                                                | to group similar spendings together                                 |
+|v2.0|user| edit my transaction                                                   | to rectify any mistakes I made when inputing the transaction details |
+|v2.0|user| view a summary of my income and expense transactions                  | know my current saving and spending                                 |
 
 ## Non-Functional Requirements
 
