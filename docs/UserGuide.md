@@ -156,6 +156,7 @@ Formats:
 * If `list goal` or `list category` is used, there must not be any other arguments that come after that.
 * If arguments are specified, such as `list /type in`, there should not be anything before the argument. (`list goal /type in` would be considered an invalid command)
 * The maximum supported goal progress percentage is `99999999.99%`, if exceeded, the goal progress percentage will be truncated 
+* For 'Uncategorised' goal, there would not be any progress shown as there is no target amount allowed.
 
 **Usage Example:**
 
